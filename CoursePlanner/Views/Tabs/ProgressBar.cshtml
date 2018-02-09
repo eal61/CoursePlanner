@@ -1,0 +1,52 @@
+﻿@using CoursePlanner.Models
+@model DegreeProgram
+@model Semester
+@model Course
+@model Student
+@{
+    ViewBag.Title = "Progress Bar";
+    Student student = new Student(); // add in code to get student
+    // instantiating course list for a semester temporarily - this should already be done normally
+    student.Plan.Semesters = new List<Semester>();
+    student.Plan.Semesters[0].Courses = new List<Course>();
+}
+
+<body>
+    <div id="progressBarContainer">
+        <div id="header">
+
+        </div>
+        <div id="barView" class="container">
+            <!--one bar per set of requirements - need student and their degree program and plan-->
+            <div id="core-bar" class="row">
+                @{List<Course> coreCourses; // need to select relevant degree program to pull courses
+                  // TODO - different progress bars by major/minor?
+                  // TODO In here we look at the students degree program and the required core courses for it
+                  // pull any courses from all semesters that meet that 
+                  // TODO need a way to select degree program
+                  // TODO I think we need a better way to link up degree program than the datastructures offer up right now.
+                  // TODO need a way to select current semester
+                     //<div class="col">
+                     //    <span data-bind="text: name"></span>
+                     //</div>
+                }
+            </div>
+            <div id="tech-bar" class="row">
+
+            </div>
+            <div id="adv-bar" class="row">
+
+            </div>
+            <div id="open-bar" class="row">
+
+            </div>
+            <div id="hs-bar" class="row">
+
+            </div>
+            <div id="other-bar" class="row">
+
+            </div>
+
+        </div>
+    </div>
+</body>
