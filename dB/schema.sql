@@ -12,8 +12,8 @@ create table course (
   course_name text not null
 );
 
-drop table if exists student_courses;
-create table student_courses (
+drop table if exists student_course;
+create table student_course (
   course_id integer not null,
   student_id integer not null
 );
