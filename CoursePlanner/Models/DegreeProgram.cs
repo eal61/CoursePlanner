@@ -7,6 +7,7 @@ namespace CoursePlanner.Models
 {
     public class DegreeProgram
     {
+        public string Name { get; set; }
         public int CreditRequirement { get; set; }
         public List<RequirementGroup> Requirements { get; set; }
         public string Department { get; set; }
