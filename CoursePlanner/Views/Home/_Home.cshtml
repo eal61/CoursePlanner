@@ -3,7 +3,7 @@
     <div class="row profile">
         <div class="col-md-3">
             <div class="profile-sidebar">
-               
+
                 <div class="profile-userpic">
                     <img src="~/Images/avatar.png" class="img-responsive" alt="">
                 </div>
@@ -27,15 +27,14 @@
                     <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
                     <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
                 </ul>
-
                 <div class="tab-content">
                     <div id="home" class="tab-pane fade in active">
                         <h3>HOME</h3>
                         <p>Some content.</p>
                     </div>
-                    <div id="menu1" class="tab-pane fade">
-                        <h3>Menu 1</h3>
-                        <p>Some content in menu 1.</p>
+                    <div id="tabCalendar" class="tab-pane fade">
+         
+                        @{Html.RenderPartial("~/Views/Tabs/CalendarMatrix.cshtml");}
                     </div>
                     <div id="menu2" class="tab-pane fade">
                         <h3>Menu 2</h3>
