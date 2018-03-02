@@ -22,20 +22,51 @@ namespace CoursePlanner.Controllers
             student.Majors.Add(new DegreeProgram {
                 Name = "Computer Engineering",
                 CreditRequirement = 125,
-                School = "Pitt Campus"
+                School = "Pitt Campus",
+                Requirements = new List<RequirementGroup>()
             });
             student.Majors.Add(new DegreeProgram
             {
                 Name = "Mechanical Engineering",
                 CreditRequirement = 125,
-                School = "Pitt Campus"
+                School = "Pitt Campus",
+                Requirements = new List<RequirementGroup>()
             });
 
             student.Minors.Add(new DegreeProgram
             {
                 Name = "Economics",
                 CreditRequirement = 15,
-                School = "Pitt Campus"
+                School = "Pitt Campus",
+                Requirements = new List<RequirementGroup>()
+            });
+
+            student.Majors[0].Requirements.Add(new RequirementGroup {
+                GroupName = "Group 1",
+                MandatoryCourses = new List<Course>()
+            });
+
+            student.Majors[0].Requirements[0].MandatoryCourses.Add(new Course {
+                Name = "Course 1",
+                Id = 1
+            });
+
+            student.Majors[0].Requirements[0].MandatoryCourses.Add(new Course
+            {
+                Name = "Course 2",
+                Id = 2
+            });
+
+            student.Majors[0].Requirements.Add(new RequirementGroup
+            {
+                GroupName = "Group 2",
+                MandatoryCourses = new List<Course>()
+            });
+
+            student.Majors[0].Requirements[1].MandatoryCourses.Add(new Course
+            {
+                Name = "Course 1",
+                Id = 1
             });
 
             List<DegreeProgram> programs = new List<DegreeProgram>();

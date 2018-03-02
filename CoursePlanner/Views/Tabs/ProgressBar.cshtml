@@ -18,7 +18,7 @@
 <body>
     <!-- This should display all majors/minors in order and the requirement groups for each
         Still need to figure out how to account for the flexible (not mandatory) courses, and style the bar-->
-    <div id="progressBarContainer">
+    <div id="progressBarContainer" class="container">
         @foreach (var program in programs)
         {
             <div id=@program.Name>
@@ -33,8 +33,8 @@
                             {
                                 foreach (var course in group.MandatoryCourses)
                                 {
-                                    <div id=@course.Id class="col">
-                                        <p>@course.Name</p>
+                                    <div id=@course.Id class="col-sm-1">
+                                        @course.Name
                                     </div>
                                 }
                             }
