@@ -10,6 +10,6 @@ namespace CoursePlanner.Models
         public int Code { get; set; }
         public List<Course> Courses { get; set; }
         public bool Complete { get; set; }
-        public int TotalCredits { get; set; }       // get TODO
+        //public int TotalCredits { get; set; }       // get TODO
     }
 }
