@@ -7,8 +7,9 @@ namespace CoursePlanner.Models
 {
     public class Semester
     {
-        public List<Course> Course { get; set; }
+        public int Code { get; set; }
+        public List<Course> Courses { get; set; }
         public bool Complete { get; set; }
-        public int TotalCredits { get; set; }
+        //public int TotalCredits { get; set; }       // get TODO
     }
 }

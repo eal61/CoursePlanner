@@ -1,0 +1,47 @@
+﻿@using CoursePlanner.Models
+@using CoursePlanner.Controllers;
+@model DegreeProgram
+@{
+    ViewBag.Title = "Progress Bar";
+    StudentController studentController = new StudentController();
+    Student student = new Student(); // add in code to get student - this will need to come from current logon or user somehow
+                                     // instantiating course list for a semester temporarily - this should already be done normally
+    student.Plan = new CoursePlan();
+    student.Plan.Semesters = new List<Semester>();
+    student.Plan.Semesters.Add(new Semester());
+    student.Plan.Semesters[0].Courses = new List<Course>();
+
+    // set up list for radio buttons to select progress bar to view
+    List<DegreeProgram> programs = studentController.getAllDegreePrograms(); // TODO need to set up student id
+}
+
+<body>
+    <!-- This should display all majors/minors in order and the requirement groups for each
+        Still need to figure out how to account for the flexible (not mandatory) courses, and style the bar-->
+    <div id="progressBarContainer" class="container">
+        @foreach (var program in programs)
+        {
+            <div id=@program.Name>
+                <h3>@program.Name</h3>
+                @if (program.Requirements != null && program.Requirements.Count > 0)
+                {
+                    foreach (var group in program.Requirements)
+                    {
+                        <h4>@group.GroupName</h4>
+                        <div id=@group.GroupName class="row">
+                            @if (group.MandatoryCourses != null && group.MandatoryCourses.Count > 0)
+                            {
+                                foreach (var course in group.MandatoryCourses)
+                                {
+                                    <div id=@course.Id class="col-sm-1">
+                                        @course.Name
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</body>
