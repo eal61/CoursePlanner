@@ -1,18 +1,11 @@
 ﻿@using CoursePlanner.Models
-@using CoursePlanner.Controllers;
+@using CoursePlanner.DataAccess;
 @model DegreeProgram
 @{
     ViewBag.Title = "Progress Bar";
-    StudentController studentController = new StudentController();
-    Student student = new Student(); // add in code to get student - this will need to come from current logon or user somehow
-                                     // instantiating course list for a semester temporarily - this should already be done normally
-    student.Plan = new CoursePlan();
-    student.Plan.Semesters = new List<Semester>();
-    student.Plan.Semesters.Add(new Semester());
-    student.Plan.Semesters[0].Courses = new List<Course>();
-
+    StudentDAO studentData = new StudentDAO();
     // set up list for radio buttons to select progress bar to view
-    List<DegreeProgram> programs = studentController.getAllDegreePrograms(); // TODO need to set up student id
+    List<DegreeProgram> programs = studentData.getAllDegreePrograms(); // TODO need to set up student id
 }
 
 <body>

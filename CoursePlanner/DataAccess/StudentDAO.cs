@@ -4,16 +4,23 @@ using System.Linq;
 using System.Web;
 using CoursePlanner.Models;
 
-namespace CoursePlanner.Controllers
+namespace CoursePlanner.DataAccess
 {
-    public class StudentController
+    public class StudentDAO
     {
+        public Student getStudentInfo(int studentId)
+        {
+            // call db to retrieve student data
+            return new Student();
+        }
+
         /// <summary>
         /// Use to get conglomerate list of all student degree programs - majors and minors
         /// </summary>
         /// <param name="studentId"></param>
         /// <returns></returns>
-        public List<DegreeProgram> getAllDegreePrograms(/*TODO implement this: int studentId*/) {
+        public List<DegreeProgram> getAllDegreePrograms(/*TODO implement this: int studentId*/)
+        {
             // use student Id to get student
             Student student = new Student();
 
