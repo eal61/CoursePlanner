@@ -8,13 +8,42 @@ namespace CoursePlanner.Controllers
 {
     public class StudentController
     {
+//   <connectionStrings>
+//     <add name="DefaultConnection" 
+//     connectionString="Data Source=(LocalDb)\MSSQLLocalDB;
+//     AttachDbFilename=|DataDirectory|\aspnet-CoursePlanner-20180131110323.mdf;
+//     Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True" 
+//     providerName="System.Data.SqlClient" />
+
         /// <summary>
         /// Use to get conglomerate list of all student degree programs - majors and minors
         /// </summary>
         /// <param name="studentId"></param>
         /// <returns></returns>
-        public List<DegreeProgram> getAllDegreePrograms(/*TODO implement this: int studentId*/) {
+        public List<DegreeProgram> getAllDegreePrograms(int studentId) {
             // use student Id to get student
+            using (SqlConnection conn = new SqlConnection())
+            {
+                conn.ConnectionString = 
+                "Server=MSSQLLocalDB;
+                Database=aspnet-CoursePlanner-20180131110323.mdf;
+                Trusted_Connection=true";
+
+
+                
+                SqlCommand command = new SqlCommand("SELECT * FROM StudentDegree WHERE FirstColumn = @0", conn);
+                command.Parameters.Add(new SqlParameter("0", studentId));
+
+                using(SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(String.Format("{0} \t | {1} \t",
+                            reader[0], reader[1]));
+                    }
+                }
+            }
+            
             Student student = new Student();
 
             student.Majors = new List<DegreeProgram>();
