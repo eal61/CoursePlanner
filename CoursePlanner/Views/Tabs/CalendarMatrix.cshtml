@@ -17,34 +17,6 @@
     var sem7 = student.Plan.Semesters.Where(s => s.Code == 7).First().Courses;
     var sem8 = student.Plan.Semesters.Where(s => s.Code == 8).First().Courses;*/
 }
-<script>
-ko.components.register('class-widget', {
-        viewModel: function(params) {
-            // Data: value is either null, 'like', or 'dislike'
-            this.className = params.name;
-            this.classCode = params.id;
-            // Behaviors
-            this.addClass = function() { 
-                // create pop up to add a course
-            }.bind(this);
-        },
-        template:
-            '<div class="class-widget">\
-                <div class="add-button"data-bind="visible: className==""">\
-                    <button data-bind="click: addClass">\
-                        <img>\
-                    </button>\
-                </div>\
-                <div>\
-                    <strong data-bind="text: className"></strong>\
-                    <strong data-bind="text: classCode"></strong>\
-                </div>\
-            </div>'
-        });
-</script>
-
-
-
 <!doctype html>
 <html>
 <head>
@@ -52,6 +24,32 @@ ko.components.register('class-widget', {
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Muuri Table</title>
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+
+    <script>
+        ko.components.register('class-widget', {
+            viewModel: function (params) {
+                // Data: value is either null, 'like', or 'dislike'
+                this.className = params.name;
+                this.classCode = params.id;
+                // Behaviors
+                this.addClass = function () {
+                    // create pop up to add a course
+                }.bind(this);
+            },
+            template:
+                '<div class="class-widget">\
+                <div data-bind="visible: className==""">\
+                    <button data-bind="click: addClass">Click me</button>\
+                </div>\
+                <div>\
+                    <strong data-bind="text: className"></strong>\
+                    <strong data-bind="text: classCode"></strong>\
+                </div>\
+            </div>'
+        });
+
+    </script>
+
 </head>
 <body>
     <!-- need to update the list at hand when items are moved around -->
