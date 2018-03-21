@@ -8,15 +8,42 @@
     Student student = studentData.getStudentInfo(1);
     // now you have the students information
     // strip out the semesters
-    var sem1 = student.Plan.Semesters.Where(s => s.Code == 1);
-    var sem2 = student.Plan.Semesters.Where(s => s.Code == 2);
-    var sem3 = student.Plan.Semesters.Where(s => s.Code == 3);
-    var sem4 = student.Plan.Semesters.Where(s => s.Code == 4);
-    var sem5 = student.Plan.Semesters.Where(s => s.Code == 5);
-    var sem6 = student.Plan.Semesters.Where(s => s.Code == 6);
-    var sem7 = student.Plan.Semesters.Where(s => s.Code == 7);
-    var sem8 = student.Plan.Semesters.Where(s => s.Code == 8);
+    var sem1 = student.Plan.Semesters.Where(s => s.Code == 1).First().Courses;
+    /*var sem2 = student.Plan.Semesters.Where(s => s.Code == 2).First().Courses;
+    var sem3 = student.Plan.Semesters.Where(s => s.Code == 3).First().Courses;
+    var sem4 = student.Plan.Semesters.Where(s => s.Code == 4).First().Courses;
+    var sem5 = student.Plan.Semesters.Where(s => s.Code == 5).First().Courses;
+    var sem6 = student.Plan.Semesters.Where(s => s.Code == 6).First().Courses;
+    var sem7 = student.Plan.Semesters.Where(s => s.Code == 7).First().Courses;
+    var sem8 = student.Plan.Semesters.Where(s => s.Code == 8).First().Courses;*/
 }
+<script>
+ko.components.register('class-widget', {
+        viewModel: function(params) {
+            // Data: value is either null, 'like', or 'dislike'
+            this.className = params.name;
+            this.classCode = params.id;
+            // Behaviors
+            this.addClass = function() { 
+                // create pop up to add a course
+            }.bind(this);
+        },
+        template:
+            '<div class="class-widget">\
+                <div class="add-button"data-bind="visible: className==""">\
+                    <button data-bind="click: addClass">\
+                        <img>\
+                    </button>\
+                </div>\
+                <div>\
+                    <strong data-bind="text: className"></strong>\
+                    <strong data-bind="text: classCode"></strong>\
+                </div>\
+            </div>'
+        });
+</script>
+
+
 
 <!doctype html>
 <html>
@@ -33,36 +60,14 @@
         <div class="board-column Sem1">
             <div class="board-column-header">Semester 1</div>
             <div class="board-column-content">
-                <div class="board-item">
-                    <div class="board-item-content">
-
+                @foreach (var course in sem1)
+                {
+                    <div class="board-item" id=@course.Id>
+                        <div class="board-item-content">
+                            <class-widget params="value: {id: @course.Id, name: @course.Name}"></class-widget>
+                        </div>
                     </div>
-                </div>
-                <div class="board-item">
-                    <div class="board-item-content">
-
-                    </div>
-                </div>
-                <div class="board-item">
-                    <div class="board-item-content">
-
-                    </div>
-                </div>
-                <div class="board-item">
-                    <div class="board-item-content">
-
-                    </div>
-                </div>
-                <div class="board-item">
-                    <div class="board-item-content">
-
-                    </div>
-                </div>
-                <div class="board-item">
-                    <div class="board-item-content">
-
-                    </div>
-                </div>
+                }
             </div>
         </div>
         <div class="board-column Sem2">

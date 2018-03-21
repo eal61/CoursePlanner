@@ -11,7 +11,26 @@ namespace CoursePlanner.DataAccess
         public Student getStudentInfo(int studentId)
         {
             // call db to retrieve student data
-            return new Student();
+
+            // fake data
+            var student = new Student();
+            student.Plan = new CoursePlan();
+            student.Plan.Semesters = new List<Semester>();
+            student.Plan.Semesters.Add(new Semester { Code = 1, Complete = false, Courses = new List<Course>() });
+            student.Plan.Semesters.Add(new Semester { Code = 2, Complete = false, Courses = new List<Course>() });
+            student.Plan.Semesters.Add(new Semester { Code = 3, Complete = false, Courses = new List<Course>() });
+            student.Plan.Semesters.Add(new Semester { Code = 4, Complete = false, Courses = new List<Course>() });
+            student.Plan.Semesters.Add(new Semester { Code = 5, Complete = false, Courses = new List<Course>() });
+            student.Plan.Semesters.Add(new Semester { Code = 6, Complete = false, Courses = new List<Course>() });
+            student.Plan.Semesters.Add(new Semester { Code = 7, Complete = false, Courses = new List<Course>() });
+            student.Plan.Semesters.Add(new Semester { Code = 8, Complete = false, Courses = new List<Course>() });
+
+            student.Plan.Semesters[0].Courses.Add(new Course { Id = 1, Name = "Course 1" });
+            student.Plan.Semesters[0].Courses.Add(new Course { Id = 2, Name = "Course 2" });
+            student.Plan.Semesters[0].Courses.Add(new Course { Id = 3, Name = "Course 3" });
+            student.Plan.Semesters[0].Courses.Add(new Course { Id = 4, Name = "Course 4" });
+
+            return student;
         }
 
         /// <summary>
