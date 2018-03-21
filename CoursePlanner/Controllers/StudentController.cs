@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using CoursePlanner.Models;
+using System.Data.SqlClient;
 
 namespace CoursePlanner.Controllers
 {
@@ -24,13 +23,8 @@ namespace CoursePlanner.Controllers
             // use student Id to get student
             using (SqlConnection conn = new SqlConnection())
             {
-                conn.ConnectionString = 
-                "Server=MSSQLLocalDB;
-                Database=aspnet-CoursePlanner-20180131110323.mdf;
-                Trusted_Connection=true";
+                conn.ConnectionString = "Server=MSSQLLocalDB; Database=aspnet-CoursePlanner-20180131110323.mdf; Trusted_Connection=true";
 
-
-                
                 SqlCommand command = new SqlCommand("SELECT * FROM StudentDegree WHERE FirstColumn = @0", conn);
                 command.Parameters.Add(new SqlParameter("0", studentId));
 
