@@ -21,6 +21,9 @@
 <!doctype html>
 <html>
 <head>
+    <script type='text/javascript' src='~/Scripts/knockout-3.4.2.js'></script>
+    <script type='text/javascript' src='~/Scripts/knockout.validation.js'></script>
+    <!--<script type='text/javascript' src='~/Scripts/require.js'></script>-->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Muuri Table</title>
@@ -30,25 +33,23 @@
         ko.components.register('class-widget', {
             viewModel: function (params) {
                 // Data: value is either null, 'like', or 'dislike'
-                this.className = params.name;
-                this.classCode = params.id;
+                this.className = ko.observable(params.name);
+                this.classCode = ko.observable(params.id);
                 // Behaviors
                 this.addClass = function () {
                     // create pop up to add a course
                 }.bind(this);
             },
-            template:
-                '<div class="class-widget">\
-                <div data-bind="visible: className==""">\
-                    <button data-bind="click: addClass">Click me</button>\
-                </div>\
-                <div>\
-                    <strong data-bind="text: className"></strong>\
-                    <strong data-bind="text: classCode"></strong>\
-                </div>\
-            </div>'
+            template: '<div class="class-widget">\
+                        <div data-bind="visible: !className()">\
+                            <button data-bind="click: addClass">Click me</button>\
+                        </div>\
+                        <div>\
+                            <strong data-bind="text: className"></strong>\
+                            <strong data-bind="text: classCode"></strong>\
+                        </div>\
+                       </div>' 
         });
-
     </script>
 
 </head>
@@ -57,13 +58,13 @@
     <!-- save the order to the student object, maybe have an update button to update db?-->
     <div class="board">
         <div class="board-column Sem1">
-            <div class="board-column-header">Semester 1</div>
+            <div class="board-column-header">Semester 1!!!!!</div>
             <div class="board-column-content">
                 @foreach (var course in sem1)
                 {
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <class-widget params="value: {id: @course.Id, name: @course.Name}"></class-widget>
+                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
                         </div>
                     </div>
                 }
@@ -305,10 +306,7 @@
             dragReleaseDuration: 400,
             dragReleaseEasing: 'ease'
         });
+
     </script>
-
 </body>
-
-
-
 </html>
