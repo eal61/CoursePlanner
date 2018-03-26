@@ -58,16 +58,33 @@
     <!-- save the order to the student object, maybe have an update button to update db?-->
     <div class="board">
         <div class="board-column Sem1">
-            <div class="board-column-header">Semester 1!!!!!</div>
+            <div class="board-column-header">Semester 1</div>
             <div class="board-column-content">
-                @foreach (var course in sem1)
+                @{var i = 0;
+                foreach (var course in sem1)
                 {
+                    i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
                             <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            
+                                <button class="button" onclick="editClassButton()">Edit Class</button>
+                                
+                          
+
+                            <button class="button">Remove Class</button>
                         </div>
                     </div>
                 }
+                for (; i < 6; i++)
+                {
+                    <div class="board-item">
+                        <div class="board-item-content">Add a Class
+                            <button class="button" onclick="addClassButton()">+</button>
+                        </div>
+                        
+                    </div>
+                }}
             </div>
         </div>
         <div class="board-column Sem2">
@@ -231,12 +248,28 @@
                 </div>
             </div>
         </div>
+
+
+
     </div>
+
+   
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.5.3/muuri.min.js"></script>
     <script>
+
+        function addClassButton() {
+            var newClass = prompt("Please enter new class in DEPT#### format");
+            if (newClass == null || newClass == "") {
+                //do nothing
+            } 
+            else {
+                //check input format and add class to matrix
+            }
+        }
+
         var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
         var columnGrids = [];
         var boardGrid;
@@ -247,7 +280,7 @@
 
             // Instantiate column grid.
             var grid = new Muuri(container, {
-                items: '.board-item',
+                items: '*',
                 layoutDuration: 400,
                 layoutEasing: 'ease',
                 dragEnabled: true,
