@@ -1,9 +1,9 @@
 ﻿@using CoursePlanner.Models
-@using CoursePlanner.DataAccess;
+@using CoursePlanner.Controllers;
 @model DegreeProgram
 @{
     ViewBag.Title = "Progress Bar";
-    StudentDAO studentData = new StudentDAO();
+    StudentController studentData = new StudentController();
     // set up list for radio buttons to select progress bar to view
     List<DegreeProgram> programs = studentData.getAllDegreePrograms(); // TODO need to set up student id
 }

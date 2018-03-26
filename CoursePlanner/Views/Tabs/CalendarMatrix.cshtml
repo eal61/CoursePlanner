@@ -1,10 +1,10 @@
 ﻿@using CoursePlanner.Models
-@using CoursePlanner.DataAccess;
+@using CoursePlanner.Controllers;
 @model DegreeProgram
 @{
     //var studentId = // get studentId from session
     ViewBag.Title = "Calendar";
-    StudentDAO studentData = new StudentDAO();
+    StudentController studentData = new StudentController();
     Student student = studentData.getStudentInfo(1);
     // now you have the students information
     // strip out the semesters

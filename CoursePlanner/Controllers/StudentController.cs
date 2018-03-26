@@ -4,9 +4,10 @@ using System.Linq;
 using System.Web;
 using CoursePlanner.Models;
 
-namespace CoursePlanner.DataAccess
+
+namespace CoursePlanner.Controllers
 {
-    public class StudentDAO
+    public class StudentController
     {
         public Student getStudentInfo(int studentId)
         {
@@ -45,7 +46,8 @@ namespace CoursePlanner.DataAccess
 
             student.Majors = new List<DegreeProgram>();
             student.Minors = new List<DegreeProgram>();
-            student.Majors.Add(new DegreeProgram {
+            student.Majors.Add(new DegreeProgram
+            {
                 Name = "Computer Engineering",
                 CreditRequirement = 125,
                 School = "Pitt Campus",
@@ -67,12 +69,14 @@ namespace CoursePlanner.DataAccess
                 Requirements = new List<RequirementGroup>()
             });
 
-            student.Majors[0].Requirements.Add(new RequirementGroup {
+            student.Majors[0].Requirements.Add(new RequirementGroup
+            {
                 GroupName = "Group 1",
                 MandatoryCourses = new List<Course>()
             });
 
-            student.Majors[0].Requirements[0].MandatoryCourses.Add(new Course {
+            student.Majors[0].Requirements[0].MandatoryCourses.Add(new Course
+            {
                 Name = "Course 1",
                 Id = 1
             });
@@ -106,6 +110,5 @@ namespace CoursePlanner.DataAccess
 
             return programs;
         }
-
     }
 }
