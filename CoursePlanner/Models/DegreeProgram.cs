@@ -7,16 +7,15 @@ namespace CoursePlanner.Models
 {
     public class DegreeProgram
     {
-        public DegreeProgram(string newName, int newCreditRequirement, List<RequirementGroup> newRequirements, \
-        string newDepartment, string newSchool, string newCampus, Administrator newAdvisor)
+        public DegreeProgram(string newName, int newCreditRequirement, List<RequirementGroup> newRequirements, string newDepartment, string newSchool, string newCampus, Administrator newAdvisor)
         {
-            Name = newName;
-            CreditRequirement = newCreditRequirement;
-            Requirements = newRequirements;
-            Department = newDepartment;
-            School = newSchool;
-            Campus = newCampus;
-            Advisor = newAdvisor;
+            var Name = newName;
+            var CreditRequirement = newCreditRequirement;
+            var Requirements = newRequirements;
+            var Department = newDepartment;
+            var School = newSchool;
+            var Campus = newCampus;
+            var Advisor = newAdvisor;
 
         }
         public string Name { get; set; }
