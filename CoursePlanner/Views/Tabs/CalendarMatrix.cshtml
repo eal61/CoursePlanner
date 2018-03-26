@@ -67,16 +67,20 @@
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
                             <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-                            <button class="button">Edit Class</button>
+                            
+                                <button class="button" onclick="editClassButton()">Edit Class</button>
+                                
+                          
+
                             <button class="button">Remove Class</button>
                         </div>
                     </div>
                 }
                 for (; i < 6; i++)
                 {
-                    <div class="empty-item">
+                    <div class="board-item">
                         <div class="board-item-content">Add a Class
-                            <button class="button">+</button>
+                            <button class="button" onclick="addClassButton()">+</button>
                         </div>
                         
                     </div>
@@ -244,12 +248,28 @@
                 </div>
             </div>
         </div>
+
+
+
     </div>
+
+   
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.5.3/muuri.min.js"></script>
     <script>
+
+        function addClassButton() {
+            var newClass = prompt("Please enter new class in DEPT#### format");
+            if (newClass == null || newClass == "") {
+                //do nothing
+            } 
+            else {
+                //check input format and add class to matrix
+            }
+        }
+
         var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
         var columnGrids = [];
         var boardGrid;
