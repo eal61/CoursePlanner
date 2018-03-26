@@ -58,16 +58,24 @@
     <!-- save the order to the student object, maybe have an update button to update db?-->
     <div class="board">
         <div class="board-column Sem1">
-            <div class="board-column-header">Semester 1!!!!!</div>
+            <div class="board-column-header">Semester 1</div>
             <div class="board-column-content">
-                @foreach (var course in sem1)
+                @{var i = 0;
+                foreach (var course in sem1)
                 {
+                    i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
                             <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
                         </div>
                     </div>
                 }
+                for (; i < 6; i++)
+                {
+                    <div class="empty-item">
+                        <div class="board-item-content">Add a Class</div>
+                    </div>
+                }}
             </div>
         </div>
         <div class="board-column Sem2">
@@ -247,7 +255,7 @@
 
             // Instantiate column grid.
             var grid = new Muuri(container, {
-                items: '.board-item',
+                items: '*',
                 layoutDuration: 400,
                 layoutEasing: 'ease',
                 dragEnabled: true,

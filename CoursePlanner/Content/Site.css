@@ -150,3 +150,10 @@ body {
   background: #fff;
   min-height: 460px;
 }
+
+
+.empty-item {
+    color: red;
+    position:absolute;
+    margin: 0px;
+}
