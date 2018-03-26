@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CoursePlanner.Models;
 using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace CoursePlanner.Controllers
 {
@@ -23,90 +24,23 @@ namespace CoursePlanner.Controllers
             // use student Id to get student
             List<DegreeProgram> degreePrograms= new List<DegreeProgram>();
 
-            using (SqlConnection conn = new SqlConnection())
+            // using (SqlConnection conn = new SqlConnection())
+            using (MySqlConnection conn = new MySqlConnection())
             {
-                conn.ConnectionString = "Server=MSSQLLocalDB; Database=aspnet-CoursePlanner-20180131110323.mdf; Trusted_Connection=true";
+                conn.ConnectionString = "Server=localhost; Database = test_db; User Id = srdesign; Password=1234@Password";
 
-                SqlCommand command = new SqlCommand("SELECT * FROM StudentDegree WHERE FirstColumn = @0", conn);
-                command.Parameters.Add(new SqlParameter("0", studentId));
+                MySqlCommand command = new MySqlCommand("SELECT * FROM student_degree WHERE student_id = 0", conn);
+                command.Parameters.Add(new MySqlParameter("0", studentId));
 
-                using(SqlDataReader reader = command.ExecuteReader())
+
+                using(MySqlDataReader reader = command.ExecuteReader())
                 {
-                    for (int i = 0; reader.Read(); i++)
-                    
-                        degreePrograms.Add(new DegreeProgram(reader[i]));
-                        Console.WriteLine(String.Format("{0} \t, {1} \t, {2} \t,  \
-                        {3} \t, {4} \t, {5} \t, {6} \t",  \ 
-                        reader[i], reader[i+1], reader[i+2], reader[i+3], reader[i+4], reader[i+5], reader[i+6]));
+                    while (reader.Read()){
+                        degreePrograms.add(reader["degree_id"]); 
                     }
                 }
             }
             return degreePrograms;
-            
-            // Student student = new Student();
-
-            // student.Majors = new List<DegreeProgram>();
-            // student.Minors = new List<DegreeProgram>();
-            // student.Majors.Add(new DegreeProgram {
-            //     Name = "Computer Engineering",
-            //     CreditRequirement = 125,
-            //     School = "Pitt Campus",
-            //     Requirements = new List<RequirementGroup>()
-            // });
-            // student.Majors.Add(new DegreeProgram
-            // {
-            //     Name = "Mechanical Engineering",
-            //     CreditRequirement = 125,
-            //     School = "Pitt Campus",
-            //     Requirements = new List<RequirementGroup>()
-            // });
-
-            // student.Minors.Add(new DegreeProgram
-            // {
-            //     Name = "Economics",
-            //     CreditRequirement = 15,
-            //     School = "Pitt Campus",
-            //     Requirements = new List<RequirementGroup>()
-            // });
-
-            // student.Majors[0].Requirements.Add(new RequirementGroup {
-            //     GroupName = "Group 1",
-            //     MandatoryCourses = new List<Course>()
-            // });
-
-            // student.Majors[0].Requirements[0].MandatoryCourses.Add(new Course {
-            //     Name = "Course 1",
-            //     Id = 1
-            // });
-
-            // student.Majors[0].Requirements[0].MandatoryCourses.Add(new Course
-            // {
-            //     Name = "Course 2",
-            //     Id = 2
-            // });
-
-            // student.Majors[0].Requirements.Add(new RequirementGroup
-            // {
-            //     GroupName = "Group 2",
-            //     MandatoryCourses = new List<Course>()
-            // });
-
-            // student.Majors[0].Requirements[1].MandatoryCourses.Add(new Course
-            // {
-            //     Name = "Course 1",
-            //     Id = 1
-            // });
-
-            // List<DegreeProgram> programs = new List<DegreeProgram>();
-
-            // student.Majors.ForEach(major => {
-            //     programs.Add(major);
-            // });
-            // student.Minors.ForEach(minor => {
-            //     programs.Add(minor);
-            // });
-
-            // return programs;
         }
 
     }
