@@ -17,9 +17,10 @@ namespace CoursePlanner.Controllers
             // use student Id to get student
             List<DegreeProgram> degreePrograms= new List<DegreeProgram>();
             //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
+                conn.Open();
 
                 SqlCommand command = new SqlCommand("SELECT * FROM student_degree WHERE student_id = 0", conn);
                 command.Parameters.Add(new SqlParameter("0", studentId));
@@ -28,7 +29,8 @@ namespace CoursePlanner.Controllers
                 using(SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read()){
-                        degreePrograms.add(reader["degree_id"]); 
+                        Console.WriteLine(reader["degree_id"]);
+                        //degreePrograms.Add(reader["degree_id"]); 
                     }
                 }
             }
