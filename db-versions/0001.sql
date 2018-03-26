@@ -1,7 +1,4 @@
 -- run this file against aspnet-CoursePlanner-20180131110323 to update your database
-CREATE DATABASE test_db;
-USE test_db;
-
 drop table if exists student;
 create table student (
   student_id integer primary key,
