@@ -157,3 +157,14 @@ body {
     position:absolute;
     margin: 0px;
 }
+
+.board-item {
+    color: green;
+    position: absolute;
+    margin: 5px;
+}
+
+.button {
+    font-size: 8px;
+    margin: auto;
+}

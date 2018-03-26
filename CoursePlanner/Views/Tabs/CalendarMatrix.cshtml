@@ -67,13 +67,18 @@
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
                             <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            <button class="button">Edit Class</button>
+                            <button class="button">Remove Class</button>
                         </div>
                     </div>
                 }
                 for (; i < 6; i++)
                 {
                     <div class="empty-item">
-                        <div class="board-item-content">Add a Class</div>
+                        <div class="board-item-content">Add a Class
+                            <button class="button">+</button>
+                        </div>
+                        
                     </div>
                 }}
             </div>
