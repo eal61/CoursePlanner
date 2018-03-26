@@ -7,7 +7,13 @@ namespace CoursePlanner.Services
 {
     public class SemesterService
     {
-        // TODO getTotalCredits
+        public int getTotalCredits(int semester)
+        {
+            int totalCredits = 0;
 
+            plan.Semesters.ForEach(s => s.Courses.ForEach(c => totalCredits += c.Credits));
+
+            return totalCredits;
+        }
     }
 }
