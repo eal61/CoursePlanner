@@ -7,7 +7,6 @@ namespace CoursePlanner.Controllers
 {
     public class StudentController
     {
-
         /// <summary>
         /// Use to get conglomerate list of all student degree programs - majors and minors
         /// </summary>

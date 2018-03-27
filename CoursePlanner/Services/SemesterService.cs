@@ -7,7 +7,7 @@ namespace CoursePlanner.Services
 {
     public class SemesterService
     {
-        public int getTotalCredits(int semester)
+        public int getTotalCredits(int semester, int student_id)
         {
             int totalCredits = 0;
 
