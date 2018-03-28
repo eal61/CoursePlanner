@@ -39,7 +39,7 @@ namespace CoursePlanner.Controllers
         }
         public List<CoursePlan> getCoursePlan(int studentId) {
             // use student Id to get student
-            List<DegreeProgram> degreePrograms= new List<DegreeProgram>();
+            List<CoursePlan> degreePrograms= new List<CoursePlan>();
             //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
             string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -61,24 +61,22 @@ namespace CoursePlanner.Controllers
             }
             return degreePrograms;
         }
-        public void addCourse(int studentId, Course c)
+        public void addCourse(int studentId, int courseId, int semesterId)
         {
             // use student Id to get student
-            List<DegreeProgram> degreePrograms = new List<DegreeProgram>();
             //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
             string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                SqlCommand command = new SqlCommand("INSERT into student_course (course_id, student_id, semester_id) values (@0, @1, @2)", con);
+                SqlCommand command = new SqlCommand("INSERT into student_course (course_id, student_id, semester_id) values (@0, @1, @2)", conn);
                 command.Parameters.Add(new SqlParameter("0", studentId));
                 command.Parameters.Add(new SqlParameter("1", courseId));
-                command.Parameters.Add(new SqlParameter("2", semestersId));
+                command.Parameters.Add(new SqlParameter("2", semesterId));
                 conn.Close();
 
             }
-            return degreePrograms;
         }
         public void addDegreeProgram(int studentId, int degreeId)
         {
