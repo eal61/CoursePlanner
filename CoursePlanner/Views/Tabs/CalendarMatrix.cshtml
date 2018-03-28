@@ -5,17 +5,17 @@
     //var studentId = // get studentId from session
     ViewBag.Title = "Calendar";
     StudentController studentData = new StudentController();
-    Student student = studentData.getStudentInfo(1);
+    Student student = studentData.getStudentInfo(0);
     // now you have the students information
     // strip out the semesters
     var sem1 = student.Plan.Semesters.Where(s => s.Code == 1).First().Courses;
-    /*var sem2 = student.Plan.Semesters.Where(s => s.Code == 2).First().Courses;
+    var sem2 = student.Plan.Semesters.Where(s => s.Code == 2).First().Courses;
     var sem3 = student.Plan.Semesters.Where(s => s.Code == 3).First().Courses;
     var sem4 = student.Plan.Semesters.Where(s => s.Code == 4).First().Courses;
     var sem5 = student.Plan.Semesters.Where(s => s.Code == 5).First().Courses;
     var sem6 = student.Plan.Semesters.Where(s => s.Code == 6).First().Courses;
     var sem7 = student.Plan.Semesters.Where(s => s.Code == 7).First().Courses;
-    var sem8 = student.Plan.Semesters.Where(s => s.Code == 8).First().Courses;*/
+    var sem8 = student.Plan.Semesters.Where(s => s.Code == 8).First().Courses;
 }
 
 <!doctype html>
@@ -61,9 +61,9 @@
             <div class="board-column-header">Semester 1</div>
             <div class="board-column-content">
                 @{var i = 0;
-                foreach (var course in sem1)
-                {
-                    i++;
+                    foreach (var course in sem1)
+                    {
+                        i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
                             <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
@@ -75,16 +75,16 @@
                             <button class="button">Remove Class</button>
                         </div>
                     </div>
-                }
-                for (; i < 6; i++)
-                {
+                    }
+                    for (; i < 6; i++)
+                    {
                     <div class="board-item">
                         <div class="board-item-content">Add a Class
                             <button class="button" onclick="addClassButton()">+</button>
                         </div>
                         
                     </div>
-                }}
+                    }}
             </div>
         </div>
         <div class="board-column Sem2">
@@ -266,7 +266,11 @@
                 //do nothing
             } 
             else {
-                //check input format and add class to matrix
+                @{ 
+                    var studentData = new StudentController();
+                    studentData.addCourse(0, newClass, 0);
+                    Console.WriteLine("new class: " + newClass);
+                }
             }
         }
 

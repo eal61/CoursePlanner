@@ -3,7 +3,7 @@
 @model DegreeProgram
 @{
     ViewBag.Title = "Progress Bar";
-    StudentController studentData = new StudentController();
+    StudentController studentController = new StudentController();
     // set up list for radio buttons to select progress bar to view
     List<DegreeProgram> programs = studentController.getAllDegreePrograms(0); // TODO need to set up student id
 }
