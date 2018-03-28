@@ -80,7 +80,11 @@ namespace CoursePlanner.Controllers
             {
                 conn.Open();
 
-                SqlCommand command = new SqlCommand("SELECT * FROM student_course WHERE student_id = @0", conn);
+                SqlCommand command = new SqlCommand(
+                "SELECT * 
+                + "FROM student_course"
+                + "JOIN course on course_id=course_id"
+                + "WHERE student_id = @0", conn);
                   //TODO JOIN with course table
                 command.Parameters.Add(new SqlParameter("0", studentId));
 
