@@ -11,9 +11,12 @@ namespace CoursePlanner.Controllers
         public Student getStudentInfo(int studentId)
         {
             // call db to retrieve student data
-            StudentController studentInfo = new StudentController();
+            //StudentController studentController = new StudentController();
             // set up list for radio buttons to select progress bar to view
-            CoursePlan cp = studentController.getCoursePlan(studentId); // TODO need to set up student id
+            CoursePlan cp = this.getCoursePlan(studentId); // TODO need to set up student id
+            Student student1 = new Student();
+            student1.Plan = cp;
+
 
             // fake data
             var student = new Student();
@@ -53,11 +56,13 @@ namespace CoursePlanner.Controllers
                 SqlCommand command = new SqlCommand("SELECT * FROM student_degree WHERE student_id = @0", conn);
                 command.Parameters.Add(new SqlParameter("0", studentId));
 
-
+                //TODO need to join with degree table
                 using(SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read()){
                         Console.WriteLine(reader["degree_id"]);
+                        //DegreeProgram dp = new DegreeProgram(string name, etc.); //TODO get all inputs for new DegreeProgram
+                        
                     }
                 }
                 conn.Close();
@@ -75,28 +80,44 @@ namespace CoursePlanner.Controllers
             {
                 conn.Open();
 
-                SqlCommand command = new SqlCommand("SELECT * FROM course WHERE student_id = @0", conn);
+                SqlCommand command = new SqlCommand("SELECT * FROM student_course WHERE student_id = @0", conn);
+                  //TODO JOIN with course table
                 command.Parameters.Add(new SqlParameter("0", studentId));
 
 
                 using(SqlDataReader reader = command.ExecuteReader())
                 {
-                    List<Course> courseList = new List<Course>();
+                    List<Course>[] courseList = new List<Course>[8];
+                    for(int i=0; i<8;i++)
+                    {
+                        courseList[i] = new List<Course>();
+                    }
                     Course course;
                     while (reader.Read()){
                         course = new Course();
                         course.Name = (String)reader["course_name"];
                         course.Id = (int)reader["course_id"];
                         course.DeptCode = (String)reader["course_number"];
-                        courseList.Add(course)
+
+
+                        courseList[(int)reader["semester-id"]-1].Add(course);
                     }
-                    cp.Semesters = courseList;
+                    List<Semester> sems = new List<Semester>();
+                    for(int i=0;i<8;i++)
+                    {
+                        Semester currSem = new Semester();
+                        currSem.Courses = courseList[i];
+                        sems.Add(currSem);
+                    }
+                    cp.Semesters = sems;
                 }
                 conn.Close();
 
             }
-            return degreePrograms;
+            return cp;
         }
+
+
         public void addCourse(int studentId, int courseId, int semesterId)
         {
             // use student Id to get student
