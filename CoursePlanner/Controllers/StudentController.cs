@@ -11,6 +11,9 @@ namespace CoursePlanner.Controllers
         public Student getStudentInfo(int studentId)
         {
             // call db to retrieve student data
+            StudentController studentInfo = new StudentController();
+            // set up list for radio buttons to select progress bar to view
+            CoursePlan cp = studentController.getCoursePlan(studentId); // TODO need to set up student id
 
             // fake data
             var student = new Student();
@@ -63,24 +66,31 @@ namespace CoursePlanner.Controllers
 
             return degreePrograms;
         }
-        public List<CoursePlan> getCoursePlan(int studentId) {
+        public CoursePlan getCoursePlan(int studentId) {
             // use student Id to get student
-            List<CoursePlan> degreePrograms= new List<CoursePlan>();
+            CoursePlan cp = new CoursePlan();
             //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
             string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                SqlCommand command = new SqlCommand("SELECT * FROM student_course WHERE student_id = @0", conn);
+                SqlCommand command = new SqlCommand("SELECT * FROM course WHERE student_id = @0", conn);
                 command.Parameters.Add(new SqlParameter("0", studentId));
 
 
                 using(SqlDataReader reader = command.ExecuteReader())
                 {
+                    List<Course> courseList = new List<Course>();
+                    Course course;
                     while (reader.Read()){
-                        Console.WriteLine(reader["degree_id"]);
+                        course = new Course();
+                        course.Name = (String)reader["course_name"];
+                        course.Id = (int)reader["course_id"];
+                        course.DeptCode = (String)reader["course_number"];
+                        courseList.Add(course)
                     }
+                    cp.Semesters = courseList;
                 }
                 conn.Close();
 
