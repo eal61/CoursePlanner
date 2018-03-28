@@ -61,7 +61,7 @@ namespace CoursePlanner.Controllers
                 {
                     while (reader.Read()){
                         Console.WriteLine(reader["degree_id"]);
-                        //DegreeProgram dp = new DegreeProgram(string name, etc.); //TODO get all inputs for new DegreeProgram
+                        //DegreeProgram dp = new DegreeProgram(string reader[""], etc.); //TODO get all inputs for new DegreeProgram
                         
                     }
                 }
@@ -107,6 +107,7 @@ namespace CoursePlanner.Controllers
                     {
                         Semester currSem = new Semester();
                         currSem.Courses = courseList[i];
+                        currSem.Code = i+1;
                         sems.Add(currSem);
                     }
                     cp.Semesters = sems;
