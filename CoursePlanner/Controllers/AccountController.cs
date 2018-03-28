@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CoursePlanner.Models;
+using System.Web.Services;
 
 namespace CoursePlanner.Controllers
 {
@@ -78,6 +79,7 @@ namespace CoursePlanner.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [WebMethod(EnableSession = true)]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
@@ -91,6 +93,9 @@ namespace CoursePlanner.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    // TODO here put user id into session
+                    var user = HttpContext.User.Identity.GetUserId();
+                    HttpContext.Session.Add("userId", user);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

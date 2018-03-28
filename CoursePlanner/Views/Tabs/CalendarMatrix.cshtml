@@ -1,179 +1,345 @@
-﻿<!doctype html>
+﻿@using CoursePlanner.Models
+@using CoursePlanner.Controllers;
+@model DegreeProgram
+@{
+    //var studentId = // get studentId from session
+    ViewBag.Title = "Calendar";
+    StudentController studentData = new StudentController();
+    Student student = studentData.getStudentInfo(1);
+    // now you have the students information
+    // strip out the semesters
+    var sem1 = student.Plan.Semesters.Where(s => s.Code == 1).First().Courses;
+    /*var sem2 = student.Plan.Semesters.Where(s => s.Code == 2).First().Courses;
+    var sem3 = student.Plan.Semesters.Where(s => s.Code == 3).First().Courses;
+    var sem4 = student.Plan.Semesters.Where(s => s.Code == 4).First().Courses;
+    var sem5 = student.Plan.Semesters.Where(s => s.Code == 5).First().Courses;
+    var sem6 = student.Plan.Semesters.Where(s => s.Code == 6).First().Courses;
+    var sem7 = student.Plan.Semesters.Where(s => s.Code == 7).First().Courses;
+    var sem8 = student.Plan.Semesters.Where(s => s.Code == 8).First().Courses;*/
+}
+
+<!doctype html>
 <html>
 <head>
+    <script type='text/javascript' src='~/Scripts/knockout-3.4.2.js'></script>
+    <script type='text/javascript' src='~/Scripts/knockout.validation.js'></script>
+    <!--<script type='text/javascript' src='~/Scripts/require.js'></script>-->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Muuri Table</title>
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+
+    <script>
+        ko.components.register('class-widget', {
+            viewModel: function (params) {
+                // Data: value is either null, 'like', or 'dislike'
+                this.className = ko.observable(params.name);
+                this.classCode = ko.observable(params.id);
+                // Behaviors
+                this.addClass = function () {
+                    // create pop up to add a course
+                }.bind(this);
+            },
+            template: '<div class="class-widget">\
+                        <div data-bind="visible: !className()">\
+                            <button data-bind="click: addClass">Click me</button>\
+                        </div>\
+                        <div>\
+                            <strong data-bind="text: className"></strong>\
+                            <strong data-bind="text: classCode"></strong>\
+                        </div>\
+                       </div>' 
+        });
+    </script>
+
 </head>
 <body>
-
+    <!-- need to update the list at hand when items are moved around -->
+    <!-- save the order to the student object, maybe have an update button to update db?-->
     <div class="board">
         <div class="board-column Sem1">
             <div class="board-column-header">Semester 1</div>
             <div class="board-column-content">
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>1</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>2</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>3</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>4</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>5</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>6</div></div>
+                @{var i = 0;
+                foreach (var course in sem1)
+                {
+                    i++;
+                    <div class="board-item" id=@course.Id>
+                        <div class="board-item-content">
+                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            
+                                <button class="button" onclick="editClassButton()">Edit Class</button>
+                                
+                          
+
+                            <button class="button">Remove Class</button>
+                        </div>
+                    </div>
+                }
+                for (; i < 6; i++)
+                {
+                    <div class="board-item">
+                        <div class="board-item-content">Add a Class
+                            <button class="button" onclick="addClassButton()">+</button>
+                        </div>
+                        
+                    </div>
+                }}
             </div>
         </div>
         <div class="board-column Sem2">
             <div class="board-column-header">Semester 2</div>
             <div class="board-column-content">
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>7</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>8</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>9</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>10</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>11</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>12</div></div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>7</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>8</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>9</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>10</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>11</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>12</div>
+                </div>
             </div>
         </div>
         <div class="board-column Sem3">
             <div class="board-column-header">Semester 3</div>
             <div class="board-column-content">
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>13</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>14</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>15</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>16</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>17</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>18</div></div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>13</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>14</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>15</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>16</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>17</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>18</div>
+                </div>
             </div>
         </div>
         <div class="board-column Sem4">
             <div class="board-column-header">Semester 4</div>
             <div class="board-column-content">
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>19</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>20</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>21</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>22</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>23</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>24</div></div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>19</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>20</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>21</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>22</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>23</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>24</div>
+                </div>
             </div>
         </div>
         <div class="board-column Sem5">
             <div class="board-column-header">Semester 5</div>
             <div class="board-column-content">
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>25</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>26</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>27</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>28</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>29</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>30</div></div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>25</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>26</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>27</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>28</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>29</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>30</div>
+                </div>
             </div>
         </div>
         <div class="board-column Sem6">
             <div class="board-column-header">Semester 6</div>
             <div class="board-column-content">
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>31</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>32</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>33</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>34</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>35</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>36</div></div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>31</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>32</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>33</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>34</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>35</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>36</div>
+                </div>
             </div>
         </div>
         <div class="board-column Sem7">
             <div class="board-column-header">Semester 7</div>
             <div class="board-column-content">
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>37</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>38</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>39</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>40</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>41</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>42</div></div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>37</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>38</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>39</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>40</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>41</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>42</div>
+                </div>
             </div>
         </div>
         <div class="board-column Sem8">
             <div class="board-column-header">Semester 8</div>
             <div class="board-column-content">
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>43</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>44</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>45</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>46</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>47</div></div>
-                <div class="board-item"><div class="board-item-content"><span>Class #</span>48</div></div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>43</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>44</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>45</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>46</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>47</div>
+                </div>
+                <div class="board-item">
+                    <div class="board-item-content"><span>Class #</span>48</div>
+                </div>
             </div>
         </div>
+
+
+
     </div>
+
+   
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.5.3/muuri.min.js"></script>
     <script>
-            var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
-            var columnGrids = [];
-            var boardGrid;
 
-            // Define the column grids so we can drag those
-            // items around.
-            itemContainers.forEach(function (container) {
+        function addClassButton() {
+            var newClass = prompt("Please enter new class in DEPT#### format");
+            if (newClass == null || newClass == "") {
+                //do nothing
+            } 
+            else {
+                //check input format and add class to matrix
+            }
+        }
 
-           // Instantiate column grid.
-           var grid = new Muuri(container, {
-                                items: '.board-item',
-                                layoutDuration: 400,
-                                layoutEasing: 'ease',
-                                dragEnabled: true,
-                                dragSort: function () {
-                                return columnGrids;
-                                },
-                                dragSortInterval: 0,
-                                dragContainer: document.body,
-                                dragReleaseDuration: 400,
-                                dragReleaseEasing: 'ease'
-                                })
-           .on('dragStart', function (item) {
-               // Let's set fixed widht/height to the dragged item
-               // so that it does not stretch unwillingly when
-               // it's appended to the document body for the
-               // duration of the drag.
-               item.getElement().style.width = item.getWidth() + 'px';
-               item.getElement().style.height = item.getHeight() + 'px';
-               })
-           .on('dragReleaseEnd', function (item) {
-               // Let's remove the fixed width/height from the
-               // dragged item now that it is back in a grid
-               // column and can freely adjust to it's
-               // surroundings.
-               item.getElement().style.width = '';
-               item.getElement().style.height = '';
-               // Just in case, let's refresh the dimensions of all items
-               // in case dragging the item caused some other items to
-               // be different size.
-               columnGrids.forEach(function (grid) {
-                                   grid.refreshItems();
-                                   });
-               })
-           .on('layoutStart', function () {
-               // Let's keep the board grid up to date with the
-               // dimensions changes of column grids.
-               boardGrid.refreshItems().layout();
-               });
+        var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
+        var columnGrids = [];
+        var boardGrid;
 
-           // Add the column grid reference to the column grids
-           // array, so we can access it later on.
-           columnGrids.push(grid);
+        // Define the column grids so we can drag those
+        // items around.
+        itemContainers.forEach(function (container) {
 
-           });
+            // Instantiate column grid.
+            var grid = new Muuri(container, {
+                items: '*',
+                layoutDuration: 400,
+                layoutEasing: 'ease',
+                dragEnabled: true,
+                dragSort: function () {
+                    return columnGrids;
+                },
+                dragSortInterval: 0,
+                dragContainer: document.body,
+                dragReleaseDuration: 400,
+                dragReleaseEasing: 'ease'
+            })
+            .on('dragStart', function (item) {
+                // Let's set fixed widht/height to the dragged item
+                // so that it does not stretch unwillingly when
+                // it's appended to the document body for the
+                // duration of the drag.
+                item.getElement().style.width = item.getWidth() + 'px';
+                item.getElement().style.height = item.getHeight() + 'px';
+            })
+            .on('dragReleaseEnd', function (item) {
+                // Let's remove the fixed width/height from the
+                // dragged item now that it is back in a grid
+                // column and can freely adjust to it's
+                // surroundings.
+                item.getElement().style.width = '';
+                item.getElement().style.height = '';
+                // Just in case, let's refresh the dimensions of all items
+                // in case dragging the item caused some other items to
+                // be different size.
+                columnGrids.forEach(function (grid) {
+                    grid.refreshItems();
+                });
+            })
+            .on('layoutStart', function () {
+                // Let's keep the board grid up to date with the
+                // dimensions changes of column grids.
+                boardGrid.refreshItems().layout();
+            });
 
-           // Instantiate the board grid so we can drag those
-           // columns around.
-           boardGrid = new Muuri('.board', {
-                                 layoutDuration: 400,
-                                 layoutEasing: 'ease',
-                                 dragEnabled: false,
-                                 dragSortInterval: 0,
-                                 dragStartPredicate: {
-                                 handle: '.board-column-header'
-                                 },
-                                 dragReleaseDuration: 400,
-                                 dragReleaseEasing: 'ease'
-                                 });
+            // Add the column grid reference to the column grids
+            // array, so we can access it later on.
+            columnGrids.push(grid);
+
+        });
+
+        // Instantiate the board grid so we can drag those
+        // columns around.
+        boardGrid = new Muuri('.board', {
+            layoutDuration: 400,
+            layoutEasing: 'ease',
+            dragEnabled: false,
+            dragSortInterval: 0,
+            dragStartPredicate: {
+                handle: '.board-column-header'
+            },
+            dragReleaseDuration: 400,
+            dragReleaseEasing: 'ease'
+        });
+
     </script>
-
 </body>
-
 </html>
