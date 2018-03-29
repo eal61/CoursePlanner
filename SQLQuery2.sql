@@ -82,7 +82,19 @@ INSERT into student (student_id) values (0);
 
 
 
-INSERT into student_course (course_id, student_id, semester_id) values (0, 0, 0);
+INSERT into student_course (course_id, student_id, semester_id) values (0, 0, 6);
+INSERT into student_course (course_id, student_id, semester_id) values (1, 0, 0);
+INSERT into student_course (course_id, student_id, semester_id) values (2, 0, 0);
+INSERT into student_course (course_id, student_id, semester_id) values (3, 0, 0);
+INSERT into student_course (course_id, student_id, semester_id) values (4, 0, 1);
+INSERT into student_course (course_id, student_id, semester_id) values (5, 0, 1);
+INSERT into student_course (course_id, student_id, semester_id) values (6, 0, 2);
+INSERT into student_course (course_id, student_id, semester_id) values (7, 0, 2);
+INSERT into student_course (course_id, student_id, semester_id) values (8, 0, 3);
+INSERT into student_course (course_id, student_id, semester_id) values (14, 0, 3);
+INSERT into student_course (course_id, student_id, semester_id) values (16, 0, 3);
+INSERT into student_course (course_id, student_id, semester_id) values (11, 0, 4);
+INSERT into student_course (course_id, student_id, semester_id) values (21, 0, 4);
 
 INSERT into student_degree (student_id, degree_id, major, minor) values (0, 0, 1, 0);
 
