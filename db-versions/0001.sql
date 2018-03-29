@@ -7,8 +7,9 @@ create table student (
 drop table if exists course;
 create table course (
   course_id integer primary key,
-  course_number integer,
-  course_name text not null
+  course_name text not null,
+  DEPT_No text not null,
+  credits integer not null
 );
 
 drop table if exists student_course;

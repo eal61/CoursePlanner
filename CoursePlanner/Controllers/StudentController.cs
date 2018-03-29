@@ -106,7 +106,7 @@ namespace CoursePlanner.Controllers
                         course = new Course();
                         course.Name = (String)reader["course_name"];
                         course.Id = (int)reader["course_id"];
-                        course.DeptCode = ((int)reader["course_number"]).ToString();
+                        course.DeptCode = (String)reader["DEPT_No"];
 
 
                         courseList[(int)reader["semester_id"]].Add(course);
@@ -134,7 +134,7 @@ namespace CoursePlanner.Controllers
             {
                 conn.Open();
 
-                SqlCommand command = new SqlCommand("SELECT * FROM course WHERE course_name = @0", conn);
+                SqlCommand command = new SqlCommand("SELECT * FROM course WHERE DEPT_NO = @0", conn);
                 //TODO JOIN with course tables
 
                 // SqlCommand command = new SqlCommand("SELECT * FROM student_course WHERE student_id = @0", conn);
