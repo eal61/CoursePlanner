@@ -83,6 +83,7 @@
                     <div class="board-item-content">
                         Add a Class
                         <button class="button" onclick="addClassButton()">+</button>
+                        @*<asp:Button runat="server" OnClick="addCourseClick" />*@
                     </div>
 
                 </div>
@@ -504,6 +505,7 @@
              }
         }
 
+       
         var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
         var columnGrids = [];
         var boardGrid;
