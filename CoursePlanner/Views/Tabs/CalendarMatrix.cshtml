@@ -17,7 +17,29 @@
     var sem7 = student.Plan.Semesters.Where(s => s.Code == 7).First().Courses;
     var sem8 = student.Plan.Semesters.Where(s => s.Code == 8).First().Courses;
 }
+@{
+    var name = "";
+    var sem = 0;
+    var del = 0;
+    if (IsPost)
+    {
+        del = Int32.Parse(Request.Form["delete1"]);
 
+        if (del == 0)
+        {
+            name = Request.Form["class"];
+            sem = Int32.Parse(Request.Form["semNo"]);
+            studentData.addCourse(0, name, sem);
+        }
+        else
+        {
+            name = Request.Form["class"];
+            sem = Int32.Parse(Request.Form["semNo"]);
+            studentData.removeCourse(0, name, sem);
+        }
+    }
+
+}
 <!doctype html>
 <html>
 <head>
@@ -73,16 +95,16 @@
 
 
 
-                            @*<button class="button">Remove Class</button>*@
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',0)">Remove Class</button>
                         </div>
                     </div>
             }
             for (; i < 6; i++)
             {
-                <div class="board-item">
+                <div class="board-item" >
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton()">+</button>
+                        <button class="button" onclick="addClassButton(0)">+</button>
                         @*<asp:Button runat="server" OnClick="addCourseClick" />*@
                     </div>
 
@@ -106,7 +128,7 @@
 
 
 
-                            @*<button class="button">Remove Class</button>*@
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',1)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -115,7 +137,7 @@
                 <div class="board-item">
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton()">+</button>
+                        <button class="button" onclick="addClassButton(1)">+</button>
                     </div>
 
                 </div>
@@ -138,7 +160,7 @@
 
 
 
-                            @*<button class="button">Remove Class</button>*@
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',2)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -147,7 +169,7 @@
                 <div class="board-item">
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton()">+</button>
+                        <button class="button" onclick="addClassButton(2)">+</button>
                     </div>
 
                 </div>
@@ -170,7 +192,7 @@
 
 
 
-                            @*<button class="button">Remove Class</button>*@
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',3)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -179,7 +201,7 @@
                 <div class="board-item">
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton()">+</button>
+                        <button class="button" onclick="addClassButton(3)">+</button>
                     </div>
 
                 </div>
@@ -202,7 +224,7 @@
 
 
 
-                            @*<button class="button">Remove Class</button>*@
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',4)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -211,7 +233,7 @@
                 <div class="board-item">
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton()">+</button>
+                        <button class="button" onclick="addClassButton(4)">+</button>
                     </div>
 
                 </div>
@@ -234,7 +256,7 @@
 
 
 
-                            @*<button class="button">Remove Class</button>*@
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',5)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -243,7 +265,7 @@
                 <div class="board-item">
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton()">+</button>
+                        <button class="button" onclick="addClassButton(5)">+</button>
                     </div>
 
                 </div>
@@ -266,7 +288,7 @@
 
 
 
-                            @*<button class="button">Remove Class</button>*@
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',6)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -275,7 +297,7 @@
                 <div class="board-item">
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton()">+</button>
+                        <button class="button" onclick="addClassButton(6)">+</button>
                     </div>
 
                 </div>
@@ -295,10 +317,10 @@
                             <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
 
                             @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+                            
 
 
-
-                            @*<button class="button">Remove Class</button>*@
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',7)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -307,7 +329,7 @@
                 <div class="board-item">
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton()">+</button>
+                        <button class="button" onclick="addClassButton(7)">+</button>
                     </div>
 
                 </div>
@@ -488,24 +510,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.5.3/muuri.min.js"></script>
     <script>
 
-        function addClassButton() {
-
+        function addClassButton(sem) {
+            var newClass = "dummy";
             var newClass = prompt("Please enter new class in DEPT#### format");
+            
 
             if (newClass == null || newClass == "") {
                 //do nothing
             }
             else {
-
-                @{
+                post('/', { class: newClass, semNo: sem, delete1: "0" });
                 //studentData.addCourse(0, newClass, 0);
                 //Console.WriteLine("new class: " + newClass);
 
-                }
+                
              }
         }
 
+        function removeClassButton(className, sem) {
+               post('/', { class: className, semNo: sem, delete1: "1" });
+                //studentData.addCourse(0, newClass, 0);
+                //Console.WriteLine("new class: " + newClass);            
+        }
+
        
+        function post(path, params, method) {
+            method = method || "post"; // Set method to post by default if not specified.
+
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+
+        function delete1(path, params, method) {
+            method = method || "delete"; // Set method to post by default if not specified.
+
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
         var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
         var columnGrids = [];
         var boardGrid;

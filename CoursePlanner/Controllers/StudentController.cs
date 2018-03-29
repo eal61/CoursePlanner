@@ -138,7 +138,7 @@ namespace CoursePlanner.Controllers
                 //TODO JOIN with course tables
 
                 // SqlCommand command = new SqlCommand("SELECT * FROM student_course WHERE student_id = @0", conn);
-                command.Parameters.Add(new SqlParameter("0", name));
+                command.Parameters.Add(new SqlParameter("0", (String)name));
                 using (SqlDataReader reader = command.ExecuteReader())
                 { 
                 if (reader.Read())
@@ -164,10 +164,34 @@ namespace CoursePlanner.Controllers
                 command.Parameters.Add(new SqlParameter("0", course_id));
                 command.Parameters.Add(new SqlParameter("1", studentId));
                 command.Parameters.Add(new SqlParameter("2", semesterId));
+                command.ExecuteNonQuery();
                 conn.Close();
 
             }
         }
+
+        public void removeCourse(int studentId, String course_name, int semesterId)
+        {
+            Console.WriteLine("class: " + course_name);
+            int course_id = getClass(course_name);
+            Console.WriteLine("id: " + course_id);
+            // use student Id to get student
+            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
+            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand("DELETE from student_course WHERE (course_id = @0 AND student_id=@1 AND semester_id = @2)", conn);
+                command.Parameters.Add(new SqlParameter("0", course_id));
+                command.Parameters.Add(new SqlParameter("1", studentId));
+                command.Parameters.Add(new SqlParameter("2", semesterId));
+                command.ExecuteNonQuery();
+                conn.Close();
+
+            }
+        }
+
         public void addDegreeProgram(int studentId, int degreeId)
         {
             string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
