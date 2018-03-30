@@ -85,8 +85,19 @@ namespace CoursePlanner.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "Hometown")]
-        public string Hometown { get; set; }
+        [Required]
+        [Display(Name = "First Name")]
+        public string firstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string lastName { get; set; }
+
+        [Display(Name = "Major")]
+        public string major { get; set; }
+
+
+
     }
 
     public class ResetPasswordViewModel

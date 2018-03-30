@@ -2,41 +2,26 @@
 using System.Collections.Generic;
 using CoursePlanner.Models;
 using System.Data.SqlClient;
-
+using App.Extensions;
+using Microsoft.AspNet.Identity;
 
 namespace CoursePlanner.Controllers
 {
     public class StudentController
-    {
+    {   
         public Student getStudentInfo(int studentId)
         {
             // call db to retrieve student data
             //StudentController studentController = new StudentController();
             // set up list for radio buttons to select progress bar to view
             CoursePlan cp = this.getCoursePlan(studentId); // TODO need to set up student id
-            Student student1 = new Student();
-            student1.Plan = cp;
-            return student1;
+            Student student = new Student();
+            student.Plan = cp;
+            //student.FirstName = HttpContext.User.Identity.GetFirstName();
+           // student.LastName = HttpContext.User.Identity.GetLastName();
+            return student;
 
-            // fake data
-            /*var student = new Student();
-            student.Plan = new CoursePlan();
-            student.Plan.Semesters = new List<Semester>();
-            student.Plan.Semesters.Add(new Semester { Code = 1, Complete = false, Courses = new List<Course>() });
-            student.Plan.Semesters.Add(new Semester { Code = 2, Complete = false, Courses = new List<Course>() });
-            student.Plan.Semesters.Add(new Semester { Code = 3, Complete = false, Courses = new List<Course>() });
-            student.Plan.Semesters.Add(new Semester { Code = 4, Complete = false, Courses = new List<Course>() });
-            student.Plan.Semesters.Add(new Semester { Code = 5, Complete = false, Courses = new List<Course>() });
-            student.Plan.Semesters.Add(new Semester { Code = 6, Complete = false, Courses = new List<Course>() });
-            student.Plan.Semesters.Add(new Semester { Code = 7, Complete = false, Courses = new List<Course>() });
-            student.Plan.Semesters.Add(new Semester { Code = 8, Complete = false, Courses = new List<Course>() });
-
-            student.Plan.Semesters[0].Courses.Add(new Course { Id = 1, Name = "Course 1" });
-            student.Plan.Semesters[0].Courses.Add(new Course { Id = 2, Name = "Course 2" });
-            student.Plan.Semesters[0].Courses.Add(new Course { Id = 3, Name = "Course 3" });
-            student.Plan.Semesters[0].Courses.Add(new Course { Id = 4, Name = "Course 4" });
-
-            return student;*/
+           
         }
 
         /// <summary>
@@ -47,36 +32,38 @@ namespace CoursePlanner.Controllers
 
         public List<DegreeProgram> getAllDegreePrograms(int studentId) {
             // use student Id to get student
-            List<DegreeProgram> degreePrograms = new List<DegreeProgram>();
+           
             //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
             string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            List<DegreeProgram> degrees = new List<DegreeProgram>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                //SqlCommand command = new SqlCommand("SELECT * FROM student_degree WHERE student_id = @0", conn);
+                
 
 
-                //TODO need to join with degree table
+               
 
                 SqlCommand command = new SqlCommand("SELECT * FROM student_degree JOIN degree on student_degree.degree_id=degree.degree_id WHERE student_id = @0", conn);
 
                 //SqlCommand command = new SqlCommand( "SELECT * FROM student_degree WHERE student_id = @0", conn);
 
                 command.Parameters.Add(new SqlParameter("0", studentId));
-
+                
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read()) {
-                        Console.WriteLine(reader["degree_id"]);
-                        //DegreeProgram dp = new DegreeProgram(string reader[""], etc.); //TODO get all inputs for new DegreeProgram
 
+                        //DegreeProgram dp = new DegreeProgram();
+                        //string reader["degree"], etc.); //TODO get all inputs for new DegreeProgram
+                        //degrees.Add(dp);
                     }
                 }
                 conn.Close();
             }
 
 
-            return degreePrograms;
+            return degrees;
         }
         public CoursePlan getCoursePlan(int studentId) {
             // use student Id to get student
@@ -88,9 +75,9 @@ namespace CoursePlanner.Controllers
                 conn.Open();
 
                 SqlCommand command = new SqlCommand("SELECT * FROM student_course sc JOIN course c on sc.course_id=c.course_id WHERE student_id = @0", conn);
-                //TODO JOIN with course table
+             
 
-                // SqlCommand command = new SqlCommand("SELECT * FROM student_course WHERE student_id = @0", conn);
+                
                 command.Parameters.Add(new SqlParameter("0", studentId));
 
 
@@ -135,9 +122,9 @@ namespace CoursePlanner.Controllers
                 conn.Open();
 
                 SqlCommand command = new SqlCommand("SELECT * FROM course WHERE DEPT_NO = @0", conn);
-                //TODO JOIN with course tables
+                
 
-                // SqlCommand command = new SqlCommand("SELECT * FROM student_course WHERE student_id = @0", conn);
+                
                 command.Parameters.Add(new SqlParameter("0", (String)name));
                 using (SqlDataReader reader = command.ExecuteReader())
                 { 
@@ -148,26 +135,30 @@ namespace CoursePlanner.Controllers
 
             }
         }
-            public void addCourse(int studentId, String course_name, int semesterId)
+            public int addCourse(int studentId, String course_name, int semesterId)
         {
-            Console.WriteLine("class: " + course_name);
             int course_id = getClass(course_name);
-            Console.WriteLine("id: " + course_id);
-            // use student Id to get student
-            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            if (course_id == -1)
             {
-                conn.Open();
-
-                SqlCommand command = new SqlCommand("INSERT into student_course (course_id, student_id, semester_id) values (@0, @1, @2)", conn);
-                command.Parameters.Add(new SqlParameter("0", course_id));
-                command.Parameters.Add(new SqlParameter("1", studentId));
-                command.Parameters.Add(new SqlParameter("2", semesterId));
-                command.ExecuteNonQuery();
-                conn.Close();
-
+                return -1;
             }
+            else
+            {
+                string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand("INSERT into student_course (course_id, student_id, semester_id) values (@0, @1, @2)", conn);
+                    command.Parameters.Add(new SqlParameter("0", course_id));
+                    command.Parameters.Add(new SqlParameter("1", studentId));
+                    command.Parameters.Add(new SqlParameter("2", semesterId));
+                    command.ExecuteNonQuery();
+                    conn.Close();
+
+                }
+            }
+            return 0;
         }
 
         public void removeCourse(int studentId, String course_name, int semesterId)

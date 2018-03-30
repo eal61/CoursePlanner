@@ -27,6 +27,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -252,6 +253,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803210222308_InitialCreate.cs" />
+    <Compile Include="Migrations\201803210222308_InitialCreate.Designer.cs">
+      <DependentUpon>201803210222308_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803301615288_First Name.cs" />
+    <Compile Include="Migrations\201803301615288_First Name.Designer.cs">
+      <DependentUpon>201803301615288_First Name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803301624289_Last Name.cs" />
+    <Compile Include="Migrations\201803301624289_Last Name.Designer.cs">
+      <DependentUpon>201803301624289_Last Name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803301657479_Major.cs" />
+    <Compile Include="Migrations\201803301657479_Major.Designer.cs">
+      <DependentUpon>201803301657479_Major.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803301704492_Major1.cs" />
+    <Compile Include="Migrations\201803301704492_Major1.Designer.cs">
+      <DependentUpon>201803301704492_Major1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CoursePlan.cs" />
@@ -384,6 +406,23 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201803210222308_InitialCreate.resx">
+      <DependentUpon>201803210222308_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803301615288_First Name.resx">
+      <DependentUpon>201803301615288_First Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803301624289_Last Name.resx">
+      <DependentUpon>201803301624289_Last Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803301657479_Major.resx">
+      <DependentUpon>201803301657479_Major.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803301704492_Major1.resx">
+      <DependentUpon>201803301704492_Major1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

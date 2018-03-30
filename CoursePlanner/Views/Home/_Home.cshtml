@@ -1,4 +1,9 @@
-﻿<!-- ko with: home -->
+﻿@using Microsoft.AspNet.Identity;
+@using App.Extensions;
+
+
+<!-- ko with: home -->
+
 <div class="container">
     <div class="row profile">
         <div class="col-md-3">
@@ -9,10 +14,10 @@
                 </div>
                 <div class="profile-usertitle">
                     <div class="profile-usertitle-name">
-                        Marcus Doe
+                      @User.Identity.GetFullName()
                     </div>
-                    <div class="profile-usertitle-job">   
-                        Computer Engineering
+                    <div class="profile-usertitle-job">
+                        
                     </div>
                     <div class="profile-usersubtitle-job">
                         Economics
