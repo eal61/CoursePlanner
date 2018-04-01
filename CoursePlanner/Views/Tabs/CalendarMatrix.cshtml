@@ -5,7 +5,7 @@
 @{
     //var studentId = // get studentId from session
     ViewBag.Title = "Calendar";
-    var studentID = User.Identity.GetStudentId();
+    // var studentID = User.Identity.GetStudentId(); -- this is just a test. use where you would please!
     StudentController studentData = new StudentController();
     Student student = studentData.getStudentInfo(0);
     // now you have the students information
