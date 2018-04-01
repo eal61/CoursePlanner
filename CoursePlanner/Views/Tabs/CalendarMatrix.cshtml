@@ -1,9 +1,11 @@
 ﻿@using CoursePlanner.Models
 @using CoursePlanner.Controllers;
+@using App.Extensions;
 @model DegreeProgram
 @{
     //var studentId = // get studentId from session
     ViewBag.Title = "Calendar";
+    var studentID = User.Identity.GetStudentId();
     StudentController studentData = new StudentController();
     Student student = studentData.getStudentInfo(0);
     // now you have the students information

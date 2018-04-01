@@ -28,6 +28,12 @@ namespace App.Extensions
         {
             return GetFirstName(identity) + " " + GetLastName(identity);
         }
+        public static int GetStudentId(this IIdentity identity)
+        {
+            var claim = ((ClaimsIdentity)identity).FindFirst("studentId");
+            // Test for null to avoid issues during local testing
+            return (claim != null) ? int.Parse(claim.Value) : -1;
+        }
     }
 }
 namespace CoursePlanner.Models
@@ -43,6 +49,7 @@ namespace CoursePlanner.Models
             // Add custom user claims here
             userIdentity.AddClaim(new Claim("firstName", this.firstName.ToString()));
             userIdentity.AddClaim(new Claim("lastName", this.lastName.ToString()));
+            userIdentity.AddClaim(new Claim("studentId", this.studentId.ToString(), "Integer"));
 
             return userIdentity;
         }
