@@ -273,6 +273,10 @@
     <Compile Include="Migrations\201803301704492_Major1.Designer.cs">
       <DependentUpon>201803301704492_Major1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804011750210_studentId.cs" />
+    <Compile Include="Migrations\201804011750210_studentId.Designer.cs">
+      <DependentUpon>201804011750210_studentId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Course.cs" />
@@ -422,6 +426,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803301704492_Major1.resx">
       <DependentUpon>201803301704492_Major1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804011750210_studentId.resx">
+      <DependentUpon>201804011750210_studentId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

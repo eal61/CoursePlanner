@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CoursePlanner.Models;
 using System.Web.Services;
+using System.Data.SqlClient;
 
 namespace CoursePlanner.Controllers
 {
@@ -168,7 +169,19 @@ namespace CoursePlanner.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, firstName = model.firstName, lastName = model.lastName, major = model.major };
+                // create student, get id put id onto application user...
+                int studentId;
+                string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand command = new SqlCommand("INSERT INTO student DEFAULT VALUES; SELECT SCOPE_IDENTITY();", conn);
+                    studentId = int.Parse(command.ExecuteScalar().ToString());
+                    conn.Close();
+                }
+                
+
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, firstName = model.firstName, lastName = model.lastName, major = model.major, studentId = studentId };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -1,7 +1,7 @@
 -- run this file against aspnet-CoursePlanner-20180131110323 to update your database
 drop table if exists student;
 create table student (
-  student_id integer primary key,
+  student_id integer identity primary key -- indicates that the primary key should be autoincremented and unique
 );
 
 drop table if exists course;
@@ -133,24 +133,23 @@ INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) valu
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 24, 0, 5);
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 25, 1, 5);
 
-INSERT into student (student_id) values (0);
+INSERT into student default values; -- this inserts a student into the table and auto increments the id so it's unique
+select SCOPE_IDENTITY();
 
+INSERT into student_course (course_id, student_id, semester_id) values (0, 1, 6); --Course 0(CS1530) is taken by student 0 in semester index 6 (so semester#7 with 0 indexing)
+INSERT into student_course (course_id, student_id, semester_id) values (1, 1, 0);
+INSERT into student_course (course_id, student_id, semester_id) values (2, 1, 0);
+INSERT into student_course (course_id, student_id, semester_id) values (3, 1, 0);
+INSERT into student_course (course_id, student_id, semester_id) values (4, 1, 1);
+INSERT into student_course (course_id, student_id, semester_id) values (5, 1, 1);
+INSERT into student_course (course_id, student_id, semester_id) values (6, 1, 2);
+INSERT into student_course (course_id, student_id, semester_id) values (7, 1, 2);
+INSERT into student_course (course_id, student_id, semester_id) values (8, 1, 3);
+INSERT into student_course (course_id, student_id, semester_id) values (14, 1, 3);
+INSERT into student_course (course_id, student_id, semester_id) values (16, 1, 3);
+INSERT into student_course (course_id, student_id, semester_id) values (11, 1, 4);
+INSERT into student_course (course_id, student_id, semester_id) values (21, 1, 4);
 
-
-INSERT into student_course (course_id, student_id, semester_id) values (0, 0, 6); --Course 0(CS1530) is taken by student 0 in semester index 6 (so semester#7 with 0 indexing)
-INSERT into student_course (course_id, student_id, semester_id) values (1, 0, 0);
-INSERT into student_course (course_id, student_id, semester_id) values (2, 0, 0);
-INSERT into student_course (course_id, student_id, semester_id) values (3, 0, 0);
-INSERT into student_course (course_id, student_id, semester_id) values (4, 0, 1);
-INSERT into student_course (course_id, student_id, semester_id) values (5, 0, 1);
-INSERT into student_course (course_id, student_id, semester_id) values (6, 0, 2);
-INSERT into student_course (course_id, student_id, semester_id) values (7, 0, 2);
-INSERT into student_course (course_id, student_id, semester_id) values (8, 0, 3);
-INSERT into student_course (course_id, student_id, semester_id) values (14, 0, 3);
-INSERT into student_course (course_id, student_id, semester_id) values (16, 0, 3);
-INSERT into student_course (course_id, student_id, semester_id) values (11, 0, 4);
-INSERT into student_course (course_id, student_id, semester_id) values (21, 0, 4);
-
-INSERT into student_degree (student_id, degree_id) values (0, 0); --student 0 has degree 0 (CS major)
+INSERT into student_degree (student_id, degree_id) values (1, 0); --student 0 has degree 0 (CS major)
 
 --DELETE FROM student_course WHERE (course_id = 0 AND student_id=0 AND semester_id = 0);

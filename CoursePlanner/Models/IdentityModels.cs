@@ -4,6 +4,8 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using System;
 namespace App.Extensions
@@ -48,6 +50,7 @@ namespace CoursePlanner.Models
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string major { get; set; }
+        public int studentId { get; set; }
 
     }
 
