@@ -81,13 +81,130 @@
         });
     </script>
 
+    <script>
+        function getGridItemsOrdered()
+        {
+            var sem1 = document.getElementById("sem1");
+            var sem2 = document.getElementById("sem2");
+            var sem3 = document.getElementById("sem3");
+            var sem4 = document.getElementById("sem4");
+            var sem5 = document.getElementById("sem5");
+            var sem6 = document.getElementById("sem6");
+            var sem7 = document.getElementById("sem7");
+            var sem8 = document.getElementById("sem8");
+
+            // get board items from semester
+            var s1 = sem1.getElementsByClassName("board-item");
+            var s2 = sem2.getElementsByClassName("board-item");
+            var s3 = sem3.getElementsByClassName("board-item");
+            var s4 = sem4.getElementsByClassName("board-item");
+            var s5 = sem5.getElementsByClassName("board-item");
+            var s6 = sem6.getElementsByClassName("board-item");
+            var s7 = sem7.getElementsByClassName("board-item");
+            var s8 = sem8.getElementsByClassName("board-item");
+
+            // create arrays for class ids
+            var s1_ids = new Array();
+            var s2_ids = new Array();
+            var s3_ids = new Array();
+            var s4_ids = new Array();
+            var s5_ids = new Array();
+            var s6_ids = new Array();
+            var s7_ids = new Array();
+            var s8_ids = new Array();
+
+            // sem1
+            for (var i = 0; i < s1.length; i++) {
+                s1_ids.push(
+                    {
+                        "semesterId": 1,
+                        "courseId": parseInt(s1[i].id)
+                    }
+                );
+            }
+
+            // sem2
+            for (var i = 0; i < s2.length; i++) {
+                s2_ids.push(
+                    {
+                        "semesterId": 2,
+                        "courseId": parseInt(s2[i].id)
+                    }
+                );
+            }
+
+            // sem3
+            for (var i = 0; i < s3.length; i++) {
+                s3_ids.push(
+                    {
+                        "semesterId": 3,
+                        "courseId": parseInt(s3[i].id)
+                    }
+                );
+            }
+
+            // sem4
+            for (var i = 0; i < s4.length; i++) {
+                s4_ids.push(
+                    {
+                        "semesterId": 4,
+                        "courseId": parseInt(s4[i].id)
+                    }
+                );
+            }
+
+            // sem5
+            for (var i = 0; i < s5.length; i++) {
+                s5_ids.push(
+                    {
+                        "semesterId": 5,
+                        "courseId": parseInt(s5[i].id)
+                    }
+                );
+            }
+
+            // sem6
+            for (var i = 0; i < s6.length; i++) {
+                s6_ids.push(
+                    {
+                        "semesterId": 6,
+                        "courseId": parseInt(s6[i].id)
+                    }
+                );
+            }
+
+            // sem7
+            for (var i = 0; i < s7.length; i++) {
+                s7_ids.push(
+                    {
+                        "semesterId": 7,
+                        "courseId": parseInt(s7[i].id)
+                    }
+                );
+            }
+
+            // sem8
+            for (var i = 0; i < s8.length; i++) {
+                s8_ids.push(
+                    {
+                        "semesterId": 8,
+                        "courseId": parseInt(s8[i].id)
+                    }
+                );
+            }
+            var coursePlan = s1_ids.concat(s2_ids, s3_ids, s4_ids, s5_ids, s6_ids, s7_ids, s8_ids);
+            let filteredPlan = coursePlan.filter(course => !isNaN(course.courseId));
+            return filteredPlan;
+        }
+    </script>
+
 </head>
 <body>
     <!-- need to update the list at hand when items are moved around -->
     <!-- save the order to the student object, maybe have an update button to update db?-->
     <div class="board">
 
-        <div class="board-column Sem1">
+        <div id="sem1" class="board-column">
             <div class="board-column-header">Semester 1</div>
             <div class="board-column-content">
                 @{var i = 0;
@@ -120,7 +237,7 @@
             </div>
         </div>
 
-        <div class="board-column Sem2">
+        <div id="sem2" class="board-column">
             <div class="board-column-header">Semester 2</div>
             <div class="board-column-content">
                 @{i = 0;
@@ -152,7 +269,7 @@
             </div>
         </div>
 
-        <div class="board-column Sem3">
+        <div id="sem3" class="board-column">
             <div class="board-column-header">Semester 3</div>
             <div class="board-column-content">
                 @{i = 0;
@@ -184,7 +301,7 @@
             </div>
         </div>
 
-        <div class="board-column Sem4">
+        <div id="sem4" class="board-column">
             <div class="board-column-header">Semester 4</div>
             <div class="board-column-content">
                 @{i = 0;
@@ -216,7 +333,7 @@
             </div>
         </div>
 
-        <div class="board-column Sem5">
+        <div id="sem5" class="board-column">
             <div class="board-column-header">Semester 5</div>
             <div class="board-column-content">
                 @{i = 0;
@@ -248,7 +365,7 @@
             </div>
         </div>
 
-        <div class="board-column Sem6">
+        <div id="sem6" class="board-column">
             <div class="board-column-header">Semester 6</div>
             <div class="board-column-content">
                 @{i = 0;
@@ -280,7 +397,7 @@
             </div>
         </div>
 
-        <div class="board-column Sem7">
+        <div id="sem7" class="board-column">
             <div class="board-column-header">Semester 7</div>
             <div class="board-column-content">
                 @{i = 0;
@@ -312,7 +429,7 @@
             </div>
         </div>
 
-        <div class="board-column Sem8">
+        <div id="sem8" class="board-column">
             <div class="board-column-header">Semester 8</div>
             <div class="board-column-content">
                 @{i = 0;
@@ -498,7 +615,6 @@
             dragReleaseDuration: 400,
             dragReleaseEasing: 'ease'
         });
-
     </script>
 </body>
 </html>
