@@ -37,7 +37,7 @@ create table degree (
   advCoreElectiveNum integer not null --refers to number of classes needed
   openElectiveNum integer not null
   techElectiveNum integer not null
-  hssElective Num integer not null
+  hssElectiveNum integer not null
 );
 
 drop table if exists preReqs;
@@ -136,11 +136,11 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (58, 'Intro
 
 
 --List of degrees into DB
-INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElective Num) values (0, 'Computer Science', 'CS', 1, 0, 5, 0, 0, 26); --CS Major
-INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElective Num) values (1, 'Computer Engineering', 'COE', 1, 0, 4, 2, 3, 7);--COE Major
-INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElective Num) values (2, 'Computer Science', 'CS', 0, 1, 2, 0, 0, 0); --CS Minor
-INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElective Num) values (3, 'Economics', 'ECON', 0, 1, 3, 0, 0, 0); --Econ Minor
-INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElective Num) values (4, 'Mechanical Engineerng', 'MEMS', 1, 0, 4, 0, 1, 6); --MechE Major
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (0, 'Computer Science', 'CS', 1, 0, 5, 0, 0, 26); --CS Major
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (1, 'Computer Engineering', 'COE', 1, 0, 4, 2, 3, 7);--COE Major
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (2, 'Computer Science', 'CS', 0, 1, 2, 0, 0, 0); --CS Minor
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (3, 'Economics', 'ECON', 0, 1, 3, 0, 0, 0); --Econ Minor
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (4, 'Mechanical Engineerng', 'MEMS', 1, 0, 4, 0, 1, 6); --MechE Major
 
 
 --Requirement value 0: Core Requirement(ie specific class is required) 1:Advanced Core Elective 2:Open Elective 3:Freshmen ENGR Program 4: Technical Elective 5:H/SS Elective 
