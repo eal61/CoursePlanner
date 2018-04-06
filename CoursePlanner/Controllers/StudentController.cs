@@ -54,9 +54,10 @@ namespace CoursePlanner.Controllers
                 {
                     while (reader.Read()) {
 
-                        //DegreeProgram dp = new DegreeProgram();
-                        //string reader["degree"], etc.); //TODO get all inputs for new DegreeProgram
-                        //degrees.Add(dp);
+                        
+                       //TODO get all inputs for new DegreeProgram
+                        DegreeProgram dp = new DegreeProgram((string)reader["name"], (string)reader["dept"]);
+                        degrees.Add(dp);
                     }
                 }
                 conn.Close();
@@ -94,7 +95,7 @@ namespace CoursePlanner.Controllers
                         course.Name = (String)reader["course_name"];
                         course.Id = (int)reader["course_id"];
                         course.DeptCode = (String)reader["DEPT_No"];
-
+                        course.Credits = (int)reader["credits"];
 
                         courseList[(int)reader["semester_id"]].Add(course);
                     }
