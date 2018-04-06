@@ -33,7 +33,27 @@ create table degree (
   dept nvarchar(60) not null,
   major bit not null,
   minor bit not null
+  
+  advCoreElectiveNum integer not null --refers to number of classes needed
+  openElectiveNum integer not null
+  techElectiveNum integer not null
+  hssElectiveNum integer not null
 );
+
+drop table if exists preReqs;
+create table preReqs (
+  course_id integer not null,
+  preReq_courseId integer not null
+)
+
+drop table if exists coReqs;
+create table coReqs (
+  course_id integer not null,
+  coReq_courseId integer not null
+)
+
+--Requirement value 0: Core Requirement 1:Advanced Core Elective 2:Open Elective 3:Freshmen ENGR Program 4: Technical Elective 
+--5:H/SS Elective 
 
 drop table if exists course_degree;
 create table course_degree (
@@ -70,68 +90,231 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (15, 'Compu
 INSERT into course (course_id, course_name, DEPT_No, credits) values (16, 'Artificial Intelligence', 'CS1571',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (17, 'Compiler Design', 'CS1622',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (18, 'Data Science', 'CS1656',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (19, 'Computer Architecture', 'CS1541',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (19, 'Interface Design Methodology', 'CS1635',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (20, 'Special Topcis in CS', 'CS1699',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (21, 'Structure Programming Languages', 'CS1621',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (22, 'Digital Systems Lab', 'COE0501',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (23, 'Digital Logic', 'COE132',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (24, 'Software Engineering', 'COE1186',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (24, 'Software Engineering', 'COE1186',4);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (25, 'Senior Design Project', 'COE1896',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (36, 'Linear Systems and Circuits 1', 'COE0031',4);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (37, 'Analysis and Design of Electronic Circuits', 'COE0257',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (39, 'Advanced Digital Desgin', 'COE1502',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (40, 'ENGR Probability and Statistics', 'ENGR0020',4);
 
-INSERT into degree (degree_id, name, dept, major, minor) values (0, 'Computer Science', 'CS', 1, 0); --CS Major
-INSERT into degree (degree_id, name, dept, major, minor) values (1, 'Computer Engineering', 'COE', 1, 0);
-INSERT into degree (degree_id, name, dept, major, minor) values (2, 'Computer Science', 'CS', 0, 1); --CS Minor
+--Freshmen classes
+INSERT into course (course_id, course_name, DEPT_No, credits) values (26, 'Calc 1', 'MATH0220',4);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (27, 'Calc 2', 'MATH0230',4);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (28, 'Calc 3', 'MATH0240',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (29, 'Physics 1', 'PHYS0174',4);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (30, 'Physics 2', 'PHYS0175',4);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (31, 'Chemistry 1', 'CHEM0960',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (32, 'Chemistry 2' 'CHEM0970',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (33, 'Engineering Analysis', 'ENGR0011',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (34, 'Engineering Analysis 2', 'ENGR0012',3);
 
--- TODO I have no idea what the requirement id field means I'm just throwing rand NO's in here
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 0, 0, 5); --degree 0 (CS Major) consists of class 0 (CS1530) and it is not mandatory (requirement # TBD)
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 1, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 2, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 3, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 4, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 5, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 6, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 7, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 8, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 9, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 10, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 11, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 12, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 13, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 14, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 15, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 16, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 17, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 18, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 19, 0 ,5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 20, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 21, 0, 5);
+--MechE core classes
+--Third Term
+	--Calc3
+	--LinearAlg
+INSERT into course (course_id, course_name, DEPT_No, credits) values (0, 'Materials Structure and Properties', 'ENGR0022',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (1, 'Statics and Mechc of Materials 1', 'ENGR0135',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (2, 'Introduction to Mechanical Engineering Design', 'MEMS0024',3);
+--Fourth Term 
+	--Differential Equations(same as COE)
+	--Communication Skills Elective (same as COE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (3, 'Statics and Mechc of Materials 2', 'ENGR0145',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (4, 'Electrical Circuits', 'MEMS0031',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (5, 'Materials and Manufacturing', 'MEMS0040',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (6, 'Introduction to Thermodynamics', 'MEMS0051',3);
+--Fifth Term 
+	--Engineering Elective
+	--Humanity/Social Science Elective(same as COE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Introduction to Fluid Mechanics', 'MEMS0071',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Dynamic Systems', 'MEMS1014',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (9, 'Mechanical Design 1', 'MEMS1028',3);
+--Sixth Term 
+	--Humanity/Social Science Elective(same as COE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Rigid-Body Dynamics', 'MEMS1015',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Mechanical Design 2', 'MEMS1029',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (9, 'Mechanical Measurements 1', 'MEMS1041',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (9, 'Applied Thermodynamics', 'MEMS1051',3);
+--Seventh Term 
+	--Humanity/Social Science Elective(same as COE)
+	--Dynamic Systems Elective
+	--ME Technical Elective
+INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Mechanical Measurements 2', 'MEMS1042',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Heat and MASS Transfer', 'MEMS1052',3);
 
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 0, 0, 5); 
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 1, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 2, 0, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 3, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 4, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 5, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 6, 0, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 7, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 8, 1, 4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 9, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 10, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 11, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 12, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 13, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 14, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 15, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 16, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 17, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 18, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 19, 1 ,4);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 20, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 21, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 22, 1, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 23, 1, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 24, 0, 5);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 25, 1, 5);
+--Eighth Term
+	--ME Technical Elective
+	--ME Technical Elective
+	--Humanity/Social Science Elective(same as COE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Senior Design Project', 'MEMS1043',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Applied Fluid Mechanics', 'MEMS1071',3);
+
+--Technical Electives (COE and MECHE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Introduction to Nuclear Engineering', 'ENGR1700',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (8, ' Fundamentals of Nuclear Reactors', 'ENGR1701',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (41, 'Nuclear Plant','ENGR1702',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (42, 'Experimental Methods in MSE', 'MEMS1010 ',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (43, 'Introduction to Combustion Theory', 'ME2056',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (44, 'Numerical Methods', 'ME2060',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (45, 'Introduction to Microelectromechanical Systems', 'ME2080',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (46, 'Principles of Electromechanical Sensors and Actuators', 'ME2082',3);
+
+--Engineering Elective(any class from Swanson School of Engineering)
+
+--Dynamic Systems Elective
+INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Vibrations', 'MEMS1020',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Automatic Controls', 'MEMS1045',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (41, 'Mechatronics', 'MEMS1049',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (42, 'Electromechanical Sensors and Actuators', 'MEMS1082',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Vibrations', 'MEMS1020',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Automatic Controls', 'MEMS1045',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (41, 'Mechatronics', 'MEMS1049',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (42, 'Electromechanical Sensors and Actuators', 'MEMS1082',3);
+
+--Humanities
+INSERT into course (course_id, course_name, DEPT_No, credits) values (41, 'Modern Greek 1', 'GREEK0231',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (42, 'Mythology in the Ancient World', 'CLASS0030',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (43, 'Intro to Ethics', 'PHIL0300',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (44, 'Intro to Cultural Anthropolgy', 'ANTH0780',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (45, 'Written Professional Communication', 'ENGCMP0400',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (46, 'Seminar in Composition', 'ENGCMP0200',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (47, 'Communication Process' 'COMMRC0300',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (48, 'Interpersonal Communication', 'COMMRC0530',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (49, 'Intro to Micro Economics', 'ECON0100',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (50, 'Intro to Macro Economics', 'ECON0110',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (51, 'Game Theory Principles', 'ECON0200',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (52, 'Game Theory', 'ECON1200',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (53, 'Intermediate Micro Economics', 'ECON1100',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (54, 'Intermediate Macro Economics', 'ECON1110',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (55, 'Intro to International Econ', 'ECON0500',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (56, 'Intro to Econometrics', 'ECON0160',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (57, 'Applied Econometrics 1', 'ECON1150',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (58, 'Intro to Money and Banking', 'ECON0280',3);
+
+--List of degrees into DB
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (0, 'Computer Science', 'CS', 1, 0, 5, 0, 0, 26); --CS Major
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (1, 'Computer Engineering', 'COE', 1, 0, 4, 2, 3, 7);--COE Major
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (2, 'Computer Science', 'CS', 0, 1, 2, 0, 0, 0); --CS Minor
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (3, 'Economics', 'ECON', 0, 1, 3, 0, 0, 0); --Econ Minor
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (4, 'Mechanical Engineerng', 'MEMS', 1, 0, 4, 0, 1, 6); --MechE Major
+
+
+--Requirement value 0: Core Requirement(ie specific class is required) 1:Advanced Core Elective 2:Open Elective 3:Freshmen ENGR Program 
+--4: Technical Elective 5:H/SS Elective 
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 0, 0, 1); --degree 0 (CS Major) consists of class 0 (CS1530) and it is not mandatory and is part of requirement classs#1:Advance core elective
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 1, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 2, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 3, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 4, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 5, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 6, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 7, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 8, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 9, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 10, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 11, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 12, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 13, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 14, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 15, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 16, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 17, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 18, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 19, 0 ,1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 20, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 21, 0, 1);
+
+--COE Major
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 0, 1, 0); 
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 1, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 2, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 3, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 4, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 5, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 6, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 7, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 8, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 9, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 10, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 11, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 12, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 13, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 14, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 15, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 16, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 17, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 18, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 19, 0 ,1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 20, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 21, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 22, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 23, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 25, 1, 0);
+
+
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 26, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 27, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 28, 0, 4);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 29, 1 ,3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 30, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 31, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 32, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 33, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 34, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 35, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 38, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 36, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 37, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 39, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 40, 1, 0);
+
+--CS Minor
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (2, 1, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (2, 3, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (2, 4, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (2, 2, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (2, 5, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (2, 7, 1, 0);
+
+--ECON Minor
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 49, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 50, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 54, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 53, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 52, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 51, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 55, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 56, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 57, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (3, 58, 0, 1);
+
+
+--MechE
+--Freshman Program(all mandatory)
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 26, 1, 3);--Calc1 --degree, class#, mandatory, classification CALC 3
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 27, 1, 3);--Calc2
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 29, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 30, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 31, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 32, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 33, 1, 3);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 34, 1, 3);
+
+--Core requirements(all mandatory)
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 35, 1, 0);--Calc3
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 38, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 49, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 49, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 49, 1, 0);
+
+
+--make a preReq
+INSERT into preReqs (course_id, preReq_courseId) values (27, 26); --class 26(Calc1) is a preReq for class 27(Calc2)
+INSERT into preReqs (course_id, preReq_courseId) values (28, 27);
 
 INSERT into student default values; -- this inserts a student into the table and auto increments the id so it's unique
 select SCOPE_IDENTITY();
