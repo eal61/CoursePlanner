@@ -52,7 +52,8 @@ create table coReqs (
   coReq_courseId integer not null
 )
 
---Requirement value 0: Core Requirement 1:Advanced Core Elective 2:Open Elective 3:Freshmen ENGR Program 4: Technical Elective 5:H/SS Elective 
+--Requirement value 0: Core Requirement 1:Advanced Core Elective 2:Open Elective 3:Freshmen ENGR Program 4: Technical Elective 
+--5:H/SS Elective 
 
 drop table if exists course_degree;
 create table course_degree (
@@ -143,7 +144,8 @@ INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, ope
 INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (4, 'Mechanical Engineerng', 'MEMS', 1, 0, 4, 0, 1, 6); --MechE Major
 
 
---Requirement value 0: Core Requirement(ie specific class is required) 1:Advanced Core Elective 2:Open Elective 3:Freshmen ENGR Program 4: Technical Elective 5:H/SS Elective 
+--Requirement value 0: Core Requirement(ie specific class is required) 1:Advanced Core Elective 2:Open Elective 3:Freshmen ENGR Program 
+--4: Technical Elective 5:H/SS Elective 
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 0, 0, 1); --degree 0 (CS Major) consists of class 0 (CS1530) and it is not mandatory and is part of requirement classs#1:Advance core elective
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 1, 1, 0);
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 2, 1, 0);
