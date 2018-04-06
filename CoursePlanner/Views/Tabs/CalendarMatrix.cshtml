@@ -82,6 +82,19 @@
     </script>
 
     <script>
+        function saveOrderedItems() {
+            var list = getGridItemsOrdered();
+            var stringList = JSON.stringify(list);
+            var targetUrl = "http://localhost:50618/api/courseplan";
+            $.ajax({
+                type: "POST",
+                url: targetUrl//,
+                //data: { plan: stringList },
+                //contentType: "application/json; charset=utf-8",
+                //datatype: "json"
+            });
+        }
+
         function getGridItemsOrdered()
         {
             var sem1 = document.getElementById("sem1");
