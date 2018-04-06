@@ -84,19 +84,22 @@
     <script>
         function saveOrderedItems() {
             var list = getGridItemsOrdered();
-            var stringList = JSON.stringify(list);
+            var jsonList = JSON.stringify(list);
+            var t = "test";
             var targetUrl = "http://localhost:50618/api/courseplan";
             $.ajax({
                 type: "POST",
-                url: targetUrl//,
-                //data: { plan: stringList },
-                //contentType: "application/json; charset=utf-8",
-                //datatype: "json"
+                url: targetUrl,
+                data: jsonList,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
             });
         }
 
         function getGridItemsOrdered()
         {
+            var studentId = @User.Identity.GetStudentId();
+
             var sem1 = document.getElementById("sem1");
             var sem2 = document.getElementById("sem2");
             var sem3 = document.getElementById("sem3");
@@ -131,7 +134,8 @@
                 s1_ids.push(
                     {
                         "semesterId": 1,
-                        "courseId": parseInt(s1[i].id)
+                        "courseId": parseInt(s1[i].id),
+                        "studentId": studentId
                     }
                 );
             }
@@ -141,7 +145,8 @@
                 s2_ids.push(
                     {
                         "semesterId": 2,
-                        "courseId": parseInt(s2[i].id)
+                        "courseId": parseInt(s2[i].id),
+                        "studentId": studentId
                     }
                 );
             }
@@ -151,7 +156,8 @@
                 s3_ids.push(
                     {
                         "semesterId": 3,
-                        "courseId": parseInt(s3[i].id)
+                        "courseId": parseInt(s3[i].id),
+                        "studentId": studentId
                     }
                 );
             }
@@ -161,7 +167,8 @@
                 s4_ids.push(
                     {
                         "semesterId": 4,
-                        "courseId": parseInt(s4[i].id)
+                        "courseId": parseInt(s4[i].id),
+                        "studentId": studentId
                     }
                 );
             }
@@ -171,7 +178,8 @@
                 s5_ids.push(
                     {
                         "semesterId": 5,
-                        "courseId": parseInt(s5[i].id)
+                        "courseId": parseInt(s5[i].id),
+                        "studentId": studentId
                     }
                 );
             }
@@ -181,7 +189,8 @@
                 s6_ids.push(
                     {
                         "semesterId": 6,
-                        "courseId": parseInt(s6[i].id)
+                        "courseId": parseInt(s6[i].id),
+                        "studentId": studentId
                     }
                 );
             }
@@ -191,7 +200,8 @@
                 s7_ids.push(
                     {
                         "semesterId": 7,
-                        "courseId": parseInt(s7[i].id)
+                        "courseId": parseInt(s7[i].id),
+                        "studentId": studentId
                     }
                 );
             }
@@ -201,7 +211,8 @@
                 s8_ids.push(
                     {
                         "semesterId": 8,
-                        "courseId": parseInt(s8[i].id)
+                        "courseId": parseInt(s8[i].id),
+                        "studentId": studentId
                     }
                 );
             }
@@ -602,6 +613,7 @@
                 columnGrids.forEach(function (grid) {
                     grid.refreshItems();
                 });
+                saveOrderedItems();
             })
             .on('layoutStart', function () {
                 // Let's keep the board grid up to date with the

@@ -19,6 +19,7 @@ namespace CoursePlanner.Models
     {
         public int semesterId { get; set; }
         public int courseId { get; set; }
+        public int studentId { get; set; }
     }
 
 }
