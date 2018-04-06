@@ -37,12 +37,19 @@
             {
                 Response.Write("<script>alert('Error: Invalid Course Number.');</script>");
             }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
         }
         else
         {
             name = Request.Form["class"];
             sem = Int32.Parse(Request.Form["semNo"]);
             studentData.removeCourse(0, name, sem);
+
+
+            Response.Redirect(Request.RawUrl);
         }
     }
 
