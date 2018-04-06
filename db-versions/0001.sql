@@ -32,11 +32,11 @@ create table degree (
   name nvarchar(60) not null,
   dept nvarchar(60) not null,
   major bit not null,
-  minor bit not null
+  minor bit not null,
   
-  advCoreElectiveNum integer not null --refers to number of classes needed
-  openElectiveNum integer not null
-  techElectiveNum integer not null
+  advCoreElectiveNum integer not null, --refers to number of classes needed
+  openElectiveNum integer not null,
+  techElectiveNum integer not null,
   hssElectiveNum integer not null
 );
 
@@ -109,7 +109,7 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (28, 'Calc 
 INSERT into course (course_id, course_name, DEPT_No, credits) values (29, 'Physics 1', 'PHYS0174',4);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (30, 'Physics 2', 'PHYS0175',4);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (31, 'Chemistry 1', 'CHEM0960',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (32, 'Chemistry 2' 'CHEM0970',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (32, 'Chemistry 2', 'CHEM0970',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (33, 'Engineering Analysis', 'ENGR0011',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (34, 'Engineering Analysis 2', 'ENGR0012',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (35, 'Differential Equations', 'MATH0290',3);
@@ -122,7 +122,7 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (43, 'Intro
 INSERT into course (course_id, course_name, DEPT_No, credits) values (44, 'Intro to Cultural Anthropolgy', 'ANTH0780',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (45, 'Written Professional Communication', 'ENGCMP0400',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (46, 'Seminar in Composition', 'ENGCMP0200',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (47, 'Communication Process' 'COMMRC0300',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (47, 'Communication Process', 'COMMRC0300',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (48, 'Interpersonal Communication', 'COMMRC0530',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (49, 'Intro to Micro Economics', 'ECON0100',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (50, 'Intro to Macro Economics', 'ECON0110',3);
