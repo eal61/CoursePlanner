@@ -32,11 +32,11 @@ create table degree (
   name nvarchar(60) not null,
   dept nvarchar(60) not null,
   major bit not null,
-  minor bit not null
+  minor bit not null,
   
-  advCoreElectiveNum integer not null --refers to number of classes needed
-  openElectiveNum integer not null
-  techElectiveNum integer not null
+  advCoreElectiveNum integer not null, --refers to number of classes needed
+  openElectiveNum integer not null,
+  techElectiveNum integer not null,
   hssElectiveNum integer not null
 );
 
@@ -109,71 +109,15 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (28, 'Calc 
 INSERT into course (course_id, course_name, DEPT_No, credits) values (29, 'Physics 1', 'PHYS0174',4);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (30, 'Physics 2', 'PHYS0175',4);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (31, 'Chemistry 1', 'CHEM0960',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (32, 'Chemistry 2' 'CHEM0970',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (32, 'Chemistry 2', 'CHEM0970',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (33, 'Engineering Analysis', 'ENGR0011',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (34, 'Engineering Analysis 2', 'ENGR0012',3);
 
---MechE core classes
---Third Term
-	--Calc3
-	--LinearAlg
-INSERT into course (course_id, course_name, DEPT_No, credits) values (0, 'Materials Structure and Properties', 'ENGR0022',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (1, 'Statics and Mechc of Materials 1', 'ENGR0135',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (2, 'Introduction to Mechanical Engineering Design', 'MEMS0024',3);
---Fourth Term 
-	--Differential Equations(same as COE)
-	--Communication Skills Elective (same as COE)
-INSERT into course (course_id, course_name, DEPT_No, credits) values (3, 'Statics and Mechc of Materials 2', 'ENGR0145',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (4, 'Electrical Circuits', 'MEMS0031',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (5, 'Materials and Manufacturing', 'MEMS0040',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (6, 'Introduction to Thermodynamics', 'MEMS0051',3);
---Fifth Term 
-	--Engineering Elective
-	--Humanity/Social Science Elective(same as COE)
-INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Introduction to Fluid Mechanics', 'MEMS0071',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Dynamic Systems', 'MEMS1014',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (9, 'Mechanical Design 1', 'MEMS1028',3);
---Sixth Term 
-	--Humanity/Social Science Elective(same as COE)
-INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Rigid-Body Dynamics', 'MEMS1015',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Mechanical Design 2', 'MEMS1029',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (9, 'Mechanical Measurements 1', 'MEMS1041',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (9, 'Applied Thermodynamics', 'MEMS1051',3);
---Seventh Term 
-	--Humanity/Social Science Elective(same as COE)
-	--Dynamic Systems Elective
-	--ME Technical Elective
-INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Mechanical Measurements 2', 'MEMS1042',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Heat and MASS Transfer', 'MEMS1052',3);
+--Additional Math/ENGR courses not taken Freshman Year
+INSERT into course (course_id, course_name, DEPT_No, credits) values (35, 'Differential Equations', 'MATH0290',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (38, 'Linear Algebra', 'MATH0280',3);
 
---Eighth Term
-	--ME Technical Elective
-	--ME Technical Elective
-	--Humanity/Social Science Elective(same as COE)
-INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Senior Design Project', 'MEMS1043',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Applied Fluid Mechanics', 'MEMS1071',3);
 
---Technical Electives (COE and MECHE)
-INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Introduction to Nuclear Engineering', 'ENGR1700',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (8, ' Fundamentals of Nuclear Reactors', 'ENGR1701',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (41, 'Nuclear Plant','ENGR1702',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (42, 'Experimental Methods in MSE', 'MEMS1010 ',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (43, 'Introduction to Combustion Theory', 'ME2056',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (44, 'Numerical Methods', 'ME2060',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (45, 'Introduction to Microelectromechanical Systems', 'ME2080',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (46, 'Principles of Electromechanical Sensors and Actuators', 'ME2082',3);
-
---Engineering Elective(any class from Swanson School of Engineering)
-
---Dynamic Systems Elective
-INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Vibrations', 'MEMS1020',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Automatic Controls', 'MEMS1045',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (41, 'Mechatronics', 'MEMS1049',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (42, 'Electromechanical Sensors and Actuators', 'MEMS1082',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (7, 'Vibrations', 'MEMS1020',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (8, 'Automatic Controls', 'MEMS1045',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (41, 'Mechatronics', 'MEMS1049',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (42, 'Electromechanical Sensors and Actuators', 'MEMS1082',3);
 
 --Humanities
 INSERT into course (course_id, course_name, DEPT_No, credits) values (41, 'Modern Greek 1', 'GREEK0231',3);
@@ -182,7 +126,7 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (43, 'Intro
 INSERT into course (course_id, course_name, DEPT_No, credits) values (44, 'Intro to Cultural Anthropolgy', 'ANTH0780',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (45, 'Written Professional Communication', 'ENGCMP0400',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (46, 'Seminar in Composition', 'ENGCMP0200',3);
-INSERT into course (course_id, course_name, DEPT_No, credits) values (47, 'Communication Process' 'COMMRC0300',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (47, 'Communication Process', 'COMMRC0300',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (48, 'Interpersonal Communication', 'COMMRC0530',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (49, 'Intro to Micro Economics', 'ECON0100',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (50, 'Intro to Macro Economics', 'ECON0110',3);
@@ -194,6 +138,70 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (55, 'Intro
 INSERT into course (course_id, course_name, DEPT_No, credits) values (56, 'Intro to Econometrics', 'ECON0160',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (57, 'Applied Econometrics 1', 'ECON1150',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (58, 'Intro to Money and Banking', 'ECON0280',3);
+
+
+
+--MechE core classes
+--Third Term
+	--Calc3
+	--LinearAlg
+INSERT into course (course_id, course_name, DEPT_No, credits) values (59, 'Materials Structure and Properties', 'ENGR0022',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (60, 'Statics and Mechc of Materials 1', 'ENGR0135',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (61, 'Introduction to Mechanical Engineering Design', 'MEMS0024',3);
+--Fourth Term 
+	--Differential Equations(same as COE)
+	--Communication Skills Elective (same as COE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (62, 'Statics and Mechc of Materials 2', 'ENGR0145',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (63, 'Electrical Circuits', 'MEMS0031',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (64, 'Materials and Manufacturing', 'MEMS0040',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (65, 'Introduction to Thermodynamics', 'MEMS0051',3);
+--Fifth Term 
+	--Engineering Elective
+	--Humanity/Social Science Elective(same as COE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (66, 'Introduction to Fluid Mechanics', 'MEMS0071',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (67, 'Dynamic Systems', 'MEMS1014',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (68, 'Mechanical Design 1', 'MEMS1028',3);
+--Sixth Term 
+	--Humanity/Social Science Elective(same as COE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (69, 'Rigid-Body Dynamics', 'MEMS1015',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (70, 'Mechanical Design 2', 'MEMS1029',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (71, 'Mechanical Measurements 1', 'MEMS1041',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (72, 'Applied Thermodynamics', 'MEMS1051',3);
+--Seventh Term 
+	--Humanity/Social Science Elective(same as COE)
+	--Dynamic Systems Elective
+	--ME Technical Elective
+INSERT into course (course_id, course_name, DEPT_No, credits) values (73, 'Mechanical Measurements 2', 'MEMS1042',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (74, 'Heat and MASS Transfer', 'MEMS1052',3);
+
+--Eighth Term
+	--ME Technical Elective
+	--ME Technical Elective
+	--Humanity/Social Science Elective(same as COE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (75, 'Senior Design Project', 'MEMS1043',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (76, 'Applied Fluid Mechanics', 'MEMS1071',3);
+
+--Technical Electives (COE and MECHE)
+INSERT into course (course_id, course_name, DEPT_No, credits) values (77, 'Introduction to Nuclear Engineering', 'ENGR1700',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (78, ' Fundamentals of Nuclear Reactors', 'ENGR1701',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (79, 'Nuclear Plant','ENGR1702',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (80, 'Experimental Methods in MSE', 'MEMS1010 ',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (81, 'Introduction to Combustion Theory', 'ME2056',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (82, 'Numerical Methods', 'ME2060',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (83, 'Introduction to Microelectromechanical Systems', 'ME2080',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (84, 'Principles of Electromechanical Sensors and Actuators', 'ME2082',3);
+
+--Engineering Elective(any class from Swanson School of Engineering)
+
+--Dynamic Systems Elective
+INSERT into course (course_id, course_name, DEPT_No, credits) values (85, 'Vibrations', 'MEMS1020',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (86, 'Automatic Controls', 'MEMS1045',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (87, 'Mechatronics', 'MEMS1049',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (88, 'Electromechanical Sensors and Actuators', 'MEMS1082',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (89, 'Vibrations', 'MEMS1020',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (90, 'Automatic Controls', 'MEMS1045',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (91, 'Mechatronics', 'MEMS1049',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (92, 'Electromechanical Sensors and Actuators', 'MEMS1082',3);
 
 --List of degrees into DB
 INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (0, 'Computer Science', 'CS', 1, 0, 5, 0, 0, 26); --CS Major
