@@ -8,7 +8,7 @@ using Microsoft.AspNet.Identity;
 namespace CoursePlanner.Controllers
 {
     public class StudentController
-    {   
+    {
         public Student getStudentInfo(int studentId)
         {
             // call db to retrieve student data
@@ -17,11 +17,25 @@ namespace CoursePlanner.Controllers
             CoursePlan cp = this.getCoursePlan(studentId); // TODO need to set up student id
             Student student = new Student();
             student.Plan = cp;
-            //student.FirstName = HttpContext.User.Identity.GetFirstName();
-           // student.LastName = HttpContext.User.Identity.GetLastName();
+            List<DegreeProgram> dps = this.getAllDegreePrograms(studentId);
+            List<DegreeProgram> maj = new List<DegreeProgram>();
+            List<DegreeProgram> min = new List<DegreeProgram>();
+            foreach (DegreeProgram program in dps)
+            {
+                if (program.Major)
+                {
+                    maj.Add(program);
+                }
+                else if (program.Minor)
+                {
+                    min.Add(program);
+                }
+            }
+            student.Majors = maj;
+            student.Minors = min;
             return student;
 
-           
+
         }
 
         /// <summary>
@@ -30,33 +44,37 @@ namespace CoursePlanner.Controllers
         /// <param name="studentId"></param>
         /// <returns></returns>
 
-        public List<DegreeProgram> getAllDegreePrograms(int studentId) {
+        public List<DegreeProgram> getAllDegreePrograms(int studentId)
+        {
             // use student Id to get student
-           
+
             //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
             string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             List<DegreeProgram> degrees = new List<DegreeProgram>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                
 
 
-               
+
+
 
                 SqlCommand command = new SqlCommand("SELECT * FROM student_degree JOIN degree on student_degree.degree_id=degree.degree_id WHERE student_id = @0", conn);
 
-                //SqlCommand command = new SqlCommand( "SELECT * FROM student_degree WHERE student_id = @0", conn);
+
 
                 command.Parameters.Add(new SqlParameter("0", studentId));
-                
+
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read()) {
+                    while (reader.Read())
+                    {
 
-                        
-                       //TODO get all inputs for new DegreeProgram
-                        DegreeProgram dp = new DegreeProgram((string)reader["name"], (string)reader["dept"]);
+
+                        //TODO get all inputs for new DegreeProgram
+                        DegreeProgram dp = new DegreeProgram((string)reader["name"], (string)reader["dept"], (bool)reader["major"], (bool)reader["minor"]);
+                        DegreeProgramController dpControl = new DegreeProgramController();
+                        dpControl.fillDegreeRequirements(dp, (int)reader["degree_id"]); //TODO add in get degreeID function here and replace into 0
                         degrees.Add(dp);
                     }
                 }
@@ -66,7 +84,8 @@ namespace CoursePlanner.Controllers
 
             return degrees;
         }
-        public CoursePlan getCoursePlan(int studentId) {
+        public CoursePlan getCoursePlan(int studentId)
+        {
             // use student Id to get student
             CoursePlan cp = new CoursePlan();
             //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
@@ -76,9 +95,9 @@ namespace CoursePlanner.Controllers
                 conn.Open();
 
                 SqlCommand command = new SqlCommand("SELECT * FROM student_course sc JOIN course c on sc.course_id=c.course_id WHERE student_id = @0", conn);
-             
 
-                
+
+
                 command.Parameters.Add(new SqlParameter("0", studentId));
 
 
@@ -90,7 +109,8 @@ namespace CoursePlanner.Controllers
                         courseList[i] = new List<Course>();
                     }
                     Course course;
-                    while (reader.Read()) {
+                    while (reader.Read())
+                    {
                         course = new Course();
                         course.Name = (String)reader["course_name"];
                         course.Id = (int)reader["course_id"];
@@ -123,20 +143,20 @@ namespace CoursePlanner.Controllers
                 conn.Open();
 
                 SqlCommand command = new SqlCommand("SELECT * FROM course WHERE DEPT_NO = @0", conn);
-                
 
-                
+
+
                 command.Parameters.Add(new SqlParameter("0", (String)name));
                 using (SqlDataReader reader = command.ExecuteReader())
-                { 
-                if (reader.Read())
-                    course_id = (int)reader["course_id"];
+                {
+                    if (reader.Read())
+                        course_id = (int)reader["course_id"];
                 }
                 return course_id;
 
             }
         }
-            public int addCourse(int studentId, String course_name, int semesterId)
+        public int addCourse(int studentId, String course_name, int semesterId)
         {
             int course_id = getClass(course_name);
             if (course_id == -1)
@@ -198,7 +218,8 @@ namespace CoursePlanner.Controllers
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read()){
+                    while (reader.Read())
+                    {
                         Console.WriteLine(reader["degree_id"]);
                     }
                 }

@@ -70,7 +70,7 @@ namespace CoursePlanner.Controllers
                                 course.Credits = (int)reader2["credits"];
                                 course.DeptCode = (String)reader2["DEPT_No"];
 
-
+                                //adds any course that fulfills requirement (even if specific course isn't mandatory) --may be something to adjust
                                 reqCourses[reqNo].Add(course);
                                 if (reqNo == 0 || reqNo == 3)
                                 {

@@ -9,21 +9,38 @@ namespace CoursePlanner.Models
 {
     public class DegreeProgram
     {
-        public DegreeProgram(string newName, string newDept)
+        public DegreeProgram(string newName, string newDept, bool major, bool minor)
         {
-            var Name = newName;
-            var Department = newDept;
-            DegreeProgramController dpControl = new DegreeProgramController();
-            dpControl.fillDegreeRequirements(this, 0); //TODO add in get studentID function here and replace into 0
+            Name = newName;
+            Department = newDept;
+            Major = false;
+            Minor = false;
+            Other = false;
 
-           
-             
+            if (major)
+            {
+                Major = true;
+            }
+            else if (minor)
+            {
+                Minor = true;
+
+            }
+            else
+            {
+                Other = true;
+            }
+
+
         }
         public string Name { get; set; }
         public int CreditRequirement { get; set; }
         public List<RequirementGroup> Requirements { get; set; }
         public string Department { get; set; }
+        public bool Major { get; set; }
+        public bool Minor { get; set; }
+        public bool Other { get; set; }
 
- 
+
     }
 }

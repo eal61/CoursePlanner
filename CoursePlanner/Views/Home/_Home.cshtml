@@ -1,5 +1,12 @@
 ﻿@using Microsoft.AspNet.Identity;
 @using App.Extensions;
+@using CoursePlanner.Controllers;
+@using CoursePlanner.Models;
+
+
+@{StudentController studentControl = new StudentController();
+    Student student = studentControl.getStudentInfo(0);
+}
 
 
 <!-- ko with: home -->
@@ -17,10 +24,33 @@
                       @User.Identity.GetFullName()
                     </div>
                     <div class="profile-usertitle-job">
-                        
+                        @if(student.Majors !=null && student.Majors.Count >0)
+                        {
+                            foreach (DegreeProgram major in student.Majors)
+                            {
+                                @major.Name
+                            }
+
+                        }
+                        else
+                        {
+                            <h4>Undeclared</h4>
+                        }
+
                     </div>
                     <div class="profile-usersubtitle-job">
-                        Economics
+                        @if(student.Minors !=null && student.Minors.Count >0)
+                        {
+                            foreach (DegreeProgram minor in student.Minors)
+                            {
+                                @minor.Name
+                            }
+
+                        }
+                        else
+                        {
+                            <h6>No Minor</h6>
+                        }
                     </div>
                 </div>
             </div>
