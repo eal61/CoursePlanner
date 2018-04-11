@@ -324,7 +324,40 @@ INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) valu
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 35, 1, 0);
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 59, 1, 0);
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 60, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 61, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 62, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 63, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 64, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 65, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 66, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 67, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 68, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 69, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 70, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 71, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 72, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 73, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 74, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 75, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 76, 1, 0);
 
+--Dynamic Systems Electives and Technical Electives (Count as Advanced Core Elective: 1, not mandatory)
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 77, 0, 1); --Introduction to Nuclear Engineering
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 78, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 79, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 80, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 81, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 82, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 83, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 84, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 85, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 86, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 87, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 88, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 89, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 90, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 91, 0, 1);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 92, 0, 1);
 
 --make a preReq
 INSERT into preReqs (course_id, preReq_courseId) values (27, 26); --class 26(Calc1) is a preReq for class 27(Calc2)
