@@ -100,6 +100,8 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (25, 'Senio
 INSERT into course (course_id, course_name, DEPT_No, credits) values (36, 'Linear Systems and Circuits 1', 'COE0031',4);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (37, 'Analysis and Design of Electronic Circuits', 'COE0257',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (39, 'Advanced Digital Desgin', 'COE1502',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (93, 'Cyber-Physical Systems', 'COE1188',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (94, 'Signals and Systems Analysis', 'ECE1552',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (40, 'ENGR Probability and Statistics', 'ENGR0020',4);
 
 --Freshmen classes
@@ -138,6 +140,10 @@ INSERT into course (course_id, course_name, DEPT_No, credits) values (55, 'Intro
 INSERT into course (course_id, course_name, DEPT_No, credits) values (56, 'Intro to Econometrics', 'ECON0160',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (57, 'Applied Econometrics 1', 'ECON1150',3);
 INSERT into course (course_id, course_name, DEPT_No, credits) values (58, 'Intro to Money and Banking', 'ECON0280',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (95, 'United States History Part 1', 'HIST0600',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (96, 'United States History Part 2', 'HIST0601',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (97, 'Intro to Psychology', 'PSY0010',3);
+INSERT into course (course_id, course_name, DEPT_No, credits) values (98, 'Intro to American Politics', 'PS0200',3);
 
 
 
