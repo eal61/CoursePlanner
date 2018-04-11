@@ -6,6 +6,8 @@
 
 @{StudentController studentControl = new StudentController();
     Student student = studentControl.getStudentInfo(0);
+
+
 }
 
 
@@ -29,12 +31,20 @@
                             foreach (DegreeProgram major in student.Majors)
                             {
                                 @major.Name
+                                <div>
+                                    <button class="button" onclick="changeMajorButton('@major.Name')">Change Major</button>
+                                </div>
+                                <div>
+                                    <button class="button" onclick="removeMajorButton('@major.Name')">Remove Major</button>
+                                </div>
                             }
-
+                            <h6></h6>
+                            <button class="button" onclick="addMajorButton()">Add Additional Major</button>
                         }
                         else
                         {
                             <h4>Undeclared</h4>
+                            <button class="button" onclick="addMajorButton()">Declare Major</button>
                         }
 
                     </div>
@@ -44,12 +54,16 @@
                             foreach (DegreeProgram minor in student.Minors)
                             {
                                 @minor.Name
+                                <button class="button" onclick="changeMinorButton('@minor.Name')">Change Minor</button>
+                                <button class="button" onclick="removeMinorButton('@minor.Name')">Remove Minor</button>
                             }
-
+                            <h6></h6>
+                            <button class="button" onclick="addMinorButton()">Add Additional Minor</button>
                         }
                         else
                         {
                             <h6>No Minor</h6>
+                            <button class="button" onclick="addMinorButton()">Add Minor</button>
                         }
                     </div>
                 </div>
@@ -76,3 +90,111 @@
     </div>
 </div>
 <!-- /ko -->
+
+
+<script>
+
+    function addMajorButton() {
+        var newDegree = prompt("Please enter new Major in DEPT format or name of Major");
+
+
+        if (newDegree == null || newDegree == "") {
+            //do nothing
+        }
+        else {
+            post('/', { degree: newDegree, delete1: "2" });
+            
+
+
+        }
+    }
+
+    function addMinorButton() {
+        var newDegree = prompt("Please enter new Minor in DEPT format or name of Minor");
+
+
+        if (newDegree == null || newDegree == "") {
+            //do nothing
+        }
+        else {
+            post('/', { degree: newDegree, delete1: "3" });
+
+
+
+        }
+    }
+
+    function removeMajorButton(majorName) {
+        
+            post('/', { degree: majorName, delete1: "4" });
+
+
+
+        
+    }
+    function removeMinorButton(minorName) {
+       
+            post('/', { degree: minorName, delete1: "5" });
+
+
+
+        
+    }
+
+    function changeMajorButton(oldMajor) {
+        var newDegree = prompt("Please enter new Major in DEPT format or name of Major");
+
+
+        if (newDegree == null || newDegree == "") {
+            //do nothing
+        }
+        else {
+            post('/', { degree: newDegree, oldDegree: oldMajor, delete1: "6" });
+
+
+
+        }
+    }
+
+    function addMinorButton(oldMinor) {
+        var newDegree = prompt("Please enter new Minor in DEPT format or name of Minor");
+
+
+        if (newDegree == null || newdegree == "") {
+            //do nothing
+        }
+        else {
+            post('/', { degree: newDegree, oldDegree: oldMinor, delete1: "7" });
+
+
+
+        }
+    }
+
+
+
+    function post(path, params, method) {
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+</script>

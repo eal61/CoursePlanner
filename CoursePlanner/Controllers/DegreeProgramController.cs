@@ -36,12 +36,14 @@ namespace CoursePlanner.Controllers
                 {
                     //create the array to hold each requirements class's list of countable classes
                     List<Course>[] reqCourses = new List<Course>[REQUIREMENTCLASSES];
+                    List<Course>[] countCourses = new List<Course>[REQUIREMENTCLASSES];
 
 
 
                     for (int i = 0; i < REQUIREMENTCLASSES; i++)
                     {
                         reqCourses[i] = new List<Course>();
+                        countCourses[i] = new List<Course>();
                     }
 
                     Course course;
@@ -70,8 +72,17 @@ namespace CoursePlanner.Controllers
                                 course.Credits = (int)reader2["credits"];
                                 course.DeptCode = (String)reader2["DEPT_No"];
 
-                                //adds any course that fulfills requirement (even if specific course isn't mandatory) --may be something to adjust
-                                reqCourses[reqNo].Add(course);
+                               
+
+                                if ((bool)reader2["mandatory"])
+                                {
+                                    reqCourses[reqNo].Add(course);
+                                }
+                                else
+                                {
+                                    countCourses[reqNo].Add(course);
+                                }
+                                
                                 if (reqNo == 0 || reqNo == 3)
                                 {
                                     creditReq[reqNo] = creditReq[reqNo] + course.Credits;

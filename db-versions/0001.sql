@@ -208,7 +208,7 @@ INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, ope
 INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (1, 'Computer Engineering', 'COE', 1, 0, 4, 2, 3, 7);--COE Major
 INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (2, 'Computer Science', 'CS', 0, 1, 2, 0, 0, 0); --CS Minor
 INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (3, 'Economics', 'ECON', 0, 1, 3, 0, 0, 0); --Econ Minor
-INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (4, 'Mechanical Engineerng', 'MEMS', 1, 0, 4, 0, 1, 6); --MechE Major
+INSERT into degree (degree_id, name, dept, major, minor, advCoreElectiveNum, openElectiveNum, techElectiveNum, hssElectiveNum) values (4, 'Mechanical Engineering', 'MEMS', 1, 0, 4, 0, 1, 6); --MechE Major
 
 
 --Requirement value 0: Core Requirement(ie specific class is required) 1:Advanced Core Elective 2:Open Elective 3:Freshmen ENGR Program 
@@ -313,11 +313,11 @@ INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) valu
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 34, 1, 3);
 
 --Core requirements(all mandatory)
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 35, 1, 0);--Calc3
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 28, 1, 0);--Calc3
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 38, 1, 0);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 49, 1, 0);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 49, 1, 0);
-INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 49, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 35, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 59, 1, 0);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 60, 1, 0);
 
 
 --make a preReq

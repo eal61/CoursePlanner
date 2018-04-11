@@ -21,6 +21,7 @@
 }
 @{
     var name = "";
+    var old = "";
     var sem = 0;
     var del = 0;
     var status = 0;
@@ -42,7 +43,82 @@
                 Response.Redirect(Request.RawUrl);
             }
         }
-        else
+        else if (del == 2)
+        {
+            name = Request.Form["degree"];
+            status = studentData.addMajor(0, name);
+            if (status == -1)
+            {
+                Response.Write("<script>alert('Error: Invalid Degree Name or DEPT.');</script>");
+            }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+        else if (del == 3)
+        {
+            name = Request.Form["degree"];
+            status = studentData.addMinor(0, name);
+            if (status == -1)
+            {
+                Response.Write("<script>alert('Error: Invalid Degree Name or DEPT.');</script>");
+            }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+        else if (del == 4)
+        {
+            name = Request.Form["degree"];
+            studentData.removeMajor(0, name);
+
+
+            Response.Redirect(Request.RawUrl);
+
+        }
+        else if (del == 5)
+        {
+            name = Request.Form["degree"];
+            studentData.removeMinor(0, name);
+
+
+            Response.Redirect(Request.RawUrl);
+
+        }
+        else if (del == 6)
+        {
+            name = Request.Form["degree"];
+            old = Request.Form["oldDegree"];
+            status = studentData.changeMajor(0, name, old);
+
+            if (status == -1)
+            {
+                Response.Write("<script>alert('Error: Major not changed: Invalid Degree Name or DEPT.');</script>");
+            }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
+
+        }
+        else if (del==7)
+        {
+            name = Request.Form["degree"];
+            old = Request.Form["oldDegree"];
+            status = studentData.changeMinor(0, name, old);
+
+            if (status == -1)
+            {
+                Response.Write("<script>alert('Error: Minor not changed: Invalid Degree Name or DEPT.');</script>");
+            }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+        else //del==1
         {
             name = Request.Form["class"];
             sem = Int32.Parse(Request.Form["semNo"]);

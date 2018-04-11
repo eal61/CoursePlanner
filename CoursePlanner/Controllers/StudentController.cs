@@ -152,6 +152,8 @@ namespace CoursePlanner.Controllers
                     if (reader.Read())
                         course_id = (int)reader["course_id"];
                 }
+
+                conn.Close();
                 return course_id;
 
             }
@@ -228,25 +230,200 @@ namespace CoursePlanner.Controllers
             }
         }
 
-        /*public void updateDegreeProgram(DegreeProgram degree)
+        public int getMajor(String name)
         {
+            int degree_id = -1;
             string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                SqlCommand command = new SqlCommand("", conn);
-                command.Parameters.Add(new SqlParameter());
+                SqlCommand command = new SqlCommand("SELECT * FROM degree WHERE dept = @0 AND major =1", conn);
 
-                using(SqlDataReader reader = command.ExecuteReader())
+
+
+                command.Parameters.Add(new SqlParameter("0", (String)name));
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read()){
-                        Console.WriteLine(reader["degree_id"]);
+                    if (reader.Read())
+                        degree_id = (int)reader["degree_id"];
+                }
+
+
+                if (degree_id < 0)
+                {
+                    command = new SqlCommand("SELECT * FROM degree WHERE name = @0 AND major=1", conn);
+
+                    command.Parameters.Add(new SqlParameter("0", (String)name));
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            degree_id = (int)reader["degree_id"];
                     }
                 }
                 conn.Close();
+                return degree_id;
 
             }
-        }*/
+        }
+
+        public int addMajor(int studentId, String degree_name)
+        {
+            int degree_id = getMajor(degree_name);
+            if (degree_id == -1)
+            {
+                return -1;
+            }
+            else
+            {
+                string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
+
+                    command.Parameters.Add(new SqlParameter("0", studentId));
+                    command.Parameters.Add(new SqlParameter("1", degree_id));
+                    command.ExecuteNonQuery();
+                    conn.Close();
+
+                }
+            }
+            return 0;
+        }
+
+        public int getMinor(String name)
+        {
+            int degree_id = -1;
+            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand("SELECT * FROM degree WHERE dept = @0 AND minor =1", conn);
+
+
+
+                command.Parameters.Add(new SqlParameter("0", (String)name));
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        degree_id = (int)reader["degree_id"];
+                }
+
+
+                if (degree_id < 0)
+                {
+                    command = new SqlCommand("SELECT * FROM degree WHERE name = @0 AND minor=1", conn);
+
+                    command.Parameters.Add(new SqlParameter("0", (String)name));
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            degree_id = (int)reader["degree_id"];
+                    }
+                }
+                conn.Close();
+                return degree_id;
+
+            }
+        }
+
+        public int addMinor(int studentId, String degree_name)
+        {
+            int degree_id = getMinor(degree_name);
+            if (degree_id == -1)
+            {
+                return -1;
+            }
+            else
+            {
+                string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
+
+                    command.Parameters.Add(new SqlParameter("0", studentId));
+                    command.Parameters.Add(new SqlParameter("1", degree_id));
+                    command.ExecuteNonQuery();
+                    conn.Close();
+
+                }
+            }
+            return 0;
+        }
+
+
+        public void removeMajor(int studentId, String degree_name)
+        {
+
+            int degree_id = getMajor(degree_name);
+
+            // use student Id to get student
+            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
+            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand("DELETE from student_degree WHERE (student_id=@0 AND degree_id = @1)", conn);
+
+                command.Parameters.Add(new SqlParameter("0", studentId));
+                command.Parameters.Add(new SqlParameter("1", degree_id));
+                command.ExecuteNonQuery();
+                conn.Close();
+
+            }
+        }
+
+        public void removeMinor(int studentId, String degree_name)
+        {
+
+            int degree_id = getMinor(degree_name);
+
+            // use student Id to get student
+            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
+            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand("DELETE from student_degree WHERE (student_id=@0 AND degree_id = @1)", conn);
+
+                command.Parameters.Add(new SqlParameter("0", studentId));
+                command.Parameters.Add(new SqlParameter("1", degree_id));
+                command.ExecuteNonQuery();
+                conn.Close();
+
+            }
+        }
+
+        public int changeMajor(int studentID, String newMaj, String old)
+        {
+            int status = addMajor(studentID, newMaj);
+            if (status==-1)
+            {
+                return status;
+            }
+
+            removeMajor(studentID, old);
+            return 1;
+        }
+
+
+        public int changeMinor(int studentID, String newMin, String old)
+        {
+            int status = addMinor(studentID, newMin);
+            if (status == -1)
+            {
+                return status;
+            }
+
+            removeMinor(studentID, old);
+            return 1;
+        }
     }
 }
