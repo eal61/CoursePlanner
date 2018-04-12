@@ -4,6 +4,7 @@ using CoursePlanner.Models;
 using System.Data.SqlClient;
 using App.Extensions;
 using Microsoft.AspNet.Identity;
+using System.Linq;
 
 namespace CoursePlanner.Controllers
 {
@@ -33,10 +34,10 @@ namespace CoursePlanner.Controllers
         public List<DegreeProgram> getAllDegreePrograms(int studentId) {
             // use student Id to get student
            
-            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            //string connectionstring = ConsoleApplication1.Properties.Settings.Default.Connectionstring;
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             List<DegreeProgram> degrees = new List<DegreeProgram>();
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
                 
@@ -68,9 +69,9 @@ namespace CoursePlanner.Controllers
         public CoursePlan getCoursePlan(int studentId) {
             // use student Id to get student
             CoursePlan cp = new CoursePlan();
-            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            //string connectionstring = ConsoleApplication1.Properties.Settings.Default.Connectionstring;
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
 
@@ -83,27 +84,32 @@ namespace CoursePlanner.Controllers
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    List<Course>[] courseList = new List<Course>[8];
-                    for (int i = 0; i < 8; i++)
-                    {
-                        courseList[i] = new List<Course>();
-                    }
-                    Course course;
+
+
+                    List<CourseSem> unsortedList = new List<CourseSem>();
+                    CourseSem item;
                     while (reader.Read()) {
-                        course = new Course();
-                        course.Name = (String)reader["course_name"];
-                        course.Id = (int)reader["course_id"];
-                        course.DeptCode = (String)reader["DEPT_No"];
 
+                        var name = (string)reader["course_name"];
+                        var id = (int)reader["course_id"];
+                        var deptCode = (string)reader["DEPT_No"];
+                        var semester = (int)reader["semester_id"];
 
-                        courseList[(int)reader["semester_id"]].Add(course);
+                        item = new CourseSem() { Id = id, DeptCode = deptCode, Name = name, SemId = semester };
+
+                        unsortedList.Add(item);
                     }
                     List<Semester> sems = new List<Semester>();
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 1; i <= 8; i++)
                     {
                         Semester currSem = new Semester();
-                        currSem.Courses = courseList[i];
-                        currSem.Code = i + 1;
+                        currSem.Courses = new List<Course>();
+                        var courses = unsortedList.Where(c => c.SemId.Equals(i)).ToList();
+                        courses.ForEach(c => {
+                            currSem.Courses.Add(new Course() { Id = c.Id, DeptCode = c.DeptCode, Name = c.Name });
+                        });
+                        
+                        currSem.Code = i;
                         sems.Add(currSem);
                     }
                     cp.Semesters = sems;
@@ -113,11 +119,11 @@ namespace CoursePlanner.Controllers
             }
             return cp;
         }
-        public int getClass(String name)
+        public int getClass(string name)
         {
             int course_id = -1;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
 
@@ -125,7 +131,7 @@ namespace CoursePlanner.Controllers
                 
 
                 
-                command.Parameters.Add(new SqlParameter("0", (String)name));
+                command.Parameters.Add(new SqlParameter("0", (string)name));
                 using (SqlDataReader reader = command.ExecuteReader())
                 { 
                 if (reader.Read())
@@ -135,7 +141,7 @@ namespace CoursePlanner.Controllers
 
             }
         }
-            public int addCourse(int studentId, String course_name, int semesterId)
+            public int addCourse(int studentId, string course_name, int semesterId)
         {
             int course_id = getClass(course_name);
             if (course_id == -1)
@@ -144,8 +150,8 @@ namespace CoursePlanner.Controllers
             }
             else
             {
-                string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+                using (SqlConnection conn = new SqlConnection(connectionstring))
                 {
                     conn.Open();
 
@@ -161,15 +167,15 @@ namespace CoursePlanner.Controllers
             return 0;
         }
 
-        public void removeCourse(int studentId, String course_name, int semesterId)
+        public void removeCourse(int studentId, string course_name, int semesterId)
         {
             Console.WriteLine("class: " + course_name);
             int course_id = getClass(course_name);
             Console.WriteLine("id: " + course_id);
             // use student Id to get student
-            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            //string connectionstring = ConsoleApplication1.Properties.Settings.Default.Connectionstring;
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
 
@@ -185,8 +191,8 @@ namespace CoursePlanner.Controllers
 
         public void addDegreeProgram(int studentId, int degreeId)
         {
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
 
@@ -208,8 +214,8 @@ namespace CoursePlanner.Controllers
 
         /*public void updateDegreeProgram(DegreeProgram degree)
         {
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
 
@@ -226,5 +232,13 @@ namespace CoursePlanner.Controllers
 
             }
         }*/
+    }
+
+    class CourseSem
+    {
+        public string Name { get; set; }
+        public string DeptCode { get; set; }
+        public int Id { get; set; }
+        public int SemId { get; set; }
     }
 }

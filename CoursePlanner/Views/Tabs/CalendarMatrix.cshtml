@@ -7,17 +7,17 @@
     ViewBag.Title = "Calendar";
     // var studentID = User.Identity.GetStudentId(); -- this is just a test. use where you would please!
     StudentController studentData = new StudentController();
-    Student student = studentData.getStudentInfo(0);
+    CoursePlan plan = studentData.getCoursePlan(User.Identity.GetStudentId());
     // now you have the students information
     // strip out the semesters
-    var sem1 = student.Plan.Semesters.Where(s => s.Code == 1).First().Courses;
-    var sem2 = student.Plan.Semesters.Where(s => s.Code == 2).First().Courses;
-    var sem3 = student.Plan.Semesters.Where(s => s.Code == 3).First().Courses;
-    var sem4 = student.Plan.Semesters.Where(s => s.Code == 4).First().Courses;
-    var sem5 = student.Plan.Semesters.Where(s => s.Code == 5).First().Courses;
-    var sem6 = student.Plan.Semesters.Where(s => s.Code == 6).First().Courses;
-    var sem7 = student.Plan.Semesters.Where(s => s.Code == 7).First().Courses;
-    var sem8 = student.Plan.Semesters.Where(s => s.Code == 8).First().Courses;
+    var sem1 = plan.Semesters.Where(s => s.Code == 1).First().Courses;
+    var sem2 = plan.Semesters.Where(s => s.Code == 2).First().Courses;
+    var sem3 = plan.Semesters.Where(s => s.Code == 3).First().Courses;
+    var sem4 = plan.Semesters.Where(s => s.Code == 4).First().Courses;
+    var sem5 = plan.Semesters.Where(s => s.Code == 5).First().Courses;
+    var sem6 = plan.Semesters.Where(s => s.Code == 6).First().Courses;
+    var sem7 = plan.Semesters.Where(s => s.Code == 7).First().Courses;
+    var sem8 = plan.Semesters.Where(s => s.Code == 8).First().Courses;
 }
 @{
     var name = "";
