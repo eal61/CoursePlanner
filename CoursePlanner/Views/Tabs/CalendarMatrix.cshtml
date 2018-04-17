@@ -33,20 +33,20 @@
         {
             name = Request.Form["class"];
             sem = Int32.Parse(Request.Form["semNo"]);
-            status = studentData.addCourse(0, name, sem);
+            status = studentData.addCourse(User.Identity.GetStudentId(), name, sem);
             if (status == -1)
             {
                 Response.Write("<script>alert('Error: Invalid Course Number.');</script>");
             }
             else
             {
-                Response.Redirect(Request.RawUrl);
+                //Response.Redirect(Request.RawUrl);
             }
         }
         else if (del == 2)
         {
             name = Request.Form["degree"];
-            status = studentData.addMajor(0, name);
+            status = studentData.addMajor(User.Identity.GetStudentId(), name);
             if (status == -1)
             {
                 Response.Write("<script>alert('Error: Invalid Degree Name or DEPT.');</script>");
@@ -59,7 +59,7 @@
         else if (del == 3)
         {
             name = Request.Form["degree"];
-            status = studentData.addMinor(0, name);
+            status = studentData.addMinor(User.Identity.GetStudentId(), name);
             if (status == -1)
             {
                 Response.Write("<script>alert('Error: Invalid Degree Name or DEPT.');</script>");
@@ -72,18 +72,14 @@
         else if (del == 4)
         {
             name = Request.Form["degree"];
-            studentData.removeMajor(0, name);
-
-
+            studentData.removeMajor(User.Identity.GetStudentId(), name);
             Response.Redirect(Request.RawUrl);
 
         }
         else if (del == 5)
         {
             name = Request.Form["degree"];
-            studentData.removeMinor(0, name);
-
-
+            studentData.removeMinor(User.Identity.GetStudentId(), name);
             Response.Redirect(Request.RawUrl);
 
         }
@@ -91,8 +87,7 @@
         {
             name = Request.Form["degree"];
             old = Request.Form["oldDegree"];
-            status = studentData.changeMajor(0, name, old);
-
+            status = studentData.changeMajor(User.Identity.GetStudentId(), name, old);
             if (status == -1)
             {
                 Response.Write("<script>alert('Error: Major not changed: Invalid Degree Name or DEPT.');</script>");
@@ -107,7 +102,7 @@
         {
             name = Request.Form["degree"];
             old = Request.Form["oldDegree"];
-            status = studentData.changeMinor(0, name, old);
+            status = studentData.changeMinor(User.Identity.GetStudentId(), name, old);
 
             if (status == -1)
             {
@@ -122,9 +117,7 @@
         {
             name = Request.Form["class"];
             sem = Int32.Parse(Request.Form["semNo"]);
-            studentData.removeCourse(0, name, sem);
-
-
+            studentData.removeCourse(User.Identity.GetStudentId(), name, sem);
             Response.Redirect(Request.RawUrl);
         }
     }
@@ -301,6 +294,7 @@
             }
             var coursePlan = s1_ids.concat(s2_ids, s3_ids, s4_ids, s5_ids, s6_ids, s7_ids, s8_ids);
             let filteredPlan = coursePlan.filter(course => !isNaN(course.courseId));
+
             return filteredPlan;
         }
     </script>
@@ -321,12 +315,7 @@
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
                             <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div> @*TODO I would change course.Id to course.DeptCode*@
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',0)">Remove Class</button>
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',1)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -335,8 +324,7 @@
                 <div class="board-item" >
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton(0)">+</button>
-                        @*<asp:Button runat="server" OnClick="addCourseClick" />*@
+                        <button class="button" onclick="addClassButton(1)">+</button>
                     </div>
 
                 </div>
@@ -349,38 +337,6 @@
             <div class="board-column-content">
                 @{i = 0;
                 foreach (var course in sem2)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',1)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item">
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(1)">+</button>
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-        <div id="sem3" class="board-column">
-            <div class="board-column-header">Semester 3</div>
-            <div class="board-column-content">
-                @{i = 0;
-                foreach (var course in sem3)
                 {
                     i++;
                     <div class="board-item" id=@course.Id>
@@ -408,11 +364,11 @@
             </div>
         </div>
 
-        <div id="sem4" class="board-column">
-            <div class="board-column-header">Semester 4</div>
+        <div id="sem3" class="board-column">
+            <div class="board-column-header">Semester 3</div>
             <div class="board-column-content">
                 @{i = 0;
-                foreach (var course in sem4)
+                foreach (var course in sem3)
                 {
                     i++;
                     <div class="board-item" id=@course.Id>
@@ -440,11 +396,11 @@
             </div>
         </div>
 
-        <div id="sem5" class="board-column">
-            <div class="board-column-header">Semester 5</div>
+        <div id="sem4" class="board-column">
+            <div class="board-column-header">Semester 4</div>
             <div class="board-column-content">
                 @{i = 0;
-                foreach (var course in sem5)
+                foreach (var course in sem4)
                 {
                     i++;
                     <div class="board-item" id=@course.Id>
@@ -472,11 +428,11 @@
             </div>
         </div>
 
-        <div id="sem6" class="board-column">
-            <div class="board-column-header">Semester 6</div>
+        <div id="sem5" class="board-column">
+            <div class="board-column-header">Semester 5</div>
             <div class="board-column-content">
                 @{i = 0;
-                foreach (var course in sem6)
+                foreach (var course in sem5)
                 {
                     i++;
                     <div class="board-item" id=@course.Id>
@@ -504,11 +460,11 @@
             </div>
         </div>
 
-        <div id="sem7" class="board-column">
-            <div class="board-column-header">Semester 7</div>
+        <div id="sem6" class="board-column">
+            <div class="board-column-header">Semester 6</div>
             <div class="board-column-content">
                 @{i = 0;
-                foreach (var course in sem7)
+                foreach (var course in sem6)
                 {
                     i++;
                     <div class="board-item" id=@course.Id>
@@ -536,6 +492,38 @@
             </div>
         </div>
 
+        <div id="sem7" class="board-column">
+            <div class="board-column-header">Semester 7</div>
+            <div class="board-column-content">
+                @{i = 0;
+                foreach (var course in sem7)
+                {
+                    i++;
+                    <div class="board-item" id=@course.Id>
+                        <div class="board-item-content">
+                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+
+                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+
+
+
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',7)">Remove Class</button>
+                        </div>
+                    </div>
+            }
+            for (; i < 6; i++)
+            {
+                <div class="board-item">
+                    <div class="board-item-content">
+                        Add a Class
+                        <button class="button" onclick="addClassButton(7)">+</button>
+                    </div>
+
+                </div>
+        }}
+            </div>
+        </div>
+
         <div id="sem8" class="board-column">
             <div class="board-column-header">Semester 8</div>
             <div class="board-column-content">
@@ -551,7 +539,7 @@
                             
 
 
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',7)">Remove Class</button>
+                            <button class="button" onclick="removeClassButton('@course.DeptCode',8)">Remove Class</button>
                         </div>
                     </div>
             }
@@ -560,7 +548,7 @@
                 <div class="board-item">
                     <div class="board-item-content">
                         Add a Class
-                        <button class="button" onclick="addClassButton(7)">+</button>
+                        <button class="button" onclick="addClassButton(8)">+</button>
                     </div>
 
                 </div>
@@ -583,8 +571,6 @@
 
         function addClassButton(sem) {
             var newClass = prompt("Please enter new class in DEPT#### format");
-            
-
             if (newClass == null || newClass == "") {
                 //do nothing
             }
@@ -592,8 +578,6 @@
                 post('/', { class: newClass, semNo: sem, delete1: "0" });
                 //studentData.addCourse(0, newClass, 0);
                 //Console.WriteLine("new class: " + newClass);
-
-                
              }
         }
 

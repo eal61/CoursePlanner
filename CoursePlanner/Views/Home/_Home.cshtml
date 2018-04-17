@@ -5,9 +5,7 @@
 
 
 @{StudentController studentControl = new StudentController();
-    Student student = studentControl.getStudentInfo(0);
-
-
+    Student student = studentControl.getStudentInfo(User.Identity.GetStudentId());
 }
 
 
@@ -93,85 +91,52 @@
 
 
 <script>
-
     function addMajorButton() {
         var newDegree = prompt("Please enter new Major in DEPT format or name of Major");
-
-
         if (newDegree == null || newDegree == "") {
             //do nothing
         }
         else {
             post('/', { degree: newDegree, delete1: "2" });
-            
-
-
         }
     }
 
     function addMinorButton() {
         var newDegree = prompt("Please enter new Minor in DEPT format or name of Minor");
-
-
         if (newDegree == null || newDegree == "") {
             //do nothing
         }
         else {
             post('/', { degree: newDegree, delete1: "3" });
-
-
-
         }
     }
 
     function removeMajorButton(majorName) {
-        
             post('/', { degree: majorName, delete1: "4" });
-
-
-
-        
     }
     function removeMinorButton(minorName) {
-       
             post('/', { degree: minorName, delete1: "5" });
-
-
-
-        
     }
 
     function changeMajorButton(oldMajor) {
         var newDegree = prompt("Please enter new Major in DEPT format or name of Major");
-
-
         if (newDegree == null || newDegree == "") {
             //do nothing
         }
         else {
             post('/', { degree: newDegree, oldDegree: oldMajor, delete1: "6" });
-
-
-
         }
     }
 
     function addMinorButton(oldMinor) {
         var newDegree = prompt("Please enter new Minor in DEPT format or name of Minor");
-
-
-        if (newDegree == null || newdegree == "") {
+        if (newDegree == null || newDegree == "") {
             //do nothing
         }
         else {
             post('/', { degree: newDegree, oldDegree: oldMinor, delete1: "7" });
-
-
-
         }
     }
-
-
 
     function post(path, params, method) {
         method = method || "post"; // Set method to post by default if not specified.

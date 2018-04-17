@@ -1,13 +1,14 @@
 ﻿@using CoursePlanner.Models
 @using CoursePlanner.Controllers;
+@using App.Extensions;
 @model DegreeProgram
 @{
     ViewBag.Title = "Progress Bar";
     StudentController studentController = new StudentController();
     // set up list for radio buttons to select progress bar to view
-    List<DegreeProgram> programs = studentController.getAllDegreePrograms(0); // TODO need to set up student id
+    List<DegreeProgram> programs = studentController.getAllDegreePrograms(User.Identity.GetStudentId()); // TODO need to set up student id
     List<Course> coursesTaken = new List<Course>();
-    CoursePlan cp = studentController.getCoursePlan(0);
+    CoursePlan cp = studentController.getCoursePlan(User.Identity.GetStudentId());
     foreach (Semester sem in cp.Semesters)
     {
         foreach (Course c in sem.Courses)
