@@ -40,7 +40,7 @@
             }
             else
             {
-                //Response.Redirect(Request.RawUrl);
+                Response.Redirect(Request.RawUrl);
             }
         }
         else if (del == 2)
@@ -53,7 +53,7 @@
             }
             else
             {
-                Response.Redirect(Request.RawUrl);
+                //Response.Redirect(Request.RawUrl);
             }
         }
         else if (del == 3)
@@ -66,21 +66,21 @@
             }
             else
             {
-                Response.Redirect(Request.RawUrl);
+                //Response.Redirect(Request.RawUrl);
             }
         }
         else if (del == 4)
         {
             name = Request.Form["degree"];
             studentData.removeMajor(User.Identity.GetStudentId(), name);
-            Response.Redirect(Request.RawUrl);
+            //Response.Redirect(Request.RawUrl);
 
         }
         else if (del == 5)
         {
             name = Request.Form["degree"];
             studentData.removeMinor(User.Identity.GetStudentId(), name);
-            Response.Redirect(Request.RawUrl);
+            //Response.Redirect(Request.RawUrl);
 
         }
         else if (del == 6)
@@ -94,7 +94,7 @@
             }
             else
             {
-                Response.Redirect(Request.RawUrl);
+                //Response.Redirect(Request.RawUrl);
             }
 
         }
@@ -110,7 +110,7 @@
             }
             else
             {
-                Response.Redirect(Request.RawUrl);
+                //Response.Redirect(Request.RawUrl);
             }
         }
         else //del==1
@@ -118,7 +118,7 @@
             name = Request.Form["class"];
             sem = Int32.Parse(Request.Form["semNo"]);
             studentData.removeCourse(User.Identity.GetStudentId(), name, sem);
-            Response.Redirect(Request.RawUrl);
+            //Response.Redirect(Request.RawUrl);
         }
     }
 
@@ -134,29 +134,29 @@
     <title>Muuri Table</title>
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
 
+    <!-- WIDGETS -->
     <script>
         ko.components.register('class-widget', {
             viewModel: function (params) {
                 // Data: value is either null, 'like', or 'dislike'
-                this.className = ko.observable(params.name);
-                this.classCode = ko.observable(params.id);
+                this.deptCode = ko.observable(params.deptCode);
                 // Behaviors
                 this.addClass = function () {
                     // create pop up to add a course
                 }.bind(this);
             },
             template: '<div class="class-widget">\
-                        <div data-bind="visible: !className()">\
+                        <div data-bind="visible: !deptCode()">\
                             <button data-bind="click: addClass">Click me</button>\
                         </div>\
                         <div>\
-                            <strong data-bind="text: className"></strong>\
-                            <strong data-bind="text: classCode"></strong>\
+                            <strong data-bind="text: deptCode"></strong>\
                         </div>\
                        </div>' 
         });
     </script>
 
+    <!-- HELPER FUNCTIONS -->
     <script>
         function saveOrderedItems() {
             var list = getGridItemsOrdered();
@@ -297,6 +297,70 @@
 
             return filteredPlan;
         }
+
+        
+        function addClassButton(sem) {
+            var newClass = prompt("Please enter new class in DEPT#### format");
+            if (newClass == null || newClass == "") {
+                //do nothing
+            }
+            else {
+                post('/', { class: newClass, semNo: sem, delete1: "0" });
+            }
+        }
+
+        function removeClassButton(className, sem) {
+            post('/', { class: className, semNo: sem, delete1: "1" });    
+        }
+
+       
+        function post(path, params, method) {
+            method = method || "post"; // Set method to post by default if not specified.
+
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function delete1(path, params, method) {
+            method = method || "delete"; // Set method to post by default if not specified.
+
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 
 </head>
@@ -314,7 +378,7 @@
                     i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div> @*TODO I would change course.Id to course.DeptCode*@
+                            <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div> @*TODO I would change course.Id to course.DeptCode*@
                             <button class="button" onclick="removeClassButton('@course.DeptCode',1)">Remove Class</button>
                         </div>
                     </div>
@@ -341,7 +405,7 @@
                     i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
 
                             @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
 
@@ -373,7 +437,7 @@
                     i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
 
                             @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
 
@@ -405,7 +469,7 @@
                     i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
 
                             @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
 
@@ -437,7 +501,7 @@
                     i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
 
                             @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
 
@@ -469,7 +533,7 @@
                     i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
 
                             @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
 
@@ -501,7 +565,7 @@
                     i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
 
                             @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
 
@@ -533,7 +597,7 @@
                     i++;
                     <div class="board-item" id=@course.Id>
                         <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
+                            <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
 
                             @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
                             
@@ -568,74 +632,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.5.3/muuri.min.js"></script>
     <script>
-
-        function addClassButton(sem) {
-            var newClass = prompt("Please enter new class in DEPT#### format");
-            if (newClass == null || newClass == "") {
-                //do nothing
-            }
-            else {
-                post('/', { class: newClass, semNo: sem, delete1: "0" });
-                //studentData.addCourse(0, newClass, 0);
-                //Console.WriteLine("new class: " + newClass);
-             }
-        }
-
-        function removeClassButton(className, sem) {
-               post('/', { class: className, semNo: sem, delete1: "1" });
-                //studentData.addCourse(0, newClass, 0);
-                //Console.WriteLine("new class: " + newClass);            
-        }
-
-       
-        function post(path, params, method) {
-            method = method || "post"; // Set method to post by default if not specified.
-
-            // The rest of this code assumes you are not using a library.
-            // It can be made less wordy if you use one.
-            var form = document.createElement("form");
-            form.setAttribute("method", method);
-            form.setAttribute("action", path);
-
-            for (var key in params) {
-                if (params.hasOwnProperty(key)) {
-                    var hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("name", key);
-                    hiddenField.setAttribute("value", params[key]);
-
-                    form.appendChild(hiddenField);
-                }
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-        }
-
-
-        function delete1(path, params, method) {
-            method = method || "delete"; // Set method to post by default if not specified.
-
-            // The rest of this code assumes you are not using a library.
-            // It can be made less wordy if you use one.
-            var form = document.createElement("form");
-            form.setAttribute("method", method);
-            form.setAttribute("action", path);
-
-            for (var key in params) {
-                if (params.hasOwnProperty(key)) {
-                    var hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("name", key);
-                    hiddenField.setAttribute("value", params[key]);
-
-                    form.appendChild(hiddenField);
-                }
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-        }
+        // LEAVE THIS FOR MUURI CODE ONLY PLEASE
 
         var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
         var columnGrids = [];
