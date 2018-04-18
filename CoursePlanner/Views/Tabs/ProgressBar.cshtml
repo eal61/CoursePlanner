@@ -3,7 +3,7 @@
 @using App.Extensions;
 @model DegreeProgram
 @{
-    ViewBag.Title = "Progress Bar";
+    ViewBag.Title = "Program Checklist";
     StudentController studentController = new StudentController();
     // set up list for radio buttons to select progress bar to view
     List<DegreeProgram> programs = studentController.getAllDegreePrograms(User.Identity.GetStudentId()); // TODO need to set up student id
@@ -19,6 +19,24 @@
 }
 
 <body>
+    <!-- Key for color distinctions-->
+    <div>
+        <h4>
+            Key
+        </h4>
+        <table>
+            <tr>
+                <td>
+                    <span class="accounted">Course Accounted For</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="unaccounted">Unaccounted Course</span>
+                </td>
+            </tr>
+        </table>
+    </div>
     <!-- This should display all majors/minors in order and the requirement groups for each
         Still need to figure out how to account for the flexible (not mandatory) courses, and style the bar-->
     <div id="progressBarContainer" class="container">
@@ -40,14 +58,14 @@
                                     {
                                         if (coursesTaken.Contains(course))
                                         {
-                                            <div id=@course.Id class="col-sm-5">
+                                            <div id=@course.Id class="col-sm-5 accounted">
                                                 <!--TODO make green-->
                                                 @course.Name
                                             </div>
                                         }
                                         else
                                         {
-                                            <div id=@course.Id class="col-sm-5">
+                                            <div id=@course.Id class="col-sm-5 unaccounted">
                                                 <!--TODO make red-->
                                                 @course.Name
                                             </div>
