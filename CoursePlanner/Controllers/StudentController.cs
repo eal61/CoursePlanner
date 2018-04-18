@@ -4,6 +4,7 @@ using CoursePlanner.Models;
 using System.Data.SqlClient;
 using App.Extensions;
 using Microsoft.AspNet.Identity;
+using System.Linq;
 
 namespace CoursePlanner.Controllers
 {
@@ -17,8 +18,22 @@ namespace CoursePlanner.Controllers
             CoursePlan cp = this.getCoursePlan(studentId); // TODO need to set up student id
             Student student = new Student();
             student.Plan = cp;
-            //student.FirstName = HttpContext.User.Identity.GetFirstName();
-           // student.LastName = HttpContext.User.Identity.GetLastName();
+            List<DegreeProgram> dps = this.getAllDegreePrograms(studentId);
+            List<DegreeProgram> maj = new List<DegreeProgram>();
+            List<DegreeProgram> min = new List<DegreeProgram>();
+            foreach (DegreeProgram program in dps)
+            {
+                if (program.Major)
+                {
+                    maj.Add(program);
+                }
+                else if (program.Minor)
+                {
+                    min.Add(program);
+                }
+            }
+            student.Majors = maj;
+            student.Minors = min;
             return student;
 
            
@@ -33,30 +48,23 @@ namespace CoursePlanner.Controllers
         public List<DegreeProgram> getAllDegreePrograms(int studentId) {
             // use student Id to get student
            
-            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            //string connectionstring = ConsoleApplication1.Properties.Settings.Default.Connectionstring;
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             List<DegreeProgram> degrees = new List<DegreeProgram>();
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
-                
-
-
-               
-
                 SqlCommand command = new SqlCommand("SELECT * FROM student_degree JOIN degree on student_degree.degree_id=degree.degree_id WHERE student_id = @0", conn);
-
-                //SqlCommand command = new SqlCommand( "SELECT * FROM student_degree WHERE student_id = @0", conn);
-
                 command.Parameters.Add(new SqlParameter("0", studentId));
-                
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read()) {
-
-                        //DegreeProgram dp = new DegreeProgram();
-                        //string reader["degree"], etc.); //TODO get all inputs for new DegreeProgram
-                        //degrees.Add(dp);
+                    while (reader.Read())
+                    {
+                        //TODO get all inputs for new DegreeProgram
+                        DegreeProgram dp = new DegreeProgram((string)reader["name"], (string)reader["dept"], (bool)reader["major"], (bool)reader["minor"]);
+                        DegreeProgramController dpControl = new DegreeProgramController();
+                        dpControl.fillDegreeRequirements(dp, (int)reader["degree_id"]); //TODO add in get degreeID function here and replace into 0
+                        degrees.Add(dp);
                     }
                 }
                 conn.Close();
@@ -68,42 +76,40 @@ namespace CoursePlanner.Controllers
         public CoursePlan getCoursePlan(int studentId) {
             // use student Id to get student
             CoursePlan cp = new CoursePlan();
-            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            //string connectionstring = ConsoleApplication1.Properties.Settings.Default.Connectionstring;
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
-
                 SqlCommand command = new SqlCommand("SELECT * FROM student_course sc JOIN course c on sc.course_id=c.course_id WHERE student_id = @0", conn);
-             
-
-                
                 command.Parameters.Add(new SqlParameter("0", studentId));
-
-
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    List<Course>[] courseList = new List<Course>[8];
-                    for (int i = 0; i < 8; i++)
-                    {
-                        courseList[i] = new List<Course>();
-                    }
-                    Course course;
+                    List<CourseSem> unsortedList = new List<CourseSem>();
+                    CourseSem item;
                     while (reader.Read()) {
-                        course = new Course();
-                        course.Name = (String)reader["course_name"];
-                        course.Id = (int)reader["course_id"];
-                        course.DeptCode = (String)reader["DEPT_No"];
 
+                        var name = (string)reader["course_name"];
+                        var id = (int)reader["course_id"];
+                        var deptCode = (string)reader["DEPT_No"];
+                        var semester = (int)reader["semester_id"];
+                        var credits = (int)reader["credits"];
 
-                        courseList[(int)reader["semester_id"]].Add(course);
+                        item = new CourseSem() { Id = id, DeptCode = deptCode, Name = name, SemId = semester, Credits = credits };
+
+                        unsortedList.Add(item);
                     }
                     List<Semester> sems = new List<Semester>();
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 1; i <= 8; i++)
                     {
                         Semester currSem = new Semester();
-                        currSem.Courses = courseList[i];
-                        currSem.Code = i + 1;
+                        currSem.Courses = new List<Course>();
+                        var courses = unsortedList.Where(c => c.SemId.Equals(i)).ToList();
+                        courses.ForEach(c => {
+                            currSem.Courses.Add(new Course() { Id = c.Id, DeptCode = c.DeptCode, Name = c.Name, Credits = c.Credits });
+                        });
+                        
+                        currSem.Code = i;
                         sems.Add(currSem);
                     }
                     cp.Semesters = sems;
@@ -113,29 +119,25 @@ namespace CoursePlanner.Controllers
             }
             return cp;
         }
-        public int getClass(String name)
+        public int getClass(string name)
         {
             int course_id = -1;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
-
                 SqlCommand command = new SqlCommand("SELECT * FROM course WHERE DEPT_NO = @0", conn);
-                
-
-                
-                command.Parameters.Add(new SqlParameter("0", (String)name));
+                command.Parameters.Add(new SqlParameter("0", (string)name));
                 using (SqlDataReader reader = command.ExecuteReader())
                 { 
                 if (reader.Read())
                     course_id = (int)reader["course_id"];
                 }
+                conn.Close();
                 return course_id;
-
             }
         }
-            public int addCourse(int studentId, String course_name, int semesterId)
+            public int addCourse(int studentId, string course_name, int semesterId)
         {
             int course_id = getClass(course_name);
             if (course_id == -1)
@@ -144,8 +146,8 @@ namespace CoursePlanner.Controllers
             }
             else
             {
-                string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+                using (SqlConnection conn = new SqlConnection(connectionstring))
                 {
                     conn.Open();
 
@@ -161,15 +163,15 @@ namespace CoursePlanner.Controllers
             return 0;
         }
 
-        public void removeCourse(int studentId, String course_name, int semesterId)
+        public void removeCourse(int studentId, string course_name, int semesterId)
         {
             Console.WriteLine("class: " + course_name);
             int course_id = getClass(course_name);
             Console.WriteLine("id: " + course_id);
             // use student Id to get student
-            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            //string connectionstring = ConsoleApplication1.Properties.Settings.Default.Connectionstring;
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
 
@@ -185,15 +187,13 @@ namespace CoursePlanner.Controllers
 
         public void addDegreeProgram(int studentId, int degreeId)
         {
-            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
-
                 SqlCommand command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
                 command.Parameters.Add(new SqlParameter("0", studentId));
                 command.Parameters.Add(new SqlParameter("1", degreeId));
-
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -206,25 +206,208 @@ namespace CoursePlanner.Controllers
             }
         }
 
-        /*public void updateDegreeProgram(DegreeProgram degree)
+        public int getMajor(String name)
         {
+            int degree_id = -1;
             string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                SqlCommand command = new SqlCommand("", conn);
-                command.Parameters.Add(new SqlParameter());
+                SqlCommand command = new SqlCommand("SELECT * FROM degree WHERE dept = @0 AND major =1", conn);
 
-                using(SqlDataReader reader = command.ExecuteReader())
+
+
+                command.Parameters.Add(new SqlParameter("0", (String)name));
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read()){
-                        Console.WriteLine(reader["degree_id"]);
+                    if (reader.Read())
+                        degree_id = (int)reader["degree_id"];
+                }
+
+
+                if (degree_id < 0)
+                {
+                    command = new SqlCommand("SELECT * FROM degree WHERE name = @0 AND major=1", conn);
+
+                    command.Parameters.Add(new SqlParameter("0", (String)name));
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            degree_id = (int)reader["degree_id"];
                     }
                 }
                 conn.Close();
+                return degree_id;
 
             }
-        }*/
+        }
+
+        public int addMajor(int studentId, String degree_name)
+        {
+            int degree_id = getMajor(degree_name);
+            if (degree_id == -1)
+            {
+                return -1;
+            }
+            else
+            {
+                string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
+
+                    command.Parameters.Add(new SqlParameter("0", studentId));
+                    command.Parameters.Add(new SqlParameter("1", degree_id));
+                    command.ExecuteNonQuery();
+                    conn.Close();
+
+                }
+            }
+            return 0;
+        }
+
+        public int getMinor(String name)
+        {
+            int degree_id = -1;
+            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand("SELECT * FROM degree WHERE dept = @0 AND minor =1", conn);
+
+
+
+                command.Parameters.Add(new SqlParameter("0", (String)name));
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        degree_id = (int)reader["degree_id"];
+                }
+
+
+                if (degree_id < 0)
+                {
+                    command = new SqlCommand("SELECT * FROM degree WHERE name = @0 AND minor=1", conn);
+
+                    command.Parameters.Add(new SqlParameter("0", (String)name));
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            degree_id = (int)reader["degree_id"];
+                    }
+                }
+                conn.Close();
+                return degree_id;
+
+            }
+        }
+
+        public int addMinor(int studentId, String degree_name)
+        {
+            int degree_id = getMinor(degree_name);
+            if (degree_id == -1)
+            {
+                return -1;
+            }
+            else
+            {
+                string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
+
+                    command.Parameters.Add(new SqlParameter("0", studentId));
+                    command.Parameters.Add(new SqlParameter("1", degree_id));
+                    command.ExecuteNonQuery();
+                    conn.Close();
+
+                }
+            }
+            return 0;
+        }
+
+
+        public void removeMajor(int studentId, String degree_name)
+        {
+
+            int degree_id = getMajor(degree_name);
+
+            // use student Id to get student
+            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
+            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand("DELETE from student_degree WHERE (student_id=@0 AND degree_id = @1)", conn);
+
+                command.Parameters.Add(new SqlParameter("0", studentId));
+                command.Parameters.Add(new SqlParameter("1", degree_id));
+                command.ExecuteNonQuery();
+                conn.Close();
+
+            }
+        }
+
+        public void removeMinor(int studentId, String degree_name)
+        {
+
+            int degree_id = getMinor(degree_name);
+
+            // use student Id to get student
+            //string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
+            string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand("DELETE from student_degree WHERE (student_id=@0 AND degree_id = @1)", conn);
+
+                command.Parameters.Add(new SqlParameter("0", studentId));
+                command.Parameters.Add(new SqlParameter("1", degree_id));
+                command.ExecuteNonQuery();
+                conn.Close();
+
+            }
+        }
+
+        public int changeMajor(int studentID, String newMaj, String old)
+        {
+            int status = addMajor(studentID, newMaj);
+            if (status == -1)
+            {
+                return status;
+            }
+
+            removeMajor(studentID, old);
+            return 1;
+        }
+        
+        public int changeMinor(int studentID, String newMin, String old)
+        {
+            int status = addMinor(studentID, newMin);
+            if (status == -1)
+            {
+                return status;
+            }
+
+            removeMinor(studentID, old);
+            return 1;
+        }
+    }
+
+    class CourseSem
+    {
+        public string Name { get; set; }
+        public string DeptCode { get; set; }
+        public int Id { get; set; }
+        public int SemId { get; set; }
+        public int Credits { get; set; }
     }
 }

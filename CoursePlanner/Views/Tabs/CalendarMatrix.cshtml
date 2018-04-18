@@ -7,20 +7,21 @@
     ViewBag.Title = "Calendar";
     // var studentID = User.Identity.GetStudentId(); -- this is just a test. use where you would please!
     StudentController studentData = new StudentController();
-    Student student = studentData.getStudentInfo(0);
+    CoursePlan plan = studentData.getCoursePlan(User.Identity.GetStudentId());
     // now you have the students information
     // strip out the semesters
-    var sem1 = student.Plan.Semesters.Where(s => s.Code == 1).First().Courses;
-    var sem2 = student.Plan.Semesters.Where(s => s.Code == 2).First().Courses;
-    var sem3 = student.Plan.Semesters.Where(s => s.Code == 3).First().Courses;
-    var sem4 = student.Plan.Semesters.Where(s => s.Code == 4).First().Courses;
-    var sem5 = student.Plan.Semesters.Where(s => s.Code == 5).First().Courses;
-    var sem6 = student.Plan.Semesters.Where(s => s.Code == 6).First().Courses;
-    var sem7 = student.Plan.Semesters.Where(s => s.Code == 7).First().Courses;
-    var sem8 = student.Plan.Semesters.Where(s => s.Code == 8).First().Courses;
+    var sem1 = plan.Semesters.Where(s => s.Code == 1).First().Courses;
+    var sem2 = plan.Semesters.Where(s => s.Code == 2).First().Courses;
+    var sem3 = plan.Semesters.Where(s => s.Code == 3).First().Courses;
+    var sem4 = plan.Semesters.Where(s => s.Code == 4).First().Courses;
+    var sem5 = plan.Semesters.Where(s => s.Code == 5).First().Courses;
+    var sem6 = plan.Semesters.Where(s => s.Code == 6).First().Courses;
+    var sem7 = plan.Semesters.Where(s => s.Code == 7).First().Courses;
+    var sem8 = plan.Semesters.Where(s => s.Code == 8).First().Courses;
 }
 @{
     var name = "";
+    var old = "";
     var sem = 0;
     var del = 0;
     var status = 0;
@@ -32,17 +33,92 @@
         {
             name = Request.Form["class"];
             sem = Int32.Parse(Request.Form["semNo"]);
-            status = studentData.addCourse(0, name, sem);
+            status = studentData.addCourse(User.Identity.GetStudentId(), name, sem);
             if (status == -1)
             {
                 Response.Write("<script>alert('Error: Invalid Course Number.');</script>");
             }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
         }
-        else
+        else if (del == 2)
+        {
+            name = Request.Form["degree"];
+            status = studentData.addMajor(User.Identity.GetStudentId(), name);
+            if (status == -1)
+            {
+                Response.Write("<script>alert('Error: Invalid Degree Name or DEPT.');</script>");
+            }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+        else if (del == 3)
+        {
+            name = Request.Form["degree"];
+            status = studentData.addMinor(User.Identity.GetStudentId(), name);
+            if (status == -1)
+            {
+                Response.Write("<script>alert('Error: Invalid Degree Name or DEPT.');</script>");
+            }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+        else if (del == 4)
+        {
+            name = Request.Form["degree"];
+            studentData.removeMajor(User.Identity.GetStudentId(), name);
+            Response.Redirect(Request.RawUrl);
+
+        }
+        else if (del == 5)
+        {
+            name = Request.Form["degree"];
+            studentData.removeMinor(User.Identity.GetStudentId(), name);
+            Response.Redirect(Request.RawUrl);
+
+        }
+        else if (del == 6)
+        {
+            name = Request.Form["degree"];
+            old = Request.Form["oldDegree"];
+            status = studentData.changeMajor(User.Identity.GetStudentId(), name, old);
+            if (status == -1)
+            {
+                Response.Write("<script>alert('Error: Major not changed: Invalid Degree Name or DEPT.');</script>");
+            }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
+
+        }
+        else if (del==7)
+        {
+            name = Request.Form["degree"];
+            old = Request.Form["oldDegree"];
+            status = studentData.changeMinor(User.Identity.GetStudentId(), name, old);
+
+            if (status == -1)
+            {
+                Response.Write("<script>alert('Error: Minor not changed: Invalid Degree Name or DEPT.');</script>");
+            }
+            else
+            {
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+        else //del==1
         {
             name = Request.Form["class"];
             sem = Int32.Parse(Request.Form["semNo"]);
-            studentData.removeCourse(0, name, sem);
+            studentData.removeCourse(User.Identity.GetStudentId(), name, sem);
+            Response.Redirect(Request.RawUrl);
         }
     }
 
@@ -56,31 +132,29 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Muuri Table</title>
-    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
-
+    <!--<link rel="stylesheet" href="~/Content/StyleSheet1.css">-->
+    <!-- WIDGETS -->
     <script>
         ko.components.register('class-widget', {
             viewModel: function (params) {
                 // Data: value is either null, 'like', or 'dislike'
-                this.className = ko.observable(params.name);
-                this.classCode = ko.observable(params.id);
+                this.deptCode = ko.observable(params.deptCode);
                 // Behaviors
                 this.addClass = function () {
                     // create pop up to add a course
                 }.bind(this);
             },
             template: '<div class="class-widget">\
-                        <div data-bind="visible: !className()">\
+                        <div data-bind="visible: !deptCode()">\
                             <button data-bind="click: addClass">Click me</button>\
                         </div>\
                         <div>\
-                            <strong data-bind="text: className"></strong>\
-                            <strong data-bind="text: classCode"></strong>\
+                            <strong data-bind="text: deptCode"></strong>\
                         </div>\
                        </div>' 
         });
     </script>
-
+    <!-- HELPER FUNCTIONS -->
     <script>
         function saveOrderedItems() {
             var list = getGridItemsOrdered();
@@ -218,306 +292,23 @@
             }
             var coursePlan = s1_ids.concat(s2_ids, s3_ids, s4_ids, s5_ids, s6_ids, s7_ids, s8_ids);
             let filteredPlan = coursePlan.filter(course => !isNaN(course.courseId));
+
             return filteredPlan;
         }
-    </script>
 
-</head>
-<body>
-    <!-- need to update the list at hand when items are moved around -->
-    <!-- save the order to the student object, maybe have an update button to update db?-->
-    <div class="board">
-
-        <div id="sem1" class="board-column">
-            <div class="board-column-header">Semester 1</div>
-            <div class="board-column-content">
-                @{var i = 0;
-                foreach (var course in sem1)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div> @*TODO I would change course.Id to course.DeptCode*@
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',0)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item" >
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(0)">+</button>
-                        @*<asp:Button runat="server" OnClick="addCourseClick" />*@
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-        <div id="sem2" class="board-column">
-            <div class="board-column-header">Semester 2</div>
-            <div class="board-column-content">
-                @{i = 0;
-                foreach (var course in sem2)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',1)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item">
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(1)">+</button>
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-        <div id="sem3" class="board-column">
-            <div class="board-column-header">Semester 3</div>
-            <div class="board-column-content">
-                @{i = 0;
-                foreach (var course in sem3)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',2)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item">
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(2)">+</button>
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-        <div id="sem4" class="board-column">
-            <div class="board-column-header">Semester 4</div>
-            <div class="board-column-content">
-                @{i = 0;
-                foreach (var course in sem4)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',3)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item">
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(3)">+</button>
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-        <div id="sem5" class="board-column">
-            <div class="board-column-header">Semester 5</div>
-            <div class="board-column-content">
-                @{i = 0;
-                foreach (var course in sem5)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',4)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item">
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(4)">+</button>
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-        <div id="sem6" class="board-column">
-            <div class="board-column-header">Semester 6</div>
-            <div class="board-column-content">
-                @{i = 0;
-                foreach (var course in sem6)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',5)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item">
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(5)">+</button>
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-        <div id="sem7" class="board-column">
-            <div class="board-column-header">Semester 7</div>
-            <div class="board-column-content">
-                @{i = 0;
-                foreach (var course in sem7)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',6)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item">
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(6)">+</button>
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-        <div id="sem8" class="board-column">
-            <div class="board-column-header">Semester 8</div>
-            <div class="board-column-content">
-                @{i = 0;
-                foreach (var course in sem8)
-                {
-                    i++;
-                    <div class="board-item" id=@course.Id>
-                        <div class="board-item-content">
-                            <div data-bind="component: { name: 'class-widget', params: { id: @course.Id, name: '@course.Name' }}"></div>
-
-                            @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
-                            
-
-
-                            <button class="button" onclick="removeClassButton('@course.DeptCode',7)">Remove Class</button>
-                        </div>
-                    </div>
-            }
-            for (; i < 6; i++)
-            {
-                <div class="board-item">
-                    <div class="board-item-content">
-                        Add a Class
-                        <button class="button" onclick="addClassButton(7)">+</button>
-                    </div>
-
-                </div>
-        }}
-            </div>
-        </div>
-
-
-
-
-
-    </div>
-
-   
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.5.3/muuri.min.js"></script>
-    <script>
-
+        
         function addClassButton(sem) {
             var newClass = prompt("Please enter new class in DEPT#### format");
-            
-
             if (newClass == null || newClass == "") {
                 //do nothing
             }
             else {
                 post('/', { class: newClass, semNo: sem, delete1: "0" });
-                //studentData.addCourse(0, newClass, 0);
-                //Console.WriteLine("new class: " + newClass);
-
-                
-             }
+            }
         }
 
         function removeClassButton(className, sem) {
-               post('/', { class: className, semNo: sem, delete1: "1" });
-                //studentData.addCourse(0, newClass, 0);
-                //Console.WriteLine("new class: " + newClass);            
+            post('/', { class: className, semNo: sem, delete1: "1" });    
         }
 
        
@@ -545,7 +336,6 @@
             form.submit();
         }
 
-
         function delete1(path, params, method) {
             method = method || "delete"; // Set method to post by default if not specified.
 
@@ -569,7 +359,261 @@
             document.body.appendChild(form);
             form.submit();
         }
+    </script>
+</head>
+<body>
+    <!-- need to update the list at hand when items are moved around -->
+    <!-- save the order to the student object, maybe have an update button to update db?-->
+    <div class="board">
+        <div id="sem1" class="board-column">
+            <div class="board-column-header">Semester 1</div>
+            <div class="board-column-content">
+                @{var i = 0;
+                    foreach (var course in sem1)
+                    {
+                        i++;
+                        <div class="board-item" id=@course.Id>
+                            <div class="board-item-content">
+                                <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div> @*TODO I would change course.Id to course.DeptCode*@
+                                <button class="button" onclick="removeClassButton('@course.DeptCode',1)">Remove Class</button>
+                            </div>
+                        </div>
+                    }
+                    for (; i < 6; i++)
+                    {
+                        <div class="board-item">
+                            <div class="board-item-content">
+                                Add a Class
+                                <button class="button" onclick="addClassButton(1)">+</button>
+                            </div>
 
+                        </div>
+                    }}
+            </div>
+        </div>
+        <div id="sem2" class="board-column">
+            <div class="board-column-header">Semester 2</div>
+            <div class="board-column-content">
+                @{i = 0;
+                    foreach (var course in sem2)
+                    {
+                        i++;
+                        <div class="board-item" id=@course.Id>
+                            <div class="board-item-content">
+                                <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
+
+                                @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+
+
+
+                                <button class="button" onclick="removeClassButton('@course.DeptCode',2)">Remove Class</button>
+                            </div>
+                        </div>
+                    }
+                    for (; i < 6; i++)
+                    {
+                        <div class="board-item">
+                            <div class="board-item-content">
+                                Add a Class
+                                <button class="button" onclick="addClassButton(2)">+</button>
+                            </div>
+
+                        </div>
+                    }}
+            </div>
+        </div>
+        <div id="sem3" class="board-column">
+            <div class="board-column-header">Semester 3</div>
+            <div class="board-column-content">
+                @{i = 0;
+                    foreach (var course in sem3)
+                    {
+                        i++;
+                        <div class="board-item" id=@course.Id>
+                            <div class="board-item-content">
+                                <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
+
+                                @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+
+
+
+                                <button class="button" onclick="removeClassButton('@course.DeptCode',3)">Remove Class</button>
+                            </div>
+                        </div>
+                    }
+                    for (; i < 6; i++)
+                    {
+                        <div class="board-item">
+                            <div class="board-item-content">
+                                Add a Class
+                                <button class="button" onclick="addClassButton(3)">+</button>
+                            </div>
+
+                        </div>
+                    }}
+            </div>
+        </div>
+        <div id="sem4" class="board-column">
+            <div class="board-column-header">Semester 4</div>
+            <div class="board-column-content">
+                @{i = 0;
+                    foreach (var course in sem4)
+                    {
+                        i++;
+                        <div class="board-item" id=@course.Id>
+                            <div class="board-item-content">
+                                <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
+
+                                @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+
+
+
+                                <button class="button" onclick="removeClassButton('@course.DeptCode',4)">Remove Class</button>
+                            </div>
+                        </div>
+                    }
+                    for (; i < 6; i++)
+                    {
+                        <div class="board-item">
+                            <div class="board-item-content">
+                                Add a Class
+                                <button class="button" onclick="addClassButton(4)">+</button>
+                            </div>
+
+                        </div>
+                    }}
+            </div>
+        </div>
+        <div id="sem5" class="board-column">
+            <div class="board-column-header">Semester 5</div>
+            <div class="board-column-content">
+                @{i = 0;
+                    foreach (var course in sem5)
+                    {
+                        i++;
+                        <div class="board-item" id=@course.Id>
+                            <div class="board-item-content">
+                                <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
+
+                                @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+
+
+
+                                <button class="button" onclick="removeClassButton('@course.DeptCode',5)">Remove Class</button>
+                            </div>
+                        </div>
+                    }
+                    for (; i < 6; i++)
+                    {
+                        <div class="board-item">
+                            <div class="board-item-content">
+                                Add a Class
+                                <button class="button" onclick="addClassButton(5)">+</button>
+                            </div>
+
+                        </div>
+                    }}
+            </div>
+        </div>
+        <div id="sem6" class="board-column">
+            <div class="board-column-header">Semester 6</div>
+            <div class="board-column-content">
+                @{i = 0;
+                    foreach (var course in sem6)
+                    {
+                        i++;
+                        <div class="board-item" id=@course.Id>
+                            <div class="board-item-content">
+                                <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
+
+                                @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+
+
+
+                                <button class="button" onclick="removeClassButton('@course.DeptCode',6)">Remove Class</button>
+                            </div>
+                        </div>
+                    }
+                    for (; i < 6; i++)
+                    {
+                        <div class="board-item">
+                            <div class="board-item-content">
+                                Add a Class
+                                <button class="button" onclick="addClassButton(6)">+</button>
+                            </div>
+
+                        </div>
+                    }}
+            </div>
+        </div>
+        <div id="sem7" class="board-column">
+            <div class="board-column-header">Semester 7</div>
+            <div class="board-column-content">
+                @{i = 0;
+                    foreach (var course in sem7)
+                    {
+                        i++;
+                        <div class="board-item" id=@course.Id>
+                            <div class="board-item-content">
+                                <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
+
+                                @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+
+
+
+                                <button class="button" onclick="removeClassButton('@course.DeptCode',7)">Remove Class</button>
+                            </div>
+                        </div>
+                    }
+                    for (; i < 6; i++)
+                    {
+                        <div class="board-item">
+                            <div class="board-item-content">
+                                Add a Class
+                                <button class="button" onclick="addClassButton(7)">+</button>
+                            </div>
+
+                        </div>
+                    }}
+            </div>
+        </div>
+        <div id="sem8" class="board-column">
+            <div class="board-column-header">Semester 8</div>
+            <div class="board-column-content">
+                @{i = 0;
+                    foreach (var course in sem8)
+                    {
+                        i++;
+                        <div class="board-item" id=@course.Id>
+                            <div class="board-item-content">
+                                <div data-bind="component: { name: 'class-widget', params: { deptCode: '@course.DeptCode' }}"></div>
+
+                                @*<button class="button" onclick="editClassButton()">Edit Class</button>*@
+
+
+
+                                <button class="button" onclick="removeClassButton('@course.DeptCode',8)">Remove Class</button>
+                            </div>
+                        </div>
+                    }
+                    for (; i < 6; i++)
+                    {
+                        <div class="board-item">
+                            <div class="board-item-content">
+                                Add a Class
+                                <button class="button" onclick="addClassButton(8)">+</button>
+                            </div>
+
+                        </div>
+                    }}
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.5.3/muuri.min.js"></script>
+    <!-- LEAVE THIS FOR MUURI CODE ONLY PLEASE -->
+    <script>
         var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
         var columnGrids = [];
         var boardGrid;

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CoursePlanner.Models
 {
-    public class Course
+    public class Course: IEquatable<Course>
     {
         public string Name { get; set; }
         public string DeptCode { get; set; }
@@ -14,5 +14,15 @@ namespace CoursePlanner.Models
         public List<Course> Prerequisites { get; set; }
         public List<Course> Corequisites { get; set; }
 
+        public bool Equals(Course other)
+        {
+            if (other.Id.Equals(Id)
+                && other.DeptCode.Equals(DeptCode)
+                && other.Credits.Equals(Credits)
+                && other.Name.Equals(Name))
+                return true;
+            else
+                return false;
+        }
     }
 }
