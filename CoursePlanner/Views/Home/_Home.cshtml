@@ -52,8 +52,12 @@
                             foreach (DegreeProgram minor in student.Minors)
                             {
                                 @minor.Name
-                                <button class="button" onclick="changeMinorButton('@minor.Name')">Change Minor</button>
-                                <button class="button" onclick="removeMinorButton('@minor.Name')">Remove Minor</button>
+                                <div>
+                                    <button class="button" onclick="changeMinorButton('@minor.Name')">Change Minor</button>
+                                </div>
+                                <div>
+                                    <button class="button" onclick="removeMinorButton('@minor.Name')">Remove Minor</button>
+                                </div>
                             }
                             <h6></h6>
                             <button class="button" onclick="addMinorButton()">Add Additional Minor</button>
