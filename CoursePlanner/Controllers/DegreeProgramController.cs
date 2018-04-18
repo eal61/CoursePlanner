@@ -113,6 +113,7 @@ namespace CoursePlanner.Controllers
                     {
                         RequirementGroup rg = new RequirementGroup();
                         rg.MandatoryCourses = reqCourses[j];
+                        rg.FulfillmentCourses = countCourses[j];
                         rg.TotalCredits = creditReq[j];
                         switch (j)
                         {

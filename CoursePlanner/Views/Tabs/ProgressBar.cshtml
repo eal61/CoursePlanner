@@ -50,11 +50,13 @@
                     {
                         if (group.TotalCredits > 0)
                         {
-                            <h4>@group.GroupName</h4>
-                            <div id=@group.GroupName class="row">
-                                @if (group.MandatoryCourses != null && group.MandatoryCourses.Count > 0)
-                                {
-                                    foreach (var course in group.MandatoryCourses)
+
+                            if (group.MandatoryCourses != null && group.MandatoryCourses.Count > 0)
+                            {
+                                <h4>@group.GroupName</h4>
+                                <div id=@group.GroupName class="row">
+
+                                    @foreach (var course in group.MandatoryCourses)
                                     {
                                         if (coursesTaken.Contains(course))
                                         {
@@ -70,15 +72,36 @@
                                                 @course.Name
                                             </div>
                                         }
-
                                     }
-                                }
+                                </div>
+                            }
+                            else if (group.TotalCredits > 0)
+                            {
+                                <h4>@group.GroupName</h4>
+                                <div id=@group.GroupName class="row">
+                                    @if (group.FulfillmentCourses != null && group.FulfillmentCourses.Count > 0)
+                                {
+                                    foreach (var course in group.FulfillmentCourses)
+                                    {
+                                        if (coursesTaken.Contains(course))
+                                        {
+                                                <div id=@course.Id class="col-sm-5 accounted">
+                                                    <!--TODO make green-->
+                                                    @course.Name
+                                                </div>
+                                            }
 
-                            </div>
+                                        }
+                                    }
+                                </div>
+                            }
+
                         }
                     }
+
                 }
             </div>
         }
     </div>
+
 </body>
