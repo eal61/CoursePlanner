@@ -93,8 +93,9 @@ namespace CoursePlanner.Controllers
                         var id = (int)reader["course_id"];
                         var deptCode = (string)reader["DEPT_No"];
                         var semester = (int)reader["semester_id"];
+                        var credits = (int)reader["credits"];
 
-                        item = new CourseSem() { Id = id, DeptCode = deptCode, Name = name, SemId = semester };
+                        item = new CourseSem() { Id = id, DeptCode = deptCode, Name = name, SemId = semester, Credits = credits };
 
                         unsortedList.Add(item);
                     }
@@ -105,7 +106,7 @@ namespace CoursePlanner.Controllers
                         currSem.Courses = new List<Course>();
                         var courses = unsortedList.Where(c => c.SemId.Equals(i)).ToList();
                         courses.ForEach(c => {
-                            currSem.Courses.Add(new Course() { Id = c.Id, DeptCode = c.DeptCode, Name = c.Name });
+                            currSem.Courses.Add(new Course() { Id = c.Id, DeptCode = c.DeptCode, Name = c.Name, Credits = c.Credits });
                         });
                         
                         currSem.Code = i;
@@ -407,5 +408,6 @@ namespace CoursePlanner.Controllers
         public string DeptCode { get; set; }
         public int Id { get; set; }
         public int SemId { get; set; }
+        public int Credits { get; set; }
     }
 }
