@@ -216,8 +216,6 @@ namespace CoursePlanner.Controllers
 
                 SqlCommand command = new SqlCommand("SELECT * FROM degree WHERE dept = @0 AND major =1", conn);
 
-
-
                 command.Parameters.Add(new SqlParameter("0", (String)name));
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -252,18 +250,33 @@ namespace CoursePlanner.Controllers
             }
             else
             {
+               
                 string connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-
-                    SqlCommand command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
-
+                    var save = true;
+                    int? entry;
+                    // check if major is in db for student already
+                    SqlCommand command = new SqlCommand("select major from student_degree sd inner join degree d on sd.degree_id = d.degree_id where sd.student_id = @0 and d.major=1 and d.dept=@1", conn);
                     command.Parameters.Add(new SqlParameter("0", studentId));
-                    command.Parameters.Add(new SqlParameter("1", degree_id));
-                    command.ExecuteNonQuery();
-                    conn.Close();
+                    command.Parameters.Add(new SqlParameter("1", degree_name));
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows) {
+                            save = false;
+                        }
+                    }
 
+
+                    if (save) { //only save if there were no prior entries in db
+                        command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
+
+                        command.Parameters.Add(new SqlParameter("0", studentId));
+                        command.Parameters.Add(new SqlParameter("1", degree_id));
+                        command.ExecuteNonQuery();
+                        conn.Close();
+                    }
                 }
             }
             return 0;
