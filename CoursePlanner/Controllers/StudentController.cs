@@ -151,31 +151,31 @@ namespace CoursePlanner.Controllers
                 {
                     conn.Open();
 
-                    var save = true;
+                    //var save = true;
                    
-                    // check if major is in db for student already
-                    SqlCommand command = new SqlCommand("select * from student_course where student_id = @0 and course_id=@1 and semester_id=@2", conn);
-                    command.Parameters.Add(new SqlParameter("0", studentId));
-                    command.Parameters.Add(new SqlParameter("1", course_id));
-                    command.Parameters.Add(new SqlParameter("2", semesterId));
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            save = false;
-                        }
-                    }
+                    //// check if major is in db for student already
+                    //SqlCommand command = new SqlCommand("select * from student_course where student_id = @0 and course_id=@1 and semester_id=@2", conn);
+                    //command.Parameters.Add(new SqlParameter("0", studentId));
+                    //command.Parameters.Add(new SqlParameter("1", course_id));
+                    //command.Parameters.Add(new SqlParameter("2", semesterId));
+                    //using (SqlDataReader reader = command.ExecuteReader())
+                    //{
+                    //    if (reader.HasRows)
+                    //    {
+                    //        save = false;
+                    //    }
+                    //}
 
 
 
-                    if (save)
-                    { 
-                        command = new SqlCommand("INSERT into student_course (course_id, student_id, semester_id) values (@0, @1, @2)", conn);
+                    //if (save)
+                    //{ 
+                        SqlCommand command = new SqlCommand("INSERT into student_course (course_id, student_id, semester_id) values (@0, @1, @2)", conn);
                         command.Parameters.Add(new SqlParameter("0", course_id));
                         command.Parameters.Add(new SqlParameter("1", studentId));
                         command.Parameters.Add(new SqlParameter("2", semesterId));
                         command.ExecuteNonQuery();
-                    }
+                    //}
                     conn.Close();
 
                 }
