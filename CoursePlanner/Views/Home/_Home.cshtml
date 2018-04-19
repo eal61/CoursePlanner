@@ -24,49 +24,51 @@
                       @User.Identity.GetFullName()
                     </div>
                     <div class="profile-usertitle-job">
-                        @if(student.Majors !=null && student.Majors.Count >0)
-                        {
-                            foreach (DegreeProgram major in student.Majors)
-                            {
-                                @major.Name
-                                <div>
-                                    <button class="button" onclick="changeMajorButton('@major.Name')">Change Major</button>
-                                </div>
-                                <div>
-                                    <button class="button" onclick="removeMajorButton('@major.Name')">Remove Major</button>
-                                </div>
-                            }
-                            <h6></h6>
-                            <button class="button" onclick="addMajorButton()">Add Additional Major</button>
-                        }
-                        else
-                        {
-                            <h4>Undeclared</h4>
-                            <button class="button" onclick="addMajorButton()">Declare Major</button>
-                        }
+                        <h3>Majors</h3>
+                        @if (student.Majors != null && student.Majors.Count > 0)
+    {
+        foreach (DegreeProgram major in student.Majors)
+        {
+                    @major.Name
+                    <div>
+                        <button class="button" onclick="changeMajorButton('@major.Name')">Change Major</button>
+                    </div>
+                    <div>
+                        <button class="button" onclick="removeMajorButton('@major.Name')">Remove Major</button>
+                    </div>
+}
+                    <h6></h6>
+                    <button class="button" onclick="addMajorButton()">Add Additional Major</button>
+}
+else
+{
+                    <h4>Undeclared</h4>
+                    <button class="button" onclick="addMajorButton()">Declare Major</button>
+}
 
                     </div>
                     <div class="profile-usersubtitle-job">
-                        @if(student.Minors !=null && student.Minors.Count >0)
-                        {
-                            foreach (DegreeProgram minor in student.Minors)
-                            {
-                                @minor.Name
-                                <div>
-                                    <button class="button" onclick="changeMinorButton('@minor.Name')">Change Minor</button>
-                                </div>
-                                <div>
-                                    <button class="button" onclick="removeMinorButton('@minor.Name')">Remove Minor</button>
-                                </div>
-                            }
-                            <h6></h6>
-                            <button class="button" onclick="addMinorButton()">Add Additional Minor</button>
-                        }
-                        else
-                        {
-                            <h6>No Minor</h6>
-                            <button class="button" onclick="addMinorButton()">Add Minor</button>
-                        }
+                        <h3>Minors</h3>
+                        @if (student.Minors != null && student.Minors.Count > 0)
+    {
+        foreach (DegreeProgram minor in student.Minors)
+        {
+                    @minor.Name
+                    <div>
+                        <button class="button" onclick="changeMinorButton('@minor.Name')">Change Minor</button>
+                    </div>
+                    <div>
+                        <button class="button" onclick="removeMinorButton('@minor.Name')">Remove Minor</button>
+                    </div>
+}
+                    <h6></h6>
+                    <button class="button" onclick="addMinorButton()">Add Additional Minor</button>
+}
+else
+{
+                    <h6>No Minor</h6>
+                    <button class="button" onclick="addMinorButton()">Add Minor</button>
+}
                     </div>
                 </div>
             </div>

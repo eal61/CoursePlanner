@@ -359,6 +359,78 @@ INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) valu
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 91, 0, 1);
 INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 92, 0, 1);
 
+--Insert Humanities
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 41, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 42, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 43, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 44, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 45, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 46, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 47, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 48, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 49, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 50, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 51, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 52, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 53, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 54, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 55, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 56, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 57, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 58, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 95, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 96, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 97, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (0, 98, 0, 5);
+
+
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 41, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 42, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 43, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 44, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 45, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 46, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 47, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 48, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 49, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 50, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 51, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 52, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 53, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 54, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 55, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 56, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 57, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 58, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 95, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 96, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 97, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (1, 98, 0, 5);
+
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 41, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 42, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 43, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 44, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 45, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 46, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 47, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 48, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 49, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 50, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 51, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 52, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 53, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 54, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 55, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 56, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 57, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 58, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 95, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 96, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 97, 0, 5);
+INSERT into course_degree (degree_id, course_id, mandatory, requirement_id) values (4, 98, 0, 5);
+
+
 --make a preReq
 INSERT into preReqs (course_id, preReq_courseId) values (27, 26); --class 26(Calc1) is a preReq for class 27(Calc2)
 INSERT into preReqs (course_id, preReq_courseId) values (28, 27);
@@ -366,20 +438,20 @@ INSERT into preReqs (course_id, preReq_courseId) values (28, 27);
 INSERT into student default values; -- this inserts a student into the table and auto increments the id so it's unique
 select SCOPE_IDENTITY();
 
-INSERT into student_course (course_id, student_id, semester_id) values (0, 1, 6); --Course 0(CS1530) is taken by student 0 in semester index 6 (so semester#7 with 0 indexing)
-INSERT into student_course (course_id, student_id, semester_id) values (1, 1, 0);
-INSERT into student_course (course_id, student_id, semester_id) values (2, 1, 0);
-INSERT into student_course (course_id, student_id, semester_id) values (3, 1, 0);
-INSERT into student_course (course_id, student_id, semester_id) values (4, 1, 1);
-INSERT into student_course (course_id, student_id, semester_id) values (5, 1, 1);
-INSERT into student_course (course_id, student_id, semester_id) values (6, 1, 2);
-INSERT into student_course (course_id, student_id, semester_id) values (7, 1, 2);
-INSERT into student_course (course_id, student_id, semester_id) values (8, 1, 3);
-INSERT into student_course (course_id, student_id, semester_id) values (14, 1, 3);
-INSERT into student_course (course_id, student_id, semester_id) values (16, 1, 3);
-INSERT into student_course (course_id, student_id, semester_id) values (11, 1, 4);
-INSERT into student_course (course_id, student_id, semester_id) values (21, 1, 4);
+--INSERT into student_course (course_id, student_id, semester_id) values (0, 1, 6); --Course 0(CS1530) is taken by student 0 in semester index 6 (so semester#7 with 0 indexing)
+--INSERT into student_course (course_id, student_id, semester_id) values (1, 1, 0);
+--INSERT into student_course (course_id, student_id, semester_id) values (2, 1, 0);
+--INSERT into student_course (course_id, student_id, semester_id) values (3, 1, 0);
+--INSERT into student_course (course_id, student_id, semester_id) values (4, 1, 1);
+--INSERT into student_course (course_id, student_id, semester_id) values (5, 1, 1);
+--INSERT into student_course (course_id, student_id, semester_id) values (6, 1, 2);
+--INSERT into student_course (course_id, student_id, semester_id) values (7, 1, 2);
+--INSERT into student_course (course_id, student_id, semester_id) values (8, 1, 3);
+--INSERT into student_course (course_id, student_id, semester_id) values (14, 1, 3);
+--INSERT into student_course (course_id, student_id, semester_id) values (16, 1, 3);
+--INSERT into student_course (course_id, student_id, semester_id) values (11, 1, 4);
+--INSERT into student_course (course_id, student_id, semester_id) values (21, 1, 4);
 
-INSERT into student_degree (student_id, degree_id) values (1, 0); --student 0 has degree 0 (CS major)
+--INSERT into student_degree (student_id, degree_id) values (1, 0); --student 0 has degree 0 (CS major)
 
 --DELETE FROM student_course WHERE (course_id = 0 AND student_id=0 AND semester_id = 0);

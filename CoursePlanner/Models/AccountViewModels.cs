@@ -93,8 +93,8 @@ namespace CoursePlanner.Models
         [Display(Name = "Last Name")]
         public string lastName { get; set; }
 
-        [Display(Name = "Major")]
-        public string major { get; set; }
+        //[Display(Name = "Major")]
+        //public string major { get; set; }
 
 
 

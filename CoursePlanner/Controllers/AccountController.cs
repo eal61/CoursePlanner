@@ -181,7 +181,7 @@ namespace CoursePlanner.Controllers
                 }
                 
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, firstName = model.firstName, lastName = model.lastName, major = model.major, studentId = studentId };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, firstName = model.firstName, lastName = model.lastName,  studentId = studentId };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

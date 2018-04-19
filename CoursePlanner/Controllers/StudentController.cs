@@ -151,11 +151,31 @@ namespace CoursePlanner.Controllers
                 {
                     conn.Open();
 
-                    SqlCommand command = new SqlCommand("INSERT into student_course (course_id, student_id, semester_id) values (@0, @1, @2)", conn);
-                    command.Parameters.Add(new SqlParameter("0", course_id));
-                    command.Parameters.Add(new SqlParameter("1", studentId));
+                    var save = true;
+                   
+                    // check if major is in db for student already
+                    SqlCommand command = new SqlCommand("select * from student_course where student_id = @0 and course_id=@1 and semester_id=@2", conn);
+                    command.Parameters.Add(new SqlParameter("0", studentId));
+                    command.Parameters.Add(new SqlParameter("1", course_id));
                     command.Parameters.Add(new SqlParameter("2", semesterId));
-                    command.ExecuteNonQuery();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            save = false;
+                        }
+                    }
+
+
+
+                    if (save)
+                    { 
+                        command = new SqlCommand("INSERT into student_course (course_id, student_id, semester_id) values (@0, @1, @2)", conn);
+                        command.Parameters.Add(new SqlParameter("0", course_id));
+                        command.Parameters.Add(new SqlParameter("1", studentId));
+                        command.Parameters.Add(new SqlParameter("2", semesterId));
+                        command.ExecuteNonQuery();
+                    }
                     conn.Close();
 
                 }
@@ -185,26 +205,7 @@ namespace CoursePlanner.Controllers
             }
         }
 
-        public void addDegreeProgram(int studentId, int degreeId)
-        {
-            string connectionstring = "Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-CoursePlanner-20180131110323.mdf;Initial Catalog=aspnet-CoursePlanner-20180131110323;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connectionstring))
-            {
-                conn.Open();
-                SqlCommand command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
-                command.Parameters.Add(new SqlParameter("0", studentId));
-                command.Parameters.Add(new SqlParameter("1", degreeId));
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read()){
-                        Console.WriteLine(reader["degree_id"]);
-                    }
-                }
-                conn.Close();
-
-            }
-        }
+        
 
         public int getMajor(String name)
         {
@@ -275,8 +276,10 @@ namespace CoursePlanner.Controllers
                         command.Parameters.Add(new SqlParameter("0", studentId));
                         command.Parameters.Add(new SqlParameter("1", degree_id));
                         command.ExecuteNonQuery();
-                        conn.Close();
+                        
                     }
+
+                    conn.Close();
                 }
             }
             return 0;
@@ -333,11 +336,29 @@ namespace CoursePlanner.Controllers
                 {
                     conn.Open();
 
-                    SqlCommand command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
-
+                    var save = true;
+                    
+                    // check if major is in db for student already
+                    SqlCommand command = new SqlCommand("select minor from student_degree sd inner join degree d on sd.degree_id = d.degree_id where sd.student_id = @0 and d.minor=1 and d.dept=@1", conn);
                     command.Parameters.Add(new SqlParameter("0", studentId));
-                    command.Parameters.Add(new SqlParameter("1", degree_id));
-                    command.ExecuteNonQuery();
+                    command.Parameters.Add(new SqlParameter("1", degree_name));
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            save = false;
+                        }
+                    }
+
+
+                    if (save)
+                    {
+                        command = new SqlCommand("INSERT into student_degree (student_id, degree_id) values (@0, @1)", conn);
+
+                        command.Parameters.Add(new SqlParameter("0", studentId));
+                        command.Parameters.Add(new SqlParameter("1", degree_id));
+                        command.ExecuteNonQuery();
+                    }
                     conn.Close();
 
                 }

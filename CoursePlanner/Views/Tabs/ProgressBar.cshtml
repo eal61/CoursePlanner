@@ -40,68 +40,139 @@
     <!-- This should display all majors/minors in order and the requirement groups for each
         Still need to figure out how to account for the flexible (not mandatory) courses, and style the bar-->
     <div id="progressBarContainer" class="container">
+        <h2>Majors</h2>
         @foreach (var program in programs)
+    {
+        if (program.Major)
         {
             <div id=@program.Name>
-                <h3>@program.Name</h3>
+                <h3>@program.Name - Major</h3>
                 @if (program.Requirements != null && program.Requirements.Count > 0)
+            {
+                foreach (var group in program.Requirements)
                 {
-                    foreach (var group in program.Requirements)
+                    if (group.TotalCredits > 0)
                     {
-                        if (group.TotalCredits > 0)
+
+                        if (group.MandatoryCourses != null && group.MandatoryCourses.Count > 0)
                         {
+                            <h4>@group.GroupName</h4>
+                            <div id=@group.GroupName class="row">
 
-                            if (group.MandatoryCourses != null && group.MandatoryCourses.Count > 0)
+                                @foreach (var course in group.MandatoryCourses)
                             {
-                                <h4>@group.GroupName</h4>
-                                <div id=@group.GroupName class="row">
-
-                                    @foreach (var course in group.MandatoryCourses)
-                                    {
-                                        if (coursesTaken.Contains(course))
-                                        {
-                                            <div id=@course.Id class="col-sm-5 accounted">
-                                                <!--TODO make green-->
-                                                @course.Name
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div id=@course.Id class="col-sm-5 unaccounted">
-                                                <!--TODO make red-->
-                                                @course.Name
-                                            </div>
-                                        }
-                                    }
-                                </div>
-                            }
-                            else if (group.TotalCredits > 0)
-                            {
-                                <h4>@group.GroupName</h4>
-                                <div id=@group.GroupName class="row">
-                                    @if (group.FulfillmentCourses != null && group.FulfillmentCourses.Count > 0)
+                                if (coursesTaken.Contains(course))
                                 {
-                                    foreach (var course in group.FulfillmentCourses)
-                                    {
-                                        if (coursesTaken.Contains(course))
-                                        {
-                                                <div id=@course.Id class="col-sm-5 accounted">
-                                                    <!--TODO make green-->
-                                                    @course.Name
-                                                </div>
-                                            }
-
-                                        }
-                                    }
+                                    <div id=@course.Id class="col-sm-5 accounted">
+                                        <!--TODO make green-->
+                                        @course.Name
+                                    </div>
+                            }
+                            else
+                            {
+                                <div id=@course.Id class="col-sm-5 unaccounted">
+                                    <!--TODO make red-->
+                                    @course.Name
                                 </div>
+                        }
+                    }
+                            </div>
+                    }
+                    else if (group.TotalCredits > 0)
+                    {
+                        <h4>@group.GroupName</h4>
+                        <div id=@group.GroupName class="row">
+                            @if (group.FulfillmentCourses != null && group.FulfillmentCourses.Count > 0)
+                        {
+                            foreach (var course in group.FulfillmentCourses)
+                            {
+                                if (coursesTaken.Contains(course))
+                                {
+                                    <div id=@course.Id class="col-sm-5 accounted">
+                                        <!--TODO make green-->
+                                        @course.Name
+                                    </div>
                             }
 
                         }
                     }
-
+                        </div>
                 }
-            </div>
+
+            }
         }
+
+    }
+            </div>
+    }
+}
+        <h2>Minors</h2>
+        @foreach (var program in programs)
+    {
+
+        if (program.Minor)
+        {
+            <div id=@program.Name>
+                <h3>@program.Name - Minor</h3>
+                @if (program.Requirements != null && program.Requirements.Count > 0)
+            {
+                foreach (var group in program.Requirements)
+                {
+                    if (group.TotalCredits > 0)
+                    {
+
+                        if (group.MandatoryCourses != null && group.MandatoryCourses.Count > 0)
+                        {
+                            <h4>@group.GroupName</h4>
+                            <div id=@group.GroupName class="row">
+
+                                @foreach (var course in group.MandatoryCourses)
+                            {
+                                if (coursesTaken.Contains(course))
+                                {
+                                    <div id=@course.Id class="col-sm-5 accounted">
+                                        <!--TODO make green-->
+                                        @course.Name
+                                    </div>
+                            }
+                            else
+                            {
+                                <div id=@course.Id class="col-sm-5 unaccounted">
+                                    <!--TODO make red-->
+                                    @course.Name
+                                </div>
+                        }
+                    }
+                            </div>
+                    }
+                    else if (group.TotalCredits > 0)
+                    {
+                        <h4>@group.GroupName</h4>
+                        <div id=@group.GroupName class="row">
+                            @if (group.FulfillmentCourses != null && group.FulfillmentCourses.Count > 0)
+                        {
+                            foreach (var course in group.FulfillmentCourses)
+                            {
+                                if (coursesTaken.Contains(course))
+                                {
+                                    <div id=@course.Id class="col-sm-5 accounted">
+                                        <!--TODO make green-->
+                                        @course.Name
+                                    </div>
+                            }
+
+                        }
+                    }
+                        </div>
+                }
+
+            }
+        }
+
+    }
+            </div>
+    }
+}
     </div>
 
 </body>
